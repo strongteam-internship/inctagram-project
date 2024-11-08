@@ -104,6 +104,7 @@ export default function Home() {
         }
       `}</style>
 
+
       <style jsx global>{`
         html,
         body {
