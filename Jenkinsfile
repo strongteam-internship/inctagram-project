@@ -8,8 +8,8 @@ pipeline {
         NAMESPACE = "strong-interns-top"
         REGISTRY_HOSTNAME = "itstrongteam"
         REGISTRY = "registry.hub.docker.com"
-        PROJECT = "strongteam-internship"
-        DEPLOYMENT_NAME = "strongteam-internship-deployment"
+        PROJECT = "strongteam-inctagram"
+        DEPLOYMENT_NAME = "strongteam-inctagram-deployment"
         IMAGE_NAME = "${env.BUILD_ID}_${env.ENV_TYPE}_${env.GIT_COMMIT}"
         DOCKER_BUILD_NAME = "${env.REGISTRY_HOSTNAME}/${env.PROJECT}:${env.IMAGE_NAME}"
     }
