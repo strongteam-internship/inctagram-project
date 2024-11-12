@@ -5,7 +5,7 @@ pipeline {
     environment {
         ENV_TYPE = "production"
         PORT = 3608
-        NAMESPACE = "strong-interns-top"
+        NAMESPACE = "strong-internsjenkins fixtop"
         REGISTRY_HOSTNAME = "itstrongteam"
         REGISTRY = "registry.hub.docker.com"
         PROJECT = "strongteam-internship"
