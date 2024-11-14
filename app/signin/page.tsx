@@ -1,5 +1,5 @@
-export default function SignIn(){
-  return <div>
-    Sign In Page
-  </div>
+'use client'
+import styles from './signin.module.css'
+export default function SignIn() {
+  return <div className={styles.title}>Sign In Page</div>
 }
