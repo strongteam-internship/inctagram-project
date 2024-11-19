@@ -1,4 +1,3 @@
-#Устанавливаем зависимости
 FROM node:20.11-alpine as dependencies
 RUN npm install -g pnpm
 WORKDIR /app
@@ -25,5 +24,3 @@ ENV NODE_ENV production
 COPY --from=builder /app/ ./
 EXPOSE 3000
 CMD ["pnpm", "start"]
-
-
