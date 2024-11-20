@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import '@/styles/index.scss';
 
 import React from 'react'
 
