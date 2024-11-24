@@ -16,9 +16,8 @@ type AvoidVariants =
   | 'Semi_bold_small_text_14'
   | 'regular_link'
   | 'small_link'
-type VariantMapping = { tag: AvoidElements; className: string }
 
-const Variants: Record<AvoidVariants, VariantMapping> = {
+const Variants: Record<AvoidVariants, { tag: AvoidElements; className: string }> = {
   Large: {
     tag: 'p',
     className: '',
@@ -71,17 +70,37 @@ const Variants: Record<AvoidVariants, VariantMapping> = {
     tag: 'a',
     className: '',
   },
-}
+} as const
 
-type Props<V extends AvoidVariants> = {
-  variant: V
+type VariantMapping = typeof Variants
+
+type Props<V extends keyof VariantMapping> = {
+  variant?: V
   children: ReactNode
-} & Omit<ComponentPropsWithoutRef<'h1'>, 'children'>
+} & (V extends 'regular_link' | 'small_link' ? { href: string } : {}) &
+  Omit<ComponentPropsWithoutRef<VariantMapping[V]['tag']>, 'children'>
 
-export function Typography<V extends AvoidVariants>({ children, variant, ...props }: Props<V>) {
-  const Component = Variants[variant].tag as ElementType
+export function Typography<V extends keyof VariantMapping>({
+  children,
+  variant,
+  ...props
+}: Props<V>) {
+  let Component
+  let className
 
-  return <Component {...props}>{children}</Component>
+  if (variant) {
+    Component = Variants[variant].tag as ElementType
+    className = Variants[variant].className
+  } else {
+    Component = 'p'
+    className = 'regular_text_16'
+  }
+
+  return (
+    <Component className={`${className}`} {...props}>
+      {children}
+    </Component>
+  )
 }
 
 //Large
