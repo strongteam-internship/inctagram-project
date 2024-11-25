@@ -78,7 +78,7 @@ type VariantMapping = typeof Variants
 type Props<V extends keyof VariantMapping> = {
   variant?: V
   children: string
-  align: 'right' | 'left' | 'center'
+  align?: 'right' | 'left' | 'center'
 } & (V extends 'regular_link' | 'small_link' ? { href: string } : {}) &
   Omit<ComponentPropsWithoutRef<VariantMapping[V]['tag']>, 'children'>
 
@@ -89,7 +89,7 @@ export function Typography<V extends keyof VariantMapping>({
   ...props
 }: Props<V>) {
   let Component
-  let className = `${s[align]} `
+  let className = align ? `${s[align]} ` : ''
 
   if (variant) {
     Component = Variants[variant].tag as ElementType
