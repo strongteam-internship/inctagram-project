@@ -9,9 +9,10 @@ import {
 } from 'react'
 
 import CloseOutline from '@/shared/input/icons/CloseOutline'
-import EyeOffOutline from '@/shared/input/icons/EyeOffOutline'
-import EyeOutline from '@/shared/input/icons/EyeOutline'
-import SearchOutline from '@/shared/input/icons/SearchOutline'
+import EyeIcon from '@/shared/input/icons/EyeIcon'
+import EyeOffIcon from '@/shared/input/icons/EyeOffIcon'
+import SearchIcon from '@/shared/input/icons/SearchIcon'
+import { Typography } from '@/shared/typography/typography'
 import clsx from 'clsx'
 
 import s from './Input.module.scss'
@@ -40,11 +41,19 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   } = props
   const [showPassword, setShowPassword] = useState(false)
   const [inputValue, setInputValue] = useState(value)
-  const id = useId()
+  const inputId = useId()
 
   const isPassword = variant === 'password'
   const inputType = !showPassword && isPassword ? 'password' : 'text'
   const isSearch = variant === 'search'
+
+  const classNames = {
+    button: clsx(s.passwordControl, errorText && s.error, disabled && s.disabled, s.showIcon),
+    clearIcon: clsx(s.clearIcon, disabled && s.disabled),
+    input: clsx(s.input, s[variant], errorText && s.error, disabled && s.disabled, className),
+    label: clsx(s.label, disabled && s.disabled),
+    searchIcon: clsx(s.iconSearch, disabled && s.disabled),
+  }
 
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     onChange?.(e)
@@ -66,29 +75,18 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   return (
     <div className={s.container}>
       {label && (
-        <p>Input</p> // временный код
-        // <Typography
-        //   as={'label'}
-        //   className={clsx(disabled && s.disabled)}
-        //   grey
-        //   htmlFor={id}
-        //   isRequired={isRequired}
-        // >
-        //   {label}
-        // </Typography>
+        <label htmlFor={inputId}>
+          <Typography className={classNames.label} variant={'regular_text_14'}>
+            {label}
+          </Typography>
+        </label>
       )}
       <div className={s.inputContainer}>
-        {isSearch && <SearchOutline className={clsx(s.iconSearch, disabled && s.disabled)} />}
+        {isSearch && <SearchIcon className={classNames.searchIcon} />}
         <input
-          className={clsx(
-            s.input,
-            s[variant],
-            errorText && s.error,
-            disabled && s.disabled,
-            className
-          )}
+          className={classNames.input}
           disabled={disabled}
-          id={id}
+          id={inputId}
           onChange={inputChangeHandler}
           placeholder={placeholder}
           ref={ref}
@@ -97,21 +95,8 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
           {...rest}
         />
         {isPassword && !!inputValue && (
-          <button
-            className={clsx(
-              s.passwordControl,
-              errorText && s.error,
-              disabled && s.disabled,
-              s.showIcon
-            )}
-            onClick={showPasswordHandler}
-            type={'button'}
-          >
-            {showPassword ? (
-              <EyeOutline className={s.icon} />
-            ) : (
-              <EyeOffOutline className={s.icon} />
-            )}
+          <button className={classNames.button} onClick={showPasswordHandler} type={'button'}>
+            {showPassword ? <EyeIcon className={s.icon} /> : <EyeOffIcon className={s.icon} />}
           </button> // временный код
           // <Button
           //   className={''}
@@ -145,15 +130,9 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
           // </Button>
         )}
       </div>
-      {!!errorText && (
-        <span className={s.errorMessage}>{errorText}</span>
-        // <Typography as={'span'} variant={'error'}>
-        //   {errorText}
-        // </Typography>
-      )}
+      {!!errorText && <Typography className={s.errorMessage}>{errorText}</Typography>}
     </div>
   )
 })
 
-// Указываем имя компонента для React DevTools
 Input.displayName = 'Input'

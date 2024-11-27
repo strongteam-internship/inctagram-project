@@ -1,103 +1,97 @@
+import type { Meta, StoryObj } from '@storybook/react'
+
+import { useState } from 'react'
+
 import { Input } from '@/shared/input/Input'
-import { Meta, StoryObj } from '@storybook/react'
 
 const meta = {
-  argTypes: {
-    disabled: {
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        defaultValue: { summary: 'false' },
-        type: {
-          summary: 'boolean',
-        },
-      },
-    },
-    errorText: {
-      control: {
-        type: 'text',
-      },
-      table: {
-        type: {
-          summary: 'string',
-        },
-      },
-    },
-    isRequired: {
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        defaultValue: { summary: 'false' },
-        type: {
-          summary: 'boolean',
-        },
-      },
-    },
-    label: {
-      table: {
-        type: {
-          summary: 'string',
-        },
-      },
-    },
-    placeholder: {
-      control: { type: 'text' },
-      table: {
-        type: {
-          summary: 'string',
-        },
-      },
-    },
-    variant: {
-      control: { type: 'select' },
-      options: ['password', 'search', 'text'],
-      table: {
-        defaultValue: { summary: 'text' },
-        type: {
-          detail: `password', 'search', 'text`,
-          summary: 'string',
-        },
-      },
-    },
-  },
   component: Input,
   tags: ['autodocs'],
   title: 'Components/Input',
 } satisfies Meta<typeof Input>
 
 export default meta
-type Story = StoryObj<typeof Input>
+type Story = StoryObj<typeof meta>
 
-export const Text: Story = {
-  args: {
-    label: 'Some text-field label',
-    placeholder: 'type something...',
+export const Default = {
+  render: () => {
+    const [state, setState] = useState('')
+
+    return (
+      <Input
+        label={'Input'}
+        name={'email'}
+        onChange={e => setState(e.target.value)}
+        placeholder={'Placeholder'}
+        value={state}
+      />
+    )
   },
 }
 
-export const Password: Story = {
+export const Password = {
+  render: () => {
+    const [state, setState] = useState('')
+
+    return (
+      <Input
+        label={'Input'}
+        onChange={e => setState(e.target.value)}
+        placeholder={'Placeholder'}
+        value={state}
+        variant={'password'}
+      />
+    )
+  },
+}
+
+export const Search = {
+  render: () => {
+    const [state, setState] = useState('')
+
+    return (
+      <Input
+        label={'Input search'}
+        onChange={e => setState(e.target.value)}
+        onClick={() => {
+          setState('')
+        }}
+        placeholder={'Input search'}
+        value={state}
+        variant={'search'}
+      />
+    )
+  },
+}
+
+export const InputWithError: Story = {
   args: {
-    label: 'Some text-field label',
-    placeholder: 'type password...',
+    errorText: 'Error!',
+    placeholder: 'Error',
+  },
+}
+
+export const InputWithoutLabel: Story = {
+  args: {
+    placeholder: 'Placeholder',
+    variant: 'text',
+  },
+}
+
+export const DisabledPassword: Story = {
+  args: {
+    disabled: true,
+    label: 'Input',
+    placeholder: 'Placeholder',
     variant: 'password',
   },
 }
 
-export const Search: Story = {
+export const DisabledSearch: Story = {
   args: {
-    label: 'Some text-field label',
-    placeholder: 'type to start search...',
+    disabled: true,
+    label: 'Input search',
+    placeholder: 'Placeholder',
     variant: 'search',
-  },
-}
-
-export const TextWithError: Story = {
-  args: {
-    errorText: 'Some error occurred...',
-    isRequired: true,
-    label: 'Some text-field label',
-    placeholder: 'type something...',
   },
 }

@@ -15,6 +15,7 @@
   "dependencies": {
     "@fontsource/inter": "^5.1.0",
     "@reduxjs/toolkit": "^2.3.0",
+    "@storybook/theming": "^8.4.5",
     "clsx": "^2.1.1",
     "eslint-config-next": "^15.0.3",
     "next": "15.0.3",
