@@ -6,7 +6,7 @@
   background-color: var(--color-dark-700);
   border: 1px solid var(--color-dark-900);
   border-radius: 2px;
-  font: var(--font-weight-regular);
+  font: inherit;
   color: var(--color-light-900);
   padding: 0.4em 0.4em 0.4em 1em;
   width: 100%;
@@ -69,7 +69,7 @@
   border: 1px solid var(--color-light-100);
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
-  font: var(--font-weight-regular);
+  font: inherit;
   color: var(--color-light-900);
   margin: 0;
   box-sizing: border-box;
@@ -77,7 +77,7 @@
 
 .ListItem {
   list-style: none;
-  padding: 0.4em 1em;
+  padding: 0 1em;
 
   &:hover {
     background-color: var(--color-dark-300);

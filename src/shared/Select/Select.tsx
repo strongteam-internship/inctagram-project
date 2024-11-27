@@ -1,15 +1,17 @@
 import React, { type SelectHTMLAttributes, useState } from 'react'
-import cls from './Select.module.scss'
+import style from './Select.module.scss'
+import { Typography } from '../typography/typography'
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options: string[]
   selectedItem?: string
   disabled?: boolean
   color?: string
+  border?: string
 }
 
 export const Select = (props: SelectProps) => {
-  const { options, selectedItem, disabled, ...otherProps } = props
+  const { options, selectedItem, disabled, color, border, ...otherProps } = props
   const [isOpen, setIsOpen] = useState(false)
   const [selectedOption, setSelectedOption] = useState(selectedItem)
   const toggling = () => {
@@ -20,30 +22,31 @@ export const Select = (props: SelectProps) => {
     setIsOpen(false)
   }
 
-  // const iconClasses = `${cls.Icon}`
+  // const iconClasses = `${style.Icon}`
 
   return (
-    <div className={`${cls.DropDownContainer}`}>
+    <div className={`${style.DropDownContainer}`}>
       <button
         type="button"
-        className={`${cls.DropDownHeader} ${
-          isOpen ? cls.active : ''
-        } ${disabled ? cls.disabled : ''}`}
+        className={`${style.DropDownHeader} ${
+          isOpen ? style.active : ''
+        } ${disabled ? style.disabled : ''}`}
         disabled={disabled}
         onClick={toggling}
+        style={{ color, border }}
       >
         {selectedOption || options[0]}
       </button>
       {isOpen && (
         <div>
-          <div className={`${cls.DropDownList}`}>
+          <div className={`${style.DropDownList}`}>
             {options.map(option => (
               <li
-                className={`${cls.ListItem}`}
+                className={`${style.ListItem}`}
                 onClick={onOptionClicked(option)}
                 key={Math.random()}
               >
-                {option}
+                <Typography variant="regular_text_16">{option}</Typography>
               </li>
             ))}
           </div>
