@@ -1,130 +1,110 @@
 @mixin button-colors-and-borders($color, $back-ground-color, $border, $border-radius, $box-shadow) {
   color: $color;
-
   background-color: $back-ground-color;
   border: $border;
   border-radius: $border-radius;
   box-shadow: $box-shadow;
 }
 
+$accent-color: var(--color-accent-500);
+$light-color: var(--color-light-100);
+$dark-color: var(--color-dark-300);
+$accent-hover: var(--color-accent-100);
+$accent-focus: var(--color-accent-700);
+$accent-disabled: var(--color-accent-900);
+
 .button {
   all: unset;
-
   cursor: pointer;
-
   gap: 10px;
+  padding: 6px 28px;
+}
 
-  padding-top: 6px;
-  padding-bottom: 6px;
-  padding-inline: 28px;
+.primary, .secondary, .outline, .link {
+  @include button-colors-and-borders($light-color, transparent, 2px solid $accent-color, 4px, 0 4px 18px 0 #8c61ff59);
 }
 
 .primary {
-  @include button-colors-and-borders(
-                  var(--color-light-100),
-                  var(--color-accent-500),
-                  2px solid var(--color-accent-500),
-                  4px,
-                  0 4px 18px 0 #8c61ff59
-  );
+  @include button-colors-and-borders($light-color, $accent-color, 2px solid $accent-color, 4px, 0 4px 18px 0 #8c61ff59);
 
   &:hover {
-    background-color: var(--color-accent-100);
-    border: 2px solid var(--color-accent-100);
+    background-color: $accent-hover;
+    border-color: $accent-hover;
   }
 
   &:focus-visible {
-    background-color: var(--color-accent-500);
-    border: 2px solid var(--color-accent-700);
+    background-color: $accent-color;
+    border-color: $accent-focus;
   }
 
   &:active {
-    background-color: var(--color-accent-500);
-    border: 2px solid var(--color-accent-700);
+    background-color: $accent-color;
+    border-color: $accent-focus;
   }
 
   &:disabled {
     color: var(--color-light-900);
-    background-color: var(--color-accent-900);
-    border: 2px solid var(--color-accent-900);
+    background-color: $accent-disabled;
+    border-color: $accent-disabled;
   }
 }
 
 .secondary {
-  @include button-colors-and-borders(
-                  var(--color-light-100),
-                  var(--color-dark-300),
-                  2px solid var(--color-dark-300),
-                  4px,
-                  0 4px 4px 0 #4d566021
-  );
+  @include button-colors-and-borders($light-color, $dark-color, 2px solid $dark-color, 4px, 0 4px 4px 0 #4d566021);
 
   &:hover {
     background-color: var(--color-dark-100);
-    border: 2px solid var(--color-dark-100);
+    border-color: var(--color-dark-100);
   }
 
   &:focus-visible {
-    background-color: var(--color-dark-300);
-    border: 2px solid var(--color-accent-300);
+    background-color: $dark-color;
+    border-color: var(--color-accent-300);
   }
 
   &:active {
     background-color: #212121;
-    border: 2px solid var(--color-dark-500);
+    border-color: var(--color-dark-500);
   }
 
   &:disabled {
     color: var(--color-light-900);
     background-color: var(--color-dark-500);
-    border: 2px solid var(--color-dark-500);
+    border-color: var(--color-dark-500);
   }
 }
 
 .outline {
-  @include button-colors-and-borders(
-                  var(--color-accent-500),
-                  rgba(255, 255, 255, 0),
-                  1px solid var(--color-accent-500),
-                  4px,
-                  none
-  );
+  @include button-colors-and-borders($accent-color, transparent, 1px solid $accent-color, 4px, none);
 
   &:hover {
-    color: var(--color-accent-100);
-    border: 1px solid var(--color-accent-100);
+    color: $accent-hover;
+    border-color: $accent-hover;
   }
 
   &:focus-visible {
-    color: var(--color-accent-700);
-    border: 2px solid var(--color-accent-700);
+    color: $accent-focus;
+    border-color: $accent-focus;
   }
 
   &:active {
-    color: var(--color-accent-700);
-    border: 1px solid var(--color-accent-700);
+    color: $accent-focus;
+    border-color: $accent-focus;
   }
 
   &:disabled {
-    color: var(--color-accent-900);
-    border: 1px solid var(--color-accent-900);
+    color: $accent-disabled;
+    border-color: $accent-disabled;
     box-shadow: none;
   }
 }
 
 .link {
-  @include button-colors-and-borders(
-                  var(--color-accent-500),
-                  rgba(255, 255, 255, 0),
-                  2px solid rgb(0 0 0 / 0%),
-                  4px,
-                  none
-  );
-
+  @include button-colors-and-borders($accent-color, transparent, 2px solid transparent, 4px, none);
   padding: 6px 12px;
 
   &:hover {
-    color: var(--color-accent-100);
+    color: $accent-hover;
   }
 
   &:active {
@@ -133,13 +113,13 @@
 
   &:focus-visible {
     padding: 6px 12px;
-    color: var(--color-accent-500);
-    border: 2px solid var(--color-accent-700);
+    color: $accent-color;
+    border-color: $accent-focus;
     border-radius: 2px;
   }
 
   &:disabled {
-    color: var(--color-accent-900);
+    color: $accent-disabled;
   }
 }
 
