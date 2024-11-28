@@ -1,91 +1,92 @@
 'use client'
 import { ComponentPropsWithoutRef, ElementType } from 'react'
+
 import s from './typography.module.scss'
 
 type AvoidElements = 'a' | 'h1' | 'h2' | 'h3' | 'p'
 export type AvoidVariants =
-  | 'Large'
   | 'H1'
   | 'H2'
   | 'H3'
-  | 'regular_text_16'
-  | 'bold_text_16'
-  | 'regular_text_14'
-  | 'medium_text_14'
+  | 'Large'
   | 'bold_text_14'
-  | 'small_text_12'
-  | 'semi_bold_small_text_12'
+  | 'bold_text_16'
+  | 'medium_text_14'
   | 'regular_link'
+  | 'regular_text_14'
+  | 'regular_text_16'
+  | 'semi_bold_small_text_12'
   | 'small_link'
+  | 'small_text_12'
 
-const Variants: Record<AvoidVariants, { tag: AvoidElements; className: string }> = {
-  Large: {
-    tag: 'p',
-    className: s.Large,
-  },
+const Variants: Record<AvoidVariants, { className: string; tag: AvoidElements }> = {
   H1: {
-    tag: 'h1',
     className: s.H1,
+    tag: 'h1',
   },
   H2: {
-    tag: 'h2',
     className: s.H2,
+    tag: 'h2',
   },
   H3: {
-    tag: 'h3',
     className: s.H3,
+    tag: 'h3',
   },
-  regular_text_16: {
+  Large: {
+    className: s.Large,
     tag: 'p',
-    className: s.regular_text_16,
-  },
-  bold_text_16: {
-    tag: 'p',
-    className: s.bold_text_16,
-  },
-  regular_text_14: {
-    tag: 'p',
-    className: s.regular_text_14,
-  },
-  medium_text_14: {
-    tag: 'p',
-    className: s.medium_text_14,
   },
   bold_text_14: {
-    tag: 'p',
     className: s.bold_text_14,
-  },
-  small_text_12: {
     tag: 'p',
-    className: s.small_text_12,
   },
-  semi_bold_small_text_12: {
+  bold_text_16: {
+    className: s.bold_text_16,
     tag: 'p',
-    className: s.semi_bold_small_text_12,
+  },
+  medium_text_14: {
+    className: s.medium_text_14,
+    tag: 'p',
   },
   regular_link: {
-    tag: 'a',
     className: s.regular_link,
+    tag: 'a',
+  },
+  regular_text_14: {
+    className: s.regular_text_14,
+    tag: 'p',
+  },
+  regular_text_16: {
+    className: s.regular_text_16,
+    tag: 'p',
+  },
+  semi_bold_small_text_12: {
+    className: s.semi_bold_small_text_12,
+    tag: 'p',
   },
   small_link: {
-    tag: 'a',
     className: s.small_link,
+    tag: 'a',
+  },
+  small_text_12: {
+    className: s.small_text_12,
+    tag: 'p',
   },
 } as const
 
 type VariantMapping = typeof Variants
 
 type Props<V extends keyof VariantMapping> = {
-  variant?: V
+  align?: 'center' | 'left' | 'right'
   children: string
-  align?: 'right' | 'left' | 'center'
-} & (V extends 'regular_link' | 'small_link' ? { href: string } : {}) &
-  Omit<ComponentPropsWithoutRef<VariantMapping[V]['tag']>, 'children'>
+  variant?: V
+} & Omit<ComponentPropsWithoutRef<VariantMapping[V]['tag']>, 'children'> &
+  (V extends 'regular_link' | 'small_link' ? { href: string } : {})
 
 export function Typography<V extends keyof VariantMapping>({
+  align,
   children,
   variant,
-  align,
   ...props
 }: Props<V>) {
   let Component
