@@ -1,9 +1,8 @@
-import React, { type SelectHTMLAttributes, useState } from 'react'
+import React, { type SelectHTMLAttributes, useState, ReactNode } from 'react'
 import style from './Select.module.scss'
-import { Typography } from '../typography/typography'
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  options: string[]
+  children: ReactNode
   selectedItem?: string
   disabled?: boolean
   color?: string
@@ -11,18 +10,18 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 export const Select = (props: SelectProps) => {
-  const { options, selectedItem, disabled, color, border, ...otherProps } = props
+  const { children, selectedItem, disabled, color, border, ...otherProps } = props
   const [isOpen, setIsOpen] = useState(false)
   const [selectedOption, setSelectedOption] = useState(selectedItem)
+
   const toggling = () => {
     setIsOpen(!isOpen)
   }
+
   const onOptionClicked = (value: string) => () => {
     setSelectedOption(value)
     setIsOpen(false)
   }
-
-  // const iconClasses = `${style.Icon}`
 
   return (
     <div className={`${style.DropDownContainer}`}>
@@ -35,23 +34,35 @@ export const Select = (props: SelectProps) => {
         onClick={toggling}
         style={{ color, border }}
       >
-        {selectedOption || options[0]}
+        {selectedOption || 'Select an option'}
       </button>
       {isOpen && (
-        <div>
+        <div className={`${style.DropDownListContainer}`}>
           <div className={`${style.DropDownList}`}>
-            {options.map(option => (
-              <li
-                className={`${style.ListItem}`}
-                onClick={onOptionClicked(option)}
-                key={Math.random()}
-              >
-                <Typography variant="regular_text_16">{option}</Typography>
-              </li>
-            ))}
+            {React.Children.map(children, child =>
+              React.cloneElement(child as React.ReactElement<any>, {
+                onClick: onOptionClicked((child as React.ReactElement<any>).props.value),
+                className: `${style.ListItem}`,
+              })
+            )}
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+interface OptionProps {
+  value: string
+  children: React.ReactNode
+  onClick?: () => void
+  className?: string
+}
+
+export const Option = ({ value, children, onClick, className }: OptionProps) => {
+  return (
+    <div onClick={onClick} className={className}>
+      {children}
     </div>
   )
 }
