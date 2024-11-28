@@ -1,17 +1,10 @@
-import {
-  ChangeEvent,
-  ComponentPropsWithoutRef,
-  ElementRef,
-  forwardRef,
-  useEffect,
-  useId,
-  useState,
-} from 'react'
+import React, { ComponentPropsWithoutRef, ElementRef, forwardRef, useId, useState } from 'react'
 
+import { Button } from '@/shared/button/button'
 import CloseOutline from '@/shared/input/icons/CloseOutline'
-import EyeIcon from '@/shared/input/icons/EyeIcon'
-import EyeOffIcon from '@/shared/input/icons/EyeOffIcon'
-import SearchIcon from '@/shared/input/icons/SearchIcon'
+import EyeOffOutline from '@/shared/input/icons/EyeOffOutline'
+import EyeOutline from '@/shared/input/icons/EyeOutline'
+import SearchOutline from '@/shared/input/icons/SearchOutline'
 import { Typography } from '@/shared/typography/typography'
 import clsx from 'clsx'
 
@@ -21,6 +14,9 @@ export type InputProps = {
   errorText?: string
   isRequired?: boolean
   label?: string
+  onClearClick?: () => void
+  onEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void
+  value?: string
   variant?: 'password' | 'search' | 'text'
 } & ComponentPropsWithoutRef<'input'>
 
@@ -33,19 +29,21 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     errorText,
     isRequired = false,
     label,
-    onChange,
+    onClearClick,
+    onEnter,
+    onKeyDown,
     placeholder,
     value,
     variant = 'text',
     ...rest
   } = props
   const [showPassword, setShowPassword] = useState(false)
-  const [inputValue, setInputValue] = useState(value)
   const inputId = useId()
 
   const isPassword = variant === 'password'
   const inputType = !showPassword && isPassword ? 'password' : 'text'
   const isSearch = variant === 'search'
+  const isShowClearButton = isSearch && onClearClick && value?.length! > 0
 
   const classNames = {
     button: clsx(s.passwordControl, errorText && s.error, disabled && s.disabled, s.showIcon),
@@ -55,79 +53,63 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     searchIcon: clsx(s.iconSearch, disabled && s.disabled),
   }
 
-  const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange?.(e)
-    setInputValue(e.currentTarget.value)
-  }
-
-  const clearInputHandler = () => {
-    setInputValue('')
+  const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === 'Enter') {
+      onEnter?.(e)
+    }
+    onKeyDown?.(e)
   }
 
   const showPasswordHandler = () => {
     setShowPassword(prev => !prev)
   }
 
-  useEffect(() => {
-    setInputValue(value)
-  }, [value])
-
   return (
     <div className={s.container}>
       {label && (
-        <label htmlFor={inputId}>
+        <label className={s.labelContainer} htmlFor={inputId}>
           <Typography className={classNames.label} variant={'regular_text_14'}>
             {label}
           </Typography>
         </label>
       )}
       <div className={s.inputContainer}>
-        {isSearch && <SearchIcon className={classNames.searchIcon} />}
+        {isSearch && <SearchOutline className={classNames.searchIcon} />}
         <input
           className={classNames.input}
           disabled={disabled}
           id={inputId}
-          onChange={inputChangeHandler}
+          onKeyDown={onKeyPressHandler}
           placeholder={placeholder}
           ref={ref}
           type={inputType}
-          value={inputValue}
           {...rest}
         />
-        {isPassword && !!inputValue && (
-          <button className={classNames.button} onClick={showPasswordHandler} type={'button'}>
-            {showPassword ? <EyeIcon className={s.icon} /> : <EyeOffIcon className={s.icon} />}
-          </button> // временный код
-          // <Button
-          //   className={''}
-          //   disabled={disabled}
-          //   onClick={showPasswordHandler}
-          //   variant={'icon'}
-          // >
-          //   {showPassword ? (
-          //     <EyeOutline className={s.icon} />
-          //   ) : (
-          //     <EyeOffOutline className={s.icon} />
-          //   )}
-          // </Button>
-        )}
-        {isSearch && !!inputValue && (
-          <button
-            className={clsx(s.clearIcon, disabled && s.disabled)}
+        {isPassword && (
+          <Button
+            className={classNames.button}
             disabled={disabled}
-            onClick={clearInputHandler}
+            onClick={showPasswordHandler}
             type={'button'}
+            variant={'link'}
+          >
+            {showPassword ? (
+              <EyeOutline className={s.icon} />
+            ) : (
+              <EyeOffOutline className={s.icon} />
+            )}
+          </Button>
+        )}
+        {isShowClearButton && (
+          <Button
+            className={classNames.clearIcon}
+            disabled={disabled}
+            onClick={onClearClick}
+            type={'button'}
+            variant={'link'}
           >
             <CloseOutline className={s.icon} />
-          </button> // временный код
-          // <Button
-          //   className={clsx(s.clearIcon, disabled && s.disabled)}
-          //   disabled={disabled}
-          //   onClick={clearInputHandler}
-          //   variant={'icon'}
-          // >
-          //   <CloseOutline className={s.icon} />
-          // </Button>
+          </Button>
         )}
       </div>
       {!!errorText && <Typography className={s.errorMessage}>{errorText}</Typography>}

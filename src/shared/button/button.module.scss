@@ -101,7 +101,7 @@ $accent-disabled: var(--color-accent-900);
 
 .link {
   @include button-colors-and-borders($accent-color, transparent, 2px solid transparent, 4px, none);
-  padding: 6px 12px;
+  padding: 6px 6px;
 
   &:hover {
     color: $accent-hover;

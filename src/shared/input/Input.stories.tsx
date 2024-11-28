@@ -53,7 +53,7 @@ export const Search = {
       <Input
         label={'Input search'}
         onChange={e => setState(e.target.value)}
-        onClick={() => {
+        onClearClick={() => {
           setState('')
         }}
         placeholder={'Input search'}
