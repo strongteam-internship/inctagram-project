@@ -2,23 +2,20 @@ import { ComponentPropsWithoutRef, ElementType } from 'react'
 
 import s from './button.module.scss'
 
-export type ButtonProps<T extends ElementType = 'button'> = {
+export type ButtonProps = {
     variant?: 'primary' | 'secondary' | 'outline' | 'link'
     fullWidth?: boolean
-    as?: T
-} & ComponentPropsWithoutRef<T>
+} & ComponentPropsWithoutRef<'button'>
 
-export const Button = <T extends ElementType = 'button'>(props: ButtonProps<T>) => {
-    const { variant = 'primary', fullWidth, className, as: Component = 'button',children, ...rest } = props
+export const Button = (props: ButtonProps) => {
+    const { variant = 'primary', fullWidth, className,  ...rest } = props
 
     return (
-        <Component
-            className={`${s.button} ${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className} ${
-                Component === 'a' ? s.asLink : ''
+        <button
+            className={`${s.button} ${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className} 
             }`}
             {...rest}
         >
-            <span className={s.valueBox}>{children}</span>
-        </Component>
+        </button>
     )
 }
