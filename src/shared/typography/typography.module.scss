@@ -1,75 +1,75 @@
 .Large{
-  font-weight: 600;
-  font-size: 26px;
+  font-weight: var(--font-weight-semi-bold);
+  font-size: var(--font-size-xxxl);
 }
 
 
 .H1{
-  font-weight: 700;
-  font-size: 20px;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xl);
 }
 
 .H2{
-  font-weight: 700;
-  font-size: 18px;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-l);
 }
 
 
 .H3{
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: var(--font-weight-semi-bold);
+  font-size: var(--font-size-m);
 }
 
 
 .regular_text_16{
-  font-weight: 400;
-  font-size: 16px;
+  font-weight:var(--font-weight-regular);
+  font-size: var(--font-size-m);
 }
 
 
 .bold_text_16{
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-m);
 }
 
 .regular_text_14{
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-s);
 }
 
 .medium_text_14{
-  font-weight: 500;
-  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-s);
 }
 
 
 .bold_text_14{
-  font-weight: 700;
-  font-size: 14px;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-s);
 }
 
 
 .small_text_12{
-  font-weight: 400;
-  font-size: 12px;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-xs);
 }
 
 
 .semi_bold_small_text_12{
-  font-weight: 600;
-  font-size: 12px;
+  font-weight: var(--font-weight-semi-bold);
+  font-size: var(--font-size-xs);
 }
 
 
 .regular_link{
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-s);
 }
 
 
 .small_link{
-  font-weight: 500;
-  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
 }
 
 .right{
