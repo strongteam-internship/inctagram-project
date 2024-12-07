@@ -1,4 +1,4 @@
-import { BaseQueryArg, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'https://inctagram.work' }),
@@ -20,4 +20,4 @@ export const authApi = createApi({
   reducerPath: 'authAPI',
 })
 
-export const { useGetMeQuery } = authApi
+export const { useGetLoginMutation, useGetMeQuery } = authApi
