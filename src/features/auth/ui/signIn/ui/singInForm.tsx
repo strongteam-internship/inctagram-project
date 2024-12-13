@@ -25,10 +25,8 @@ export function SignInForm() {
     if (isLoginData(data)) {
       try {
         const res = await getLogin(data).unwrap()
-
-        console.log('Login success', res)
       } catch (error) {
-        console.log('Falied to login', error)
+        throw new Error('Invalid form data.')
       }
     } else {
       throw new Error('Login failed.')
