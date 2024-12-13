@@ -1,7 +1,5 @@
 'use client'
 
-import { FormEvent } from 'react'
-
 import { useGetLoginMutation } from '@/features/auth/api/authApi'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
@@ -10,7 +8,7 @@ import { Input } from '@/shared/input'
 import { Typography } from '@/shared/typography/typography'
 
 export function SignInForm() {
-  const [getLogin, { isError, isLoading, isSuccess }] = useGetLoginMutation()
+  const [getLogin, { isLoading }] = useGetLoginMutation()
 
   function isLoginData(
     formData: Record<string, boolean | string>
@@ -47,7 +45,7 @@ export function SignInForm() {
         <Input label={'Password'} name={'password'} required variant={'password'} />
         <Button type={'submit'}>Sing In</Button>
         <Typography variant={'regular_text_16'}>Don’t have an account?</Typography>
-        <Button variant={'link'}>
+        <Button disabled={isLoading} variant={'link'}>
           <Typography variant={'H3'}>Sign Up</Typography>
         </Button>
       </Card>
