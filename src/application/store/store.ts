@@ -1,4 +1,4 @@
-import { appSlice } from '@/aplication/model/app/appSlice'
+import { appSlice } from '@/application/model/app/appSlice'
 import { authApi } from '@/features/auth/api/authApi'
 import { configureStore } from '@reduxjs/toolkit'
 

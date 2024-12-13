@@ -1,5 +1,10 @@
 'use client'
-import styles from './signin.module.css'
+import { SignInForm } from '@/features/auth/ui/signIn/ui/singInForm'
+
 export default function SignIn() {
-  return <div className={styles.title}>Sign In Page</div>
+  return (
+    <div>
+      <SignInForm />
+    </div>
+  )
 }
