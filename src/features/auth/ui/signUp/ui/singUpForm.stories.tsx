@@ -16,7 +16,7 @@ export default meta
 type Story = StoryObj<typeof Form>
 export function SignInForm() {
   return (
-    <Form callback={e => console.log('Form data:', e)}>
+    <Form onSubmit={e => console.log('Form data:', e)}>
       <Card>
         <Typography align={'center'} variant={'H1'}>
           Sing Up
