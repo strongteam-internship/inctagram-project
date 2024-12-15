@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 
 import React from 'react'
 
+import { Header } from '@/app/layouts/header/Header'
+
 import '@/styles/index.scss'
 
 export const metadata: Metadata = {
@@ -16,7 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang={'en'} suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <Header isAuthenticated={false} />
+        {children}
+      </body>
     </html>
   )
 }
