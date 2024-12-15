@@ -3,8 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Typography } from '@/shared/typography/typography'
 
 const meta: Meta<typeof Typography> = {
-  title: 'Components/Typography',
-  component: Typography,
   argTypes: {
     align: {
       control: 'select',
@@ -14,6 +12,8 @@ const meta: Meta<typeof Typography> = {
       control: 'text',
     },
   },
+  component: Typography,
+  title: 'Components/Typography',
 }
 
 export default meta
@@ -46,17 +46,17 @@ export const SimpleText: Story = {
 }
 export const SimpleLink: Story = {
   argTypes: {
+    href: {
+      control: 'text',
+    },
     variant: {
       control: 'select',
       options: ['regular_link', 'small_link'],
     },
-    href: {
-      control: 'text',
-    },
   },
   args: {
-    variant: 'regular_link',
     children: 'Click me!',
     href: '#',
+    variant: 'regular_link',
   },
 }

@@ -1,16 +1,17 @@
-import React, { type SelectHTMLAttributes, useState, ReactNode } from 'react'
+import React, { ReactNode, type SelectHTMLAttributes, useState } from 'react'
+
 import style from './Select.module.scss'
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  children: ReactNode
-  selectedItem?: string
-  disabled?: boolean
-  color?: string
   border?: string
+  children: ReactNode
+  color?: string
+  disabled?: boolean
+  selectedItem?: string
 }
 
 export const Select = (props: SelectProps) => {
-  const { children, selectedItem, disabled, color, border, ...otherProps } = props
+  const { border, children, color, disabled, selectedItem, ...otherProps } = props
   const [isOpen, setIsOpen] = useState(false)
   const [selectedOption, setSelectedOption] = useState(selectedItem)
 
@@ -26,13 +27,13 @@ export const Select = (props: SelectProps) => {
   return (
     <div className={`${style.DropDownContainer}`}>
       <button
-        type="button"
         className={`${style.DropDownHeader} ${
           isOpen ? style.active : ''
         } ${disabled ? style.disabled : ''}`}
         disabled={disabled}
         onClick={toggling}
-        style={{ color, border }}
+        style={{ border, color }}
+        type={'button'}
       >
         {selectedOption || 'Select an option'}
       </button>
@@ -41,8 +42,8 @@ export const Select = (props: SelectProps) => {
           <div className={`${style.DropDownList}`}>
             {React.Children.map(children, child =>
               React.cloneElement(child as React.ReactElement<any>, {
-                onClick: onOptionClicked((child as React.ReactElement<any>).props.value),
                 className: `${style.ListItem}`,
+                onClick: onOptionClicked((child as React.ReactElement<any>).props.value),
               })
             )}
           </div>
@@ -53,15 +54,15 @@ export const Select = (props: SelectProps) => {
 }
 
 interface OptionProps {
-  value: string
   children: React.ReactNode
-  onClick?: () => void
   className?: string
+  onClick?: () => void
+  value: string
 }
 
-export const Option = ({ value, children, onClick, className }: OptionProps) => {
+export const Option = ({ children, className, onClick, value }: OptionProps) => {
   return (
-    <div onClick={onClick} className={className}>
+    <div className={className} onClick={onClick}>
       {children}
     </div>
   )

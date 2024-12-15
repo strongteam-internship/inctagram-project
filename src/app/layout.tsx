@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 
 import React from 'react'
 
+import { AppProvider } from '@/application/services/appProvider/appProvider'
+
 import '@/styles/index.scss'
 
 export const metadata: Metadata = {
@@ -16,7 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang={'en'} suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <AppProvider>{children}</AppProvider>
+      </body>
     </html>
   )
 }

@@ -1,6 +1,6 @@
 'use client'
-import Link from 'next/link'
 import { Typography } from '@/shared/typography/typography'
+import Link from 'next/link'
 
 export default function Home() {
   return (

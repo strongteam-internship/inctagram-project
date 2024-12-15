@@ -1,75 +1,88 @@
 .Large{
-  font-weight: 600;
-  font-size: 26px;
+  font-weight: var(--font-weight-semi-bold);
+  font-size: var(--font-size-xxxl);
+  color: var(--color-light-100);
 }
 
 
 .H1{
-  font-weight: 700;
-  font-size: 20px;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xl);
+  color: var(--color-light-100);
 }
 
 .H2{
-  font-weight: 700;
-  font-size: 18px;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-l);
+  color: var(--color-light-100);
 }
 
 
 .H3{
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: var(--font-weight-semi-bold);
+  font-size: var(--font-size-m);
+  color: var(--color-light-100);
 }
 
 
 .regular_text_16{
-  font-weight: 400;
-  font-size: 16px;
+  font-weight:var(--font-weight-regular);
+  font-size: var(--font-size-m);
+  color: var(--color-light-100);
 }
 
 
 .bold_text_16{
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-m);
+  color: var(--color-light-100);
 }
 
 .regular_text_14{
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-s);
+  color: var(--color-light-100);
 }
 
 .medium_text_14{
-  font-weight: 500;
-  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-s);
+  color: var(--color-light-100);
 }
 
 
 .bold_text_14{
-  font-weight: 700;
-  font-size: 14px;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-s);
+  color: var(--color-light-100);
 }
 
 
 .small_text_12{
-  font-weight: 400;
-  font-size: 12px;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-xs);
+  color: var(--color-light-100);
 }
 
 
 .semi_bold_small_text_12{
-  font-weight: 600;
-  font-size: 12px;
+  font-weight: var(--font-weight-semi-bold);
+  font-size: var(--font-size-xs);
+  color: var(--color-light-100);
 }
 
 
 .regular_link{
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-s);
+  color: var(--color-accent-500);
 }
 
 
 .small_link{
-  font-weight: 500;
-  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  color: var(--color-accent-500);
 }
 
 .right{
