@@ -1,5 +1,7 @@
 'use client'
 
+import { useForm } from 'react-hook-form'
+
 import { useGetLoginMutation } from '@/features/auth/api/authApi'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
@@ -9,6 +11,7 @@ import { Typography } from '@/shared/typography/typography'
 
 export function SignInForm() {
   const [getLogin, { isLoading }] = useGetLoginMutation()
+  const { handleSubmit, register } = useForm()
 
   function isLoginData(
     formData: Record<string, boolean | string>
@@ -26,7 +29,7 @@ export function SignInForm() {
       try {
         await getLogin(data).unwrap()
       } catch (error) {
-        throw new Error('Invalid form data.')
+        console.log(error.data.messages)
       }
     } else {
       throw new Error('Login failed.')
@@ -34,13 +37,13 @@ export function SignInForm() {
   }
 
   return (
-    <Form onSubmit={data => handleLogIn(data as { email: string; password: string })}>
+    <Form onSubmitAction={handleSubmit(handleLogIn)}>
       <Card>
         <Typography align={'center'} variant={'H1'}>
           Sing In
         </Typography>
-        <Input label={'Email'} name={'email'} required variant={'text'} />
-        <Input label={'Password'} name={'password'} required variant={'password'} />
+        <Input label={'Email'} required variant={'text'} {...register('email')} />
+        <Input label={'Password'} {...register('password')} required variant={'password'} />
         <Button type={'submit'}>Sing In</Button>
         <Typography variant={'regular_text_16'}>Don’t have an account?</Typography>
         <Button disabled={isLoading} variant={'link'}>

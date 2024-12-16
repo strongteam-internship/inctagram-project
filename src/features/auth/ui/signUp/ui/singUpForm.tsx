@@ -9,7 +9,7 @@ import { Typography } from '@/shared/typography/typography'
 
 export function SignUpForm() {
   return (
-    <Form onSubmit={data => console.log('Form data:', data)}>
+    <Form onSubmitAction={data => console.log('Form data:', data)}>
       <Card>
         <Typography align={'center'} variant={'H1'}>
           Sing Up
