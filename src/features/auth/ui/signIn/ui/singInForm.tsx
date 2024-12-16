@@ -14,8 +14,8 @@ export function SignInForm() {
     formData: Record<string, boolean | string>
   ): formData is { email: string; password: string } {
     return (
-      typeof formData.email !== 'undefined' &&
-      typeof formData.password !== 'undefined' &&
+      'email' in formData &&
+      'password' in formData &&
       typeof formData.password === 'string' &&
       typeof formData.email === 'string'
     )
@@ -24,7 +24,7 @@ export function SignInForm() {
   const handleLogIn = async (data: Record<string, boolean | string>) => {
     if (isLoginData(data)) {
       try {
-        const res = await getLogin(data).unwrap()
+        await getLogin(data).unwrap()
       } catch (error) {
         throw new Error('Invalid form data.')
       }
