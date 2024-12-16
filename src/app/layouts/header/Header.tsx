@@ -17,8 +17,8 @@ type HeaderProps = {
 export const Header: React.FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 0 }) => {
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>Inctagram</div>
-      <div className={styles.nav}>
+      <h2 className={styles.logo}>Inctagram</h2>
+      <div className={styles.div}>
         {isAuthenticated && (
           <div className={styles.notifications}>
             <Image alt={'Notifications'} height={24} src={'/icons/bell.svg'} width={24} />
