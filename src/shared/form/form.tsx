@@ -4,10 +4,10 @@ import { ComponentPropsWithoutRef, FormEvent, ReactNode } from 'react'
 
 type FormProps = {
   children: ReactNode
-  onSubmit: (formData: Record<string, boolean | string>) => void
-} & ComponentPropsWithoutRef<'form'>
+  onSubmitAction: (formData: Record<string, boolean | string>) => void
+} & Omit<ComponentPropsWithoutRef<'form'>, 'onSubmit'>
 
-export function Form({ children, onSubmit, ...rest }: FormProps) {
+export function Form({ children, onSubmitAction, ...rest }: FormProps) {
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -19,7 +19,7 @@ export function Form({ children, onSubmit, ...rest }: FormProps) {
       }
     }
 
-    onSubmit(formValues)
+    onSubmitAction(formValues)
   }
 
   return (
