@@ -1,6 +1,6 @@
 'use client'
 
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form'
 
 import { useGetSignUpMutation } from '@/features/auth/api/authApi'
 import { Button } from '@/shared/button/button'
@@ -10,13 +10,37 @@ import { Form } from '@/shared/form/form'
 import { Input } from '@/shared/input'
 import { Typography } from '@/shared/typography/typography'
 
+type FormData = {
+  confirmPassword: string
+  confirmTermsAndPolicy: boolean
+  email: string
+  password: string
+  userName: string
+}
+
 type ErrorResponse = {
   data: {
     error: string
-    messages: Array<{ field: string; message: string }>
+    messages: Array<ErrorMessage>
     statusCode: number
   }
   status: number
+}
+
+type ErrorMessage = {
+  field: keyof FormData
+  message: string
+}
+
+function isErrorMessage(errorMessage: unknown): errorMessage is ErrorMessage {
+  return (
+    typeof errorMessage === 'object' &&
+    errorMessage !== null &&
+    'field' in errorMessage &&
+    'message' in errorMessage &&
+    typeof errorMessage.field === 'string' &&
+    typeof errorMessage.message === 'string'
+  )
 }
 
 function isError(errorRes: unknown): errorRes is ErrorResponse {
@@ -30,20 +54,13 @@ function isError(errorRes: unknown): errorRes is ErrorResponse {
     typeof errorRes.data.error === 'string' &&
     'messages' in errorRes.data &&
     Array.isArray(errorRes.data.messages) &&
-    'status' in errorRes.data &&
-    typeof errorRes.data.status === 'number'
+    errorRes.data.messages.every(message => isErrorMessage(message)) &&
+    'status' in errorRes &&
+    typeof errorRes.status === 'number'
   )
 }
 
 export function SignUpForm() {
-  type FormData = {
-    confirmPassword: string
-    confirmTermsAndPolicy: boolean
-    email: string
-    password: string
-    userName: string
-  }
-
   const [getSignUp] = useGetSignUpMutation()
 
   const {
@@ -51,6 +68,7 @@ export function SignUpForm() {
     handleSubmit,
     register,
     reset,
+    setError,
     watch,
   } = useForm<FormData>({
     mode: 'onBlur',
@@ -92,7 +110,7 @@ export function SignUpForm() {
     },
   }
 
-  const onSubmit: SubmitHandler<FormData> = async data => {
+  const onSubmit: SubmitHandler<FormData> = data => {
     const requestData = {
       baseUrl: 'http://localhost:3000/',
       email: data.email,
@@ -100,18 +118,17 @@ export function SignUpForm() {
       userName: data.userName,
     }
 
-    try {
-      const response = await getSignUp(requestData).unwrap()
-
-      console.log(response)
-      if (response.statusCode === 204) {
+    getSignUp(requestData)
+      .unwrap()
+      .then(response => {
+        console.log(response)
         reset()
-      }
-    } catch (error) {
-      if (isError(error)) {
-        console.log(error.data.messages[0].field)
-      }
-    }
+      })
+      .catch(error => {
+        error.data.messages.forEach((error: ErrorMessage) => {
+          setError(error.field, { message: error.message })
+        })
+      })
   }
 
   return (
