@@ -1,10 +1,17 @@
 'use client'
 
 import { Typography } from '@/shared/typography/typography'
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
+import { useRouter } from 'next/navigation'
 
 export function TermsOfService() {
+  const router: AppRouterInstance = useRouter()
+
   return (
     <div>
+      <button onClick={() => router.back()} type={'button'}>
+        Click here to go back
+      </button>
       <Typography align={'center'} variant={'H1'}>
         Terms of Service
       </Typography>
