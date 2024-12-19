@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form'
 
-import { useGetLoginMutation } from '@/features/auth/api/authApi'
+import { useGetSignInMutation } from '@/features/auth/api/authApi'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { Form } from '@/shared/form/form'
@@ -10,7 +10,7 @@ import { Input } from '@/shared/input'
 import { Typography } from '@/shared/typography/typography'
 
 export function SignInForm() {
-  const [getLogin, { isLoading }] = useGetLoginMutation()
+  const [getSignIn, { isLoading }] = useGetSignInMutation()
   const { handleSubmit, register } = useForm()
 
   function isLoginData(
@@ -27,17 +27,15 @@ export function SignInForm() {
   const handleLogIn = async (data: Record<string, boolean | string>) => {
     if (isLoginData(data)) {
       try {
-        await getLogin(data).unwrap()
+        await getSignIn(data)
       } catch (error) {
-        console.log(error.data.messages)
+        console.log(error)
       }
-    } else {
-      throw new Error('Login failed.')
     }
   }
 
   return (
-    <Form onSubmitAction={handleSubmit(handleLogIn)}>
+    <Form onSubmit={handleSubmit(handleLogIn)}>
       <Card>
         <Typography align={'center'} variant={'H1'}>
           Sing In
