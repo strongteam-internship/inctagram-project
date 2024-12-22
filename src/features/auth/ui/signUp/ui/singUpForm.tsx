@@ -2,6 +2,8 @@
 
 import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form'
 
+import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
+import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { useGetSignUpMutation } from '@/features/auth/api/authApi'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
@@ -137,6 +139,10 @@ export function SignUpForm() {
         <Typography align={'center'} variant={'H1'}>
           Sing Up
         </Typography>
+        <div>
+          <GoogleSvg />
+          <GithubSvg />
+        </div>
         <Input
           label={'Username'}
           {...register('userName', validationRulesForSignUpForm.userName)}
