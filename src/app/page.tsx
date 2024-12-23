@@ -15,6 +15,9 @@ export default function Home() {
       <div>
         <Link href={'/signin'}>Sign In</Link>
       </div>
+      <div>
+        <Link href={'/resignup'}>Re-Sign Up</Link>
+      </div>
       <Typography>Hello world</Typography>
     </div>
   )
