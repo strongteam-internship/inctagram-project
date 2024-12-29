@@ -4,12 +4,14 @@ import { Typography } from '@/shared/typography/typography'
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { useRouter } from 'next/navigation'
 
+import s from './termsOfService.module.scss'
+
 export function TermsOfService() {
   const router: AppRouterInstance = useRouter()
 
   return (
-    <div>
-      <button onClick={() => router.back()} type={'button'}>
+    <div className={s.page}>
+      <button className={s.button} onClick={() => router.back()} type={'button'}>
         Click here to go back
       </button>
       <Typography align={'center'} variant={'H1'}>
