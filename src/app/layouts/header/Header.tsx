@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { FC } from 'react'
 
 import { Option, Select } from '@/shared/Select/Select'
 import { Button } from '@/shared/button/button'
@@ -14,7 +14,7 @@ type HeaderProps = {
   notificationsCount?: number
 }
 
-export const Header: React.FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 0 }) => {
+export const Header: FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 0 }) => {
   return (
     <header className={styles.header}>
       <h2 className={styles.logo}>Inctagram</h2>

@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang={'en'} suppressHydrationWarning>
       <body>
-        <Header isAuthenticated={false} />
+        <Header isAuthenticated notificationsCount={4} />
         {children}
       </body>
     </html>
