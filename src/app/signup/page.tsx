@@ -23,6 +23,7 @@ export default function SignUp() {
     <div>
       <SignUpForm onSubmitHandler={email => submitHandler(email)} />
       <Modal
+        onClose={onClose}
         open={openModal}
         setOpen={setOpenModal}
         title={'Email sent'}

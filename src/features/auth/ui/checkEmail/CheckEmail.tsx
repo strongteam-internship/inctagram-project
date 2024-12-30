@@ -1,32 +1,36 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Button } from '@/shared/button/button'
-import { Modal } from '@/shared/modal/Modal'
+import { Modal, ModalProps } from '@/shared/modal/Modal'
 import { Typography } from '@/shared/typography/typography'
 
 import s from './CheckEmail.module.scss'
 
 type CheckEmailProps = {
   email: string
-}
+} & ModalProps
 
-export const CheckEmail = ({ email = 'example@mail.com' }: CheckEmailProps) => {
-  const [open, setOpen] = useState(false)
-
+export const CheckEmail = ({
+  email = 'example@mail.com',
+  onClose,
+  open,
+  setOpen,
+  title = 'Email sent',
+  trigger,
+  ...restProps
+}: CheckEmailProps) => {
   const onButtonClickHandler = () => {
     setOpen(false)
   }
 
   return (
     <Modal
+      onClose={onClose}
       open={open}
       setOpen={setOpen}
-      title={'Email sent'}
-      trigger={
-        <Button className={s.button} variant={'primary'}>
-          Sign Up
-        </Button>
-      }
+      title={title}
+      trigger={trigger}
+      {...restProps}
     >
       <div className={s.text}>
         <Typography variant={'regular_text_16'}>
