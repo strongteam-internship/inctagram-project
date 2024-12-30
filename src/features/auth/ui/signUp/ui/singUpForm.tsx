@@ -1,10 +1,11 @@
 'use client'
 
-import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { useGetSignUpMutation } from '@/features/auth/api/authApi'
+import { validationRulesForSignUpForm } from '@/features/auth/ui/signUp/utils/validationRules/validationRules'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { Checkbox } from '@/shared/checkbox/Checkbox'
@@ -12,7 +13,11 @@ import { Form } from '@/shared/form/form'
 import { Input } from '@/shared/input'
 import { Typography } from '@/shared/typography/typography'
 
-type FormData = {
+type SignUpFormProps = {
+  onSubmitHandler: (email: string) => void
+}
+
+export type FormData = {
   confirmPassword: string
   confirmTermsAndPolicy: boolean
   email: string
@@ -62,7 +67,7 @@ function isError(errorRes: unknown): errorRes is ErrorResponse {
   )
 }
 
-export function SignUpForm() {
+export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
   const [getSignUp] = useGetSignUpMutation()
 
   const {
@@ -78,40 +83,6 @@ export function SignUpForm() {
 
   const isTermsAndPolicyChecked = watch('confirmTermsAndPolicy')
 
-  const validationRulesForSignUpForm = {
-    confirmPassword: {
-      required: 'Password confirmation is required',
-      validate: (value: string, { password }: FormData) =>
-        value === password || 'Passwords do not match',
-    },
-
-    email: {
-      pattern: {
-        message: 'Invalid email format',
-        value: /^[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-      },
-      required: 'Email is required',
-    },
-    password: {
-      maxLength: { message: 'Max length is 20', value: 20 },
-      minLength: { message: 'Min length is 6', value: 6 },
-      pattern: {
-        message: 'Password must include uppercase, lowercase, number, and special character',
-        value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*]).{6,20}$/,
-      },
-      required: 'Password is required',
-    },
-    userName: {
-      maxLength: { message: 'Max length is 30', value: 30 },
-      minLength: { message: 'Min length is 6', value: 6 },
-      pattern: {
-        message: 'Invalid username (use letters, numbers, _, -)',
-        value: /^[\w_-]{6,30}$/,
-      },
-      required: 'Username is required',
-    },
-  }
-
   const onSubmit: SubmitHandler<FormData> = data => {
     const requestData = {
       baseUrl: 'http://localhost:3000/',
@@ -124,6 +95,7 @@ export function SignUpForm() {
       .unwrap()
       .then(response => {
         console.log(response)
+        onSubmitHandler(requestData.email)
         reset()
       })
       .catch(error => {
