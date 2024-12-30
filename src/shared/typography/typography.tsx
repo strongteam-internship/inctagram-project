@@ -1,5 +1,5 @@
 'use client'
-import { ComponentPropsWithoutRef, ElementType } from 'react'
+import { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react'
 
 import s from './typography.module.scss'
 
@@ -78,7 +78,7 @@ type VariantMapping = typeof Variants
 
 type Props<V extends keyof VariantMapping> = {
   align?: 'center' | 'left' | 'right'
-  children: string
+  children: ReactNode | string | string[]
   variant?: V
 } & Omit<ComponentPropsWithoutRef<VariantMapping[V]['tag']>, 'children'> &
   (V extends 'regular_link' | 'small_link' ? { href: string } : {})

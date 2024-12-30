@@ -1,5 +1,6 @@
 'use client'
 
+import resendEmailImage from '@/assets/images/resendEmailImage.png'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { Form } from '@/shared/form/form'
@@ -7,7 +8,7 @@ import { Input } from '@/shared/input'
 import { Typography } from '@/shared/typography/typography'
 import Image from 'next/image'
 
-export function ReSignUpForm() {
+export function ResendEmailForm() {
   return (
     <Form onSubmit={data => console.log('Re-form data', data)}>
       <Card>
@@ -22,7 +23,7 @@ export function ReSignUpForm() {
           <Typography variant={'H3'}>Resend verification link</Typography>
         </Button>
         <div style={{ margin: '20px 0', textAlign: 'center' }}>
-          <Image alt={'Email verification'} height={200} src={'./rafiki.png'} width={200} />
+          <Image alt={'Email verification'} height={352} src={resendEmailImage} width={473} />
         </div>
       </Card>
     </Form>
