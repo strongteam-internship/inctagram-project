@@ -10,14 +10,15 @@ import { AnimatePresence, motion } from 'framer-motion'
 import s from './Modal.module.scss'
 
 export type ModalProps = {
+  onClose?: () => void
   open: boolean
   setOpen: (open: boolean) => void
-  title: string
-  trigger: ReactNode
+  title?: string
+  trigger?: ReactNode
 } & ComponentPropsWithoutRef<'div'>
 
 export const Modal = forwardRef<ElementRef<'div'>, ModalProps>(
-  ({ children, className, open, setOpen, title, trigger, ...restProps }, ref) => {
+  ({ children, className, onClose, open = false, setOpen, title, trigger, ...restProps }, ref) => {
     const classNames = {
       closeButton: s.closeButton,
       content: s.content,
@@ -27,8 +28,15 @@ export const Modal = forwardRef<ElementRef<'div'>, ModalProps>(
       overlay: s.overlay,
     }
 
+    const handleClose = (isOpen: boolean) => {
+      setOpen(isOpen)
+      if (!isOpen && onClose) {
+        onClose()
+      }
+    }
+
     return (
-      <ModalPrimitive.Root onOpenChange={setOpen} open={open}>
+      <ModalPrimitive.Root onOpenChange={handleClose} open={open}>
         <ModalPrimitive.Trigger asChild>{trigger}</ModalPrimitive.Trigger>
         <AnimatePresence>
           {open && (
