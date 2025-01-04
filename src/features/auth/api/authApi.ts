@@ -51,15 +51,18 @@ export const authApi = createApi({
       }
     >({
       query: ({
+        baseUrl,
         email,
         password,
         userName,
       }: {
+        baseUrl: string
         email: string
         password: string
         userName: string
       }) => ({
         body: {
+          baseUrl,
           email,
           password,
           userName,

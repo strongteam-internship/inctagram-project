@@ -85,7 +85,7 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
 
   const onSubmit: SubmitHandler<FormData> = data => {
     const requestData = {
-      baseUrl: 'http://localhost:3000/',
+      baseUrl: 'https://strong-interns.top/signup/confirmEmail',
       email: data.email,
       password: data.password,
       userName: data.userName,
@@ -105,6 +105,7 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
       })
   }
 
+  //https://strong-interns.top//auth/registration-confirmation?code=eef65719-b03d-4df0-9cde-8d6fa921c12a&email=pavelretunskih@gmail.com
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Card>
