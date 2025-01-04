@@ -1,17 +1,14 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
-
 import { useGetSignInMutation } from '@/features/auth/api/authApi'
+import { signInSchema } from '@/features/auth/ui/signIn/utils/validation/zodSchemaSignIn'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
-import { Form } from '@/shared/form/form'
-import { Input } from '@/shared/input'
-import { Typography } from '@/shared/typography/typography'
+import { FormSecond, FormTextField } from '@/shared/form/formSecondVariant'
+import { z } from 'zod'
 
 export function SignInForm() {
-  const [getSignIn, { isLoading }] = useGetSignInMutation()
-  const { handleSubmit, register } = useForm()
+  const [getSignIn] = useGetSignInMutation()
 
   function isLoginData(
     formData: Record<string, boolean | string>
@@ -24,30 +21,24 @@ export function SignInForm() {
     )
   }
 
-  const handleLogIn = async (data: Record<string, boolean | string>) => {
-    if (isLoginData(data)) {
-      try {
-        await getSignIn(data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
+  const handleLogIn = (data: z.infer<typeof signInSchema>) => {
+    getSignIn(data)
+      .unwrap()
+      .then(response => {
+        console.log('Success: ', response)
+      })
+      .catch(error => {
+        console.log('Error:', error)
+      })
   }
 
   return (
-    <Form onSubmit={handleSubmit(handleLogIn)}>
+    <FormSecond onSubmit={handleLogIn} validationRules={signInSchema}>
       <Card>
-        <Typography align={'center'} variant={'H1'}>
-          Sing In
-        </Typography>
-        <Input label={'Email'} required variant={'text'} {...register('email')} />
-        <Input label={'Password'} {...register('password')} required variant={'password'} />
-        <Button type={'submit'}>Sing In</Button>
-        <Typography variant={'regular_text_16'}>Don’t have an account?</Typography>
-        <Button disabled={isLoading} variant={'link'}>
-          <Typography variant={'H3'}>Sign Up</Typography>
-        </Button>
+        <FormTextField label={'Email'} name={'email'} variant={'text'} />
+        <FormTextField label={'Password'} name={'password'} variant={'password'} />
+        <Button type={'submit'}>Sing Up</Button>
       </Card>
-    </Form>
+    </FormSecond>
   )
 }
