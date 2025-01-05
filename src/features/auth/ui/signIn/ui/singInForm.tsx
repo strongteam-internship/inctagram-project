@@ -1,25 +1,32 @@
 'use client'
 
+import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
+import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { useGetSignInMutation } from '@/features/auth/api/authApi'
 import { signInSchema } from '@/features/auth/ui/signIn/utils/validation/zodSchemaSignIn'
 import { Button } from '@/shared/button/button'
-import { Card } from '@/shared/card'
-import { FormSecond, FormTextField } from '@/shared/form/formSecondVariant'
+import { Form } from '@/shared/form/formSecondVariant'
+import { Typography } from '@/shared/typography/typography'
+import Link from 'next/link'
 import { z } from 'zod'
+
+import s from './singInForm.module.scss'
 
 export function SignInForm() {
   const [getSignIn] = useGetSignInMutation()
 
-  function isLoginData(
-    formData: Record<string, boolean | string>
-  ): formData is { email: string; password: string } {
-    return (
-      'email' in formData &&
-      'password' in formData &&
-      typeof formData.password === 'string' &&
-      typeof formData.email === 'string'
-    )
-  }
+  //Это на потом---------------
+  // function isLoginData(
+  //   formData: Record<string, boolean | string>
+  // ): formData is { email: string; password: string } {
+  //   return (
+  //     'email' in formData &&
+  //     'password' in formData &&
+  //     typeof formData.password === 'string' &&
+  //     typeof formData.email === 'string'
+  //   )
+  // }
+  //------------------
 
   const handleLogIn = (data: z.infer<typeof signInSchema>) => {
     getSignIn(data)
@@ -33,12 +40,31 @@ export function SignInForm() {
   }
 
   return (
-    <FormSecond onSubmit={handleLogIn} validationRules={signInSchema}>
-      <Card>
-        <FormTextField label={'Email'} name={'email'} variant={'text'} />
-        <FormTextField label={'Password'} name={'password'} variant={'password'} />
-        <Button type={'submit'}>Sing Up</Button>
-      </Card>
-    </FormSecond>
+    <Form className={s.form} onSubmit={handleLogIn} validationRules={signInSchema}>
+      <Form.Title align={'center'} className={s.title} variant={'H1'}>
+        Sign In
+      </Form.Title>
+
+      <Form.Icons className={s.iconContainer}>
+        <GoogleSvg />
+        <GithubSvg />
+      </Form.Icons>
+      <Form.Body className={s.inputContainer}>
+        <Form.TextField label={'Email'} name={'email'} variant={'text'} />
+        <Form.TextField label={'Password'} name={'password'} variant={'password'} />
+      </Form.Body>
+      <Typography align={'right'} variant={'medium_text_14'}>
+        Forgot Password
+      </Typography>
+      <Button className={s.signInButton} type={'submit'}>
+        Sing In
+      </Button>
+      <Typography align={'center'} variant={'regular_text_16'}>
+        Don’t have an account?
+      </Typography>
+      <Link className={s.signupButton} href={'./signup'}>
+        Sign Up
+      </Link>
+    </Form>
   )
 }

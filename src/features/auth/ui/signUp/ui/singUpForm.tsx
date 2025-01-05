@@ -1,17 +1,15 @@
 'use client'
 
-import { SubmitHandler, useForm } from 'react-hook-form'
-
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { useGetSignUpMutation } from '@/features/auth/api/authApi'
-import { validationRulesForSignUpForm } from '@/features/auth/ui/signUp/utils/validationRules/validationRules'
+import { signUpSchema } from '@/features/auth/ui/signUp/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
-import { Card } from '@/shared/card'
-import { Checkbox } from '@/shared/checkbox/Checkbox'
-import { Form } from '@/shared/form/form'
-import { Input } from '@/shared/input'
+import { Form } from '@/shared/form/formSecondVariant'
 import { Typography } from '@/shared/typography/typography'
+import { z } from 'zod'
+
+import s from './singUpForm.module.scss'
 
 type SignUpFormProps = {
   onSubmitHandler: (email: string) => void
@@ -69,21 +67,7 @@ function isError(errorRes: unknown): errorRes is ErrorResponse {
 
 export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
   const [getSignUp] = useGetSignUpMutation()
-
-  const {
-    formState: { errors, isValid },
-    handleSubmit,
-    register,
-    reset,
-    setError,
-    watch,
-  } = useForm<FormData>({
-    mode: 'onBlur',
-  })
-
-  const isTermsAndPolicyChecked = watch('confirmTermsAndPolicy')
-
-  const onSubmit: SubmitHandler<FormData> = data => {
+  const onSubmit = (data: z.infer<typeof signUpSchema>) => {
     const requestData = {
       baseUrl: 'https://strong-interns.top/signup/confirmEmail',
       email: data.email,
@@ -91,71 +75,49 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
       userName: data.userName,
     }
 
-    getSignUp(requestData)
-      .unwrap()
-      .then(response => {
-        console.log(response)
-        onSubmitHandler(requestData.email)
-        reset()
-      })
-      .catch(error => {
-        error.data.messages.forEach((error: ErrorMessage) => {
-          setError(error.field, { message: error.message })
-        })
-      })
+    console.log(data)
+    // getSignUp(requestData)
+    //   .unwrap()
+    //   .then(response => {
+    //     console.log(response)
+    //     onSubmitHandler(requestData.email)
+    //     reset()
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //     error.data.messages.forEach((error: ErrorMessage) => {
+    //       setError(error.field, { message: error.message })
+    //     })
+    //   })
   }
 
   //https://strong-interns.top//auth/registration-confirmation?code=eef65719-b03d-4df0-9cde-8d6fa921c12a&email=pavelretunskih@gmail.com
+  //http://localhost:3000/auth/registration-confirmation?code=fbd99987-f3de-4fec-a309-f5b9f560ed2d&email=pavelretunskih@gmail.com
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Card>
-        <Typography align={'center'} variant={'H1'}>
-          Sing Up
-        </Typography>
+    <Form className={s.form} onSubmit={onSubmit} validationRules={signUpSchema}>
+      <Form.Title align={'center'} variant={'H1'}>
+        Sing Up
+      </Form.Title>
+      <Form.Icons className={s.iconContainer}>
+        <GoogleSvg />
+        <GithubSvg />
+      </Form.Icons>
+      <Form.Body className={s.inputContainer}>
+        <Form.TextField label={'Username'} name={'userName'} variant={'text'} />
+        <Form.TextField label={'Email'} name={'email'} variant={'text'} />
+        <Form.TextField label={'Password'} name={'password'} variant={'password'} />
+        <Form.TextField label={'Confirm password'} name={'confirmPassword'} variant={'password'} />
         <div>
-          <GoogleSvg />
-          <GithubSvg />
+          <Form.CheckBox name={'terms'}>
+            <Typography>I agree to the Terms of Service and Privacy Policy</Typography>
+          </Form.CheckBox>
         </div>
-        <Input
-          label={'Username'}
-          {...register('userName', validationRulesForSignUpForm.userName)}
-          errorText={errors.userName?.message}
-          variant={'text'}
-        />
-        <Input
-          label={'Email'}
-          {...register('email', validationRulesForSignUpForm.email)}
-          errorText={errors.email?.message}
-          variant={'text'}
-        />
-        <Input
-          label={'Password'}
-          {...register('password', validationRulesForSignUpForm.password)}
-          errorText={errors.password?.message}
-          variant={'password'}
-        />
-        <Input
-          label={'Password confirmation'}
-          {...register('confirmPassword', validationRulesForSignUpForm.confirmPassword)}
-          errorText={errors.confirmPassword?.message}
-          variant={'password'}
-        />
-        <div>
-          <Checkbox>
-            <Checkbox.Input {...register('confirmTermsAndPolicy')} />
-            <Checkbox.Label>
-              <Typography>I agree to the Terms of Service and Privacy Policy</Typography>
-            </Checkbox.Label>
-          </Checkbox>
-        </div>
-        <Button disabled={!isTermsAndPolicyChecked || !isValid} type={'submit'}>
-          Sing Up
-        </Button>
-        <Typography variant={'regular_text_16'}>Do you have an account?</Typography>
-        <Button variant={'link'}>
-          <Typography variant={'H3'}>Sign In</Typography>
-        </Button>
-      </Card>
+        <Form.Button>Sing Up</Form.Button>
+      </Form.Body>
+      <Typography variant={'regular_text_16'}>Do you have an account?</Typography>
+      <Button variant={'link'}>
+        <Typography variant={'H3'}>Sign In</Typography>
+      </Button>
     </Form>
   )
 }

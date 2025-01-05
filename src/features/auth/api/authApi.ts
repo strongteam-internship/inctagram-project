@@ -5,6 +5,7 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://inctagram.work',
   }),
+
   endpoints: builder => ({
     getMe: builder.query<
       {
