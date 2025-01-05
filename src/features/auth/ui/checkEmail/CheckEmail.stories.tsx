@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import { Meta } from '@storybook/react'
+import { Button } from '@/shared/button/button'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { CheckEmail } from './CheckEmail'
 
@@ -12,8 +13,27 @@ const meta = {
 
 export default meta
 
-export const Default = {
-  render() {
-    return <CheckEmail email={'test@example.com'} />
+export const Default: StoryObj<typeof CheckEmail> = {
+  render: () => {
+    const [open, setOpen] = useState<boolean>(false)
+
+    return (
+      <CheckEmail
+        email={'test@example.com'}
+        onClose={() => console.log('Modal closed')}
+        open={open}
+        setOpen={setOpen}
+        trigger={
+          <Button
+            onClick={() => {
+              setOpen(true)
+            }}
+            variant={'primary'}
+          >
+            Click me
+          </Button>
+        }
+      />
+    )
   },
 }
