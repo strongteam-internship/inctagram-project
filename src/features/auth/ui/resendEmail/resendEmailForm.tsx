@@ -2,9 +2,9 @@
 
 import resendEmailImage from '@/assets/images/resendEmailImage.png'
 import { resendEmailSchema } from '@/features/auth/ui/resendEmail/utils/validationRules/zodSchema'
+import { Form } from '@/shared/Form/Form'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
-import { Form } from '@/shared/form/Form'
 import { Typography } from '@/shared/typography/typography'
 import Image from 'next/image'
 
@@ -18,7 +18,7 @@ export function ResendEmailForm() {
         Looks like the verification link has expired. Not to worry, we can send the link again
       </Typography>
       <Form
-        onSubmit={data => console.log('Re-form data', data)}
+        onSubmit={data => console.log('Re-Form data', data)}
         validationRules={resendEmailSchema}
       >
         <Form.Body>

@@ -2,8 +2,8 @@
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { signInSchema } from '@/features/auth/ui/signIn/utils/validation/zodSchemaSignIn'
+import { Form } from '@/shared/Form/Form'
 import { Button } from '@/shared/button/button'
-import { Form } from '@/shared/form/Form'
 import { Typography } from '@/shared/typography/typography'
 import Link from 'next/link'
 

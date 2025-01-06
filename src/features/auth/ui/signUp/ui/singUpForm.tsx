@@ -3,7 +3,7 @@
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { signUpSchema } from '@/features/auth/ui/signUp/utils/validationRules/zodSchema'
-import { Form } from '@/shared/form/Form'
+import { Form } from '@/shared/Form/Form'
 import { Typography } from '@/shared/typography/typography'
 import Link from 'next/link'
 import { z } from 'zod'
