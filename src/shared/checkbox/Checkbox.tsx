@@ -57,7 +57,7 @@ export const Checkbox: {
   Label: React.FC<CheckboxLabelProps>
 } & React.FC<CheckboxProps> = ({ checked, children, className, disabled, isRequired = false }) => {
   const [isChecked, setIsChecked] = useState<boolean>(checked ?? false)
-  const id = useId()
+  const id = useId() //TODO: Обернуть в useMemo?
 
   useEffect(() => {
     if (checked !== undefined) {

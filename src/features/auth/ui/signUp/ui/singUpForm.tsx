@@ -2,10 +2,9 @@
 
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
-import { useGetSignUpMutation } from '@/features/auth/api/authApi'
 import { signUpSchema } from '@/features/auth/ui/signUp/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
-import { Form } from '@/shared/form/formSecondVariant'
+import { Form } from '@/shared/form/Form'
 import { Typography } from '@/shared/typography/typography'
 import { z } from 'zod'
 
@@ -66,30 +65,7 @@ function isError(errorRes: unknown): errorRes is ErrorResponse {
 }
 
 export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
-  const [getSignUp] = useGetSignUpMutation()
-  const onSubmit = (data: z.infer<typeof signUpSchema>) => {
-    const requestData = {
-      baseUrl: 'https://strong-interns.top/signup/confirmEmail',
-      email: data.email,
-      password: data.password,
-      userName: data.userName,
-    }
-
-    console.log(data)
-    // getSignUp(requestData)
-    //   .unwrap()
-    //   .then(response => {
-    //     console.log(response)
-    //     onSubmitHandler(requestData.email)
-    //     reset()
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //     error.data.messages.forEach((error: ErrorMessage) => {
-    //       setError(error.field, { message: error.message })
-    //     })
-    //   })
-  }
+  const onSubmit = (data: z.infer<typeof signUpSchema>) => {}
 
   //https://strong-interns.top//auth/registration-confirmation?code=eef65719-b03d-4df0-9cde-8d6fa921c12a&email=pavelretunskih@gmail.com
   //http://localhost:3000/auth/registration-confirmation?code=fbd99987-f3de-4fec-a309-f5b9f560ed2d&email=pavelretunskih@gmail.com
@@ -108,7 +84,7 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
         <Form.TextField label={'Password'} name={'password'} variant={'password'} />
         <Form.TextField label={'Confirm password'} name={'confirmPassword'} variant={'password'} />
         <div>
-          <Form.CheckBox name={'terms'}>
+          <Form.CheckBox name={'agreeToPolicies'}>
             <Typography>I agree to the Terms of Service and Privacy Policy</Typography>
           </Form.CheckBox>
         </div>

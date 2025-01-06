@@ -1,6 +1,6 @@
 'use client'
 
-import { ComponentPropsWithoutRef, ReactNode, useState } from 'react'
+import { ComponentPropsWithoutRef, ReactNode, memo, useEffect } from 'react'
 import { FormProvider, Path, SubmitHandler, useForm, useFormContext } from 'react-hook-form'
 
 import { Button } from '@/shared/button/button'
@@ -27,7 +27,7 @@ type FormProps<T extends ZodTypeAny> = {
 
 type TextFieldProps = {
   label: string
-  name: string // Ключ схемы для name
+  name: string
   variant: 'password' | 'text'
 }
 
@@ -48,15 +48,30 @@ function FormRoot<T extends ZodTypeAny>({
   validationRules,
   ...rest
 }: FormProps<T>) {
-  const methods = useForm<z.infer<T>>({ mode: 'onBlur', resolver: zodResolver(validationRules) })
-  const { setError } = methods
+  const methods = useForm<z.infer<T>>({
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
+    resolver: zodResolver(validationRules),
+  })
+  const {
+    formState: { isSubmitSuccessful },
+    reset,
+    setError,
+  } = methods
+  const classNames = clsx(s.form, className)
 
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset()
+    }
+  }, [isSubmitSuccessful, reset])
+  //TODO: Возможно тоже стоит обернуть в useEffect
   if (errors) {
     errors.forEach((error: ErrorMessage<T>) => {
       setError(error.field, { message: error.message })
     })
   }
-  const classNames = clsx(s.form, className)
+  //-----------------------------------------------
 
   return (
     <FormProvider {...methods}>
@@ -73,16 +88,13 @@ function FormRoot<T extends ZodTypeAny>({
 }
 
 // Компонент для текстового поля формы
-function TextField({ label, name, variant }: TextFieldProps) {
+const TextField = memo(({ label, name, variant, ...rest }: TextFieldProps) => {
+  TextField.displayName = 'Form.TextField'
   const {
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
     register,
-    reset,
   } = useFormContext()
 
-  if (isSubmitSuccessful) {
-    reset()
-  }
   const errorMessage = typeof errors[name]?.message === 'string' ? errors[name].message : undefined
 
   return (
@@ -91,9 +103,10 @@ function TextField({ label, name, variant }: TextFieldProps) {
       {...register(name)} // Используем name как ключ схемы
       errorText={errorMessage}
       variant={variant}
+      {...rest}
     />
   )
-}
+})
 
 // Компонент для тела формы
 function FormBody({ children, className, ...rest }: FormBodyProps) {
@@ -107,35 +120,42 @@ function FormBody({ children, className, ...rest }: FormBodyProps) {
 }
 
 // Компонент для иконок формы
-function FormIcons({ children, className }: FormIconsProps) {
-  return <div className={className}>{children}</div>
+function FormIcons({ children, className, ...rest }: FormIconsProps) {
+  return (
+    <div className={className} {...rest}>
+      {children}
+    </div>
+  )
 }
 //Компонент кнопки
-function FormButton({ children }: { children: ReactNode }) {
+function FormButton({ children, ...rest }: { children: ReactNode }) {
   const {
     formState: { isValid },
   } = useFormContext()
 
-  console.log('Is valid: ' + isValid)
-
   return (
-    <Button disabled={!isValid} type={'submit'}>
+    <Button disabled={!isValid} type={'submit'} {...rest}>
       {children}
     </Button>
   )
 }
 // Компонент для чекбокса
-//TODO: не работает валидация по клику на чекбокс
-function FormCheckBox({ children, name }: { children: ReactNode; name: string }) {
-  const { register } = useFormContext()
+const FormCheckBox = memo(({ children, name }: { children: ReactNode; name: string }) => {
+  FormCheckBox.displayName = 'Form.CheckBox'
+  const { register, setValue } = useFormContext()
 
   return (
     <Checkbox>
-      <Checkbox.Input {...register(name)} />
+      <Checkbox.Input
+        {...register(name)}
+        onChange={e => {
+          setValue(name, e.target.checked, { shouldValidate: true }) // Устанавливаем значение и инициируем валидацию
+        }}
+      />
       <Checkbox.Label>{children}</Checkbox.Label>
     </Checkbox>
   )
-}
+})
 
 // Подключение дочерних компонентов формы
 type FormCompound = {

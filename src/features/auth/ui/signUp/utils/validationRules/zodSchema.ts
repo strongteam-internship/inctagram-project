@@ -2,12 +2,13 @@ import { z } from 'zod'
 
 export const signUpSchema = z
   .object({
+    agreeToPolicies: z
+      .boolean()
+      .refine(value => value, { message: 'You must agree to the policies' }),
+
     confirmPassword: z.string().nonempty('Password confirmation is required'),
 
-    email: z
-      .string()
-      .nonempty('Email is required')
-      .regex(/^[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/, 'Invalid email format'),
+    email: z.string().nonempty('Email is required').email('Invalid email format'),
 
     password: z
       .string()
@@ -19,10 +20,6 @@ export const signUpSchema = z
         'Password must include uppercase, lowercase, number, and special character'
       ),
 
-    // Поле для чекбокса
-    //TODO: не работает
-    terms: z.boolean(),
-
     userName: z
       .string()
       .nonempty('Username is required')
@@ -30,9 +27,7 @@ export const signUpSchema = z
       .max(30, 'Max length is 30')
       .regex(/^[\w_-]{6,30}$/, 'Invalid username (use letters, numbers, _, -)'),
   })
-  //TODO: Тут тоже как то криво
-  .refine(data => data.confirmPassword === data.password, {
+  .refine(data => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
-    path: ['confirmPassword'],
+    path: ['confirmPassword'], // Поле, к которому относится ошибка
   })
-  .refine(data => data.terms === true)

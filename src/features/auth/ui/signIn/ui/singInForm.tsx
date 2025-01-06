@@ -2,19 +2,16 @@
 
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
-import { useGetSignInMutation } from '@/features/auth/api/authApi'
 import { signInSchema } from '@/features/auth/ui/signIn/utils/validation/zodSchemaSignIn'
 import { Button } from '@/shared/button/button'
-import { Form } from '@/shared/form/formSecondVariant'
+import { Form } from '@/shared/form/Form'
 import { Typography } from '@/shared/typography/typography'
 import Link from 'next/link'
-import { z } from 'zod'
+import { ZodAny, z } from 'zod'
 
 import s from './singInForm.module.scss'
 
 export function SignInForm() {
-  const [getSignIn] = useGetSignInMutation()
-
   //Это на потом---------------
   // function isLoginData(
   //   formData: Record<string, boolean | string>
@@ -29,14 +26,7 @@ export function SignInForm() {
   //------------------
 
   const handleLogIn = (data: z.infer<typeof signInSchema>) => {
-    getSignIn(data)
-      .unwrap()
-      .then(response => {
-        console.log('Success: ', response)
-      })
-      .catch(error => {
-        console.log('Error:', error)
-      })
+    console.log(data)
   }
 
   return (
@@ -62,7 +52,7 @@ export function SignInForm() {
       <Typography align={'center'} variant={'regular_text_16'}>
         Don’t have an account?
       </Typography>
-      <Link className={s.signupButton} href={'./signup'}>
+      <Link className={s.signupButton} href={'/signup'}>
         Sign Up
       </Link>
     </Form>
