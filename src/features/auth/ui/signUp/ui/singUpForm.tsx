@@ -3,24 +3,22 @@
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { signUpSchema } from '@/features/auth/ui/signUp/utils/validationRules/zodSchema'
-import { Button } from '@/shared/button/button'
 import { Form } from '@/shared/form/Form'
 import { Typography } from '@/shared/typography/typography'
+import Link from 'next/link'
 import { z } from 'zod'
 
 import s from './singUpForm.module.scss'
 
-type SignUpFormProps = {
-  onSubmitHandler: (email: string) => void
-}
-
-export type FormData = {
-  confirmPassword: string
-  confirmTermsAndPolicy: boolean
-  email: string
-  password: string
-  userName: string
-}
+// type SignUpFormProps = {
+//   onSubmitHandler: (data: {
+//     agreeToPolicies: boolean
+//     confirmPassword: string
+//     email: string
+//     password: string
+//     userName: string
+//   }) => void
+// }
 
 type ErrorResponse = {
   data: {
@@ -64,13 +62,13 @@ function isError(errorRes: unknown): errorRes is ErrorResponse {
   )
 }
 
-export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
+export function SignUpForm() {
   const onSubmit = (data: z.infer<typeof signUpSchema>) => {}
 
   //https://strong-interns.top//auth/registration-confirmation?code=eef65719-b03d-4df0-9cde-8d6fa921c12a&email=pavelretunskih@gmail.com
   //http://localhost:3000/auth/registration-confirmation?code=fbd99987-f3de-4fec-a309-f5b9f560ed2d&email=pavelretunskih@gmail.com
   return (
-    <Form className={s.form} onSubmit={onSubmit} validationRules={signUpSchema}>
+    <Form className={s.form} onSubmit={data => onSubmit} validationRules={signUpSchema}>
       <Form.Title align={'center'} variant={'H1'}>
         Sing Up
       </Form.Title>
@@ -91,9 +89,9 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
         <Form.Button>Sing Up</Form.Button>
       </Form.Body>
       <Typography variant={'regular_text_16'}>Do you have an account?</Typography>
-      <Button variant={'link'}>
+      <Link href={'/signin'}>
         <Typography variant={'H3'}>Sign In</Typography>
-      </Button>
+      </Link>
     </Form>
   )
 }

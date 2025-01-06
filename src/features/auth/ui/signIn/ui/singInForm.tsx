@@ -1,5 +1,4 @@
 'use client'
-
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { signInSchema } from '@/features/auth/ui/signIn/utils/validation/zodSchemaSignIn'
@@ -7,10 +6,9 @@ import { Button } from '@/shared/button/button'
 import { Form } from '@/shared/form/Form'
 import { Typography } from '@/shared/typography/typography'
 import Link from 'next/link'
-import { ZodAny, z } from 'zod'
 
 import s from './singInForm.module.scss'
-
+//type SignInFormProps = { onSubmitCallback: (data: { email: string; password: string }) => void }
 export function SignInForm() {
   //Это на потом---------------
   // function isLoginData(
@@ -25,16 +23,15 @@ export function SignInForm() {
   // }
   //------------------
 
-  const handleLogIn = (data: z.infer<typeof signInSchema>) => {
-    console.log(data)
+  const handleLogIn = (data: { email: string; password: string }) => {
+    //onSubmitCallback(data)
   }
 
   return (
-    <Form className={s.form} onSubmit={handleLogIn} validationRules={signInSchema}>
+    <Form className={s.form} onSubmit={data => handleLogIn(data)} validationRules={signInSchema}>
       <Form.Title align={'center'} className={s.title} variant={'H1'}>
         Sign In
       </Form.Title>
-
       <Form.Icons className={s.iconContainer}>
         <GoogleSvg />
         <GithubSvg />
@@ -47,7 +44,7 @@ export function SignInForm() {
         Forgot Password
       </Typography>
       <Button className={s.signInButton} type={'submit'}>
-        Sing In
+        Sing Up
       </Button>
       <Typography align={'center'} variant={'regular_text_16'}>
         Don’t have an account?

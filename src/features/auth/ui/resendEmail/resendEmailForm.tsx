@@ -5,7 +5,6 @@ import { resendEmailSchema } from '@/features/auth/ui/resendEmail/utils/validati
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { Form } from '@/shared/form/Form'
-import { Input } from '@/shared/input'
 import { Typography } from '@/shared/typography/typography'
 import Image from 'next/image'
 
