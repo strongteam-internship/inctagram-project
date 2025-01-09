@@ -3,52 +3,49 @@
 import { useForm } from 'react-hook-form'
 
 import { useGetSignInMutation } from '@/features/auth/api/authApi'
+import { SignInSchemaType, signInSchema } from '@/features/auth/ui/signIn/utils/schema/schema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
-import { Form } from '@/shared/form/form'
-import { Input } from '@/shared/input'
 import { ControlledInput } from '@/shared/input/controlled-input'
 import { Typography } from '@/shared/typography/typography'
+import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
 
 export function SignInForm() {
   const [getSignIn, { isLoading }] = useGetSignInMutation()
-  const { control, handleSubmit } = useForm<>()
+  const { control, handleSubmit, setError } = useForm<SignInSchemaType>({
+    mode: 'onBlur',
+    resolver: zodResolver(signInSchema),
+  })
 
-  function isLoginData(
-    formData: Record<string, boolean | string>
-  ): formData is { email: string; password: string } {
-    return (
-      'email' in formData &&
-      'password' in formData &&
-      typeof formData.password === 'string' &&
-      typeof formData.email === 'string'
-    )
-  }
-
-  const handleLogIn = async (data: Record<string, boolean | string>) => {
-    if (isLoginData(data)) {
-      try {
-        await getSignIn(data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
+  const handleLogIn = (data: { email: string; password: string }) => {
+    getSignIn(data)
+      .unwrap()
+      .then(res => console.log(res))
+      .catch(err => setError('password', { message: err.data.messages }))
   }
 
   return (
-    <form onSubmit={handleSubmit(handleLogIn)}>
-      <Card>
+    <Card>
+      <form onSubmit={handleSubmit(handleLogIn)}>
         <Typography align={'center'} variant={'H1'}>
           Sing In
         </Typography>
-        <ControlledInput control={control} label={'Email'} name={''} variant={'text'} />
-        <ControlledInput control={control} label={'Password'} name={''} variant={'password'} />
-        <Button type={'submit'}>Sing In</Button>
-        <Typography variant={'regular_text_16'}>Don’t have an account?</Typography>
-        <Button disabled={isLoading} variant={'link'}>
-          <Typography variant={'H3'}>Sign Up</Typography>
+        <ControlledInput control={control} label={'Email'} name={'email'} variant={'text'} />
+        <ControlledInput
+          control={control}
+          label={'Password'}
+          name={'password'}
+          variant={'password'}
+        />
+        <Button disabled={isLoading} type={'submit'}>
+          Sing In
         </Button>
-      </Card>
-    </form>
+      </form>
+      <Typography variant={'regular_text_16'}>Don’t have an account?</Typography>
+      <Link href={'/signup'}>
+        <Typography variant={'H3'}>Sign Up</Typography>
+      </Link>
+    </Card>
   )
 }
