@@ -7,11 +7,12 @@ import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { Form } from '@/shared/form/form'
 import { Input } from '@/shared/input'
+import { ControlledInput } from '@/shared/input/controlled-input'
 import { Typography } from '@/shared/typography/typography'
 
 export function SignInForm() {
   const [getSignIn, { isLoading }] = useGetSignInMutation()
-  const { handleSubmit, register } = useForm()
+  const { control, handleSubmit } = useForm<>()
 
   function isLoginData(
     formData: Record<string, boolean | string>
@@ -35,19 +36,19 @@ export function SignInForm() {
   }
 
   return (
-    <Form onSubmit={handleSubmit(handleLogIn)}>
+    <form onSubmit={handleSubmit(handleLogIn)}>
       <Card>
         <Typography align={'center'} variant={'H1'}>
           Sing In
         </Typography>
-        <Input label={'Email'} required variant={'text'} {...register('email')} />
-        <Input label={'Password'} {...register('password')} required variant={'password'} />
+        <ControlledInput control={control} label={'Email'} name={''} variant={'text'} />
+        <ControlledInput control={control} label={'Password'} name={''} variant={'password'} />
         <Button type={'submit'}>Sing In</Button>
         <Typography variant={'regular_text_16'}>Don’t have an account?</Typography>
         <Button disabled={isLoading} variant={'link'}>
           <Typography variant={'H3'}>Sign Up</Typography>
         </Button>
       </Card>
-    </Form>
+    </form>
   )
 }
