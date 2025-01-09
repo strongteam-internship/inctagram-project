@@ -106,7 +106,7 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Card>
         <Typography align={'center'} variant={'H1'}>
           Sing Up
@@ -155,6 +155,6 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
           <Typography variant={'H3'}>Sign In</Typography>
         </Button>
       </Card>
-    </Form>
+    </form>
   )
 }
