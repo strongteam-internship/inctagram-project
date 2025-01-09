@@ -9,7 +9,6 @@ import { validationRulesForSignUpForm } from '@/features/auth/ui/signUp/utils/va
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { Checkbox } from '@/shared/checkbox/Checkbox'
-import { Form } from '@/shared/form/form'
 import { Input } from '@/shared/input'
 import { Typography } from '@/shared/typography/typography'
 
