@@ -11,6 +11,8 @@ import { Typography } from '@/shared/typography/typography'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 
+import s from './SignIn.module.scss'
+
 export function SignInForm() {
   const [getSignIn, { isLoading }] = useGetSignInMutation()
   const { control, handleSubmit, setError } = useForm<SignInSchemaType>({
@@ -27,25 +29,28 @@ export function SignInForm() {
 
   return (
     <Card>
-      <form onSubmit={handleSubmit(handleLogIn)}>
-        <Typography align={'center'} variant={'H1'}>
+      <form className={s.form} onSubmit={handleSubmit(handleLogIn)}>
+        <Typography align={'center'} className={s.title} variant={'H1'}>
           Sing In
         </Typography>
-        <ControlledInput control={control} label={'Email'} name={'email'} variant={'text'} />
-        <ControlledInput
-          control={control}
-          label={'Password'}
-          name={'password'}
-          variant={'password'}
-        />
-        <Button disabled={isLoading} type={'submit'}>
+        <div className={s.inputContainer}>
+          <ControlledInput control={control} label={'Email'} name={'email'} variant={'text'} />
+          <ControlledInput
+            control={control}
+            label={'Password'}
+            name={'password'}
+            variant={'password'}
+          />
+        </div>
+
+        <Button className={s.signInButton} disabled={isLoading} fullWidth type={'submit'}>
           Sing In
         </Button>
+        <Typography variant={'regular_text_16'}>Don’t have an account?</Typography>
+        <Link className={s.signupButton} href={'/signup'}>
+          Sign Up
+        </Link>
       </form>
-      <Typography variant={'regular_text_16'}>Don’t have an account?</Typography>
-      <Link href={'/signup'}>
-        <Typography variant={'H3'}>Sign Up</Typography>
-      </Link>
     </Card>
   )
 }
