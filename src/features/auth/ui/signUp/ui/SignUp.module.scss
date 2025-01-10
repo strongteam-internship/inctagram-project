@@ -73,3 +73,15 @@
   align-self: center;
   margin-top: 15px;
 }
+.terms{
+  white-space: nowrap;
+}
+
+.link{font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  color: var(--color-accent-500);
+  text-decoration: underline;
+}
+.link:hover{
+  text-decoration: none;
+}
