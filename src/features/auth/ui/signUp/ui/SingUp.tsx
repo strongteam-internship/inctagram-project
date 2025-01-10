@@ -105,8 +105,8 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
 
   return (
     <div className={s.wrap}>
-      <Card className={s.form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+      <Card className={s.formContainer}>
+        <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
           <Typography align={'center'} className={s.title} variant={'H1'}>
             Sign Up
           </Typography>
