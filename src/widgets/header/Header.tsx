@@ -4,7 +4,9 @@ import { FC } from 'react'
 
 import { Option, Select } from '@/shared/Select/Select'
 import { Button } from '@/shared/button/button'
-import Image from 'next/image'
+import FlagEn from '@/shared/input/icons/FlagEn'
+import FlagRu from '@/shared/input/icons/FlagRu'
+import NotificationIcon from '@/shared/input/icons/NotificationIcon'
 import Link from 'next/link'
 
 import styles from './Header.module.scss'
@@ -17,25 +19,25 @@ type HeaderProps = {
 export const Header: FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 0 }) => {
   return (
     <header className={styles.header}>
-      <h2 className={styles.logo}>Inctagram</h2>
-      <div className={styles.div}>
+      <h2>Instagram</h2>
+      <div>
         {isAuthenticated && (
-          <div className={styles.notifications}>
-            <Image alt={'Notifications'} height={24} src={'/icons/bell.svg'} width={24} />
-            {notificationsCount > 0 && <span className={styles.badge}>{notificationsCount}</span>}
+          <div>
+            <NotificationIcon />
+            {notificationsCount > 0 && <span>{notificationsCount}</span>}
           </div>
         )}
-        <div className={styles.language}>
+        <div>
           <Select>
             <Option key={'1'} value={'en'}>
               <div>
-                <img alt={''} src={''} />
+                <FlagEn />
                 <span>English</span>
               </div>
             </Option>
             <Option key={'2'} value={'ru'}>
               <div>
-                <img alt={''} src={''} />
+                <FlagRu />
                 <span>Русский</span>
               </div>
             </Option>
@@ -43,9 +45,7 @@ export const Header: FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 
         </div>
         {!isAuthenticated && (
           <>
-            <Link className={styles.link} href={'/login'}>
-              Log in
-            </Link>
+            <Link href={'/login'}>Log in</Link>
             <Link href={'/signup'}>
               <Button variant={'primary'}>Sign up</Button>
             </Link>
