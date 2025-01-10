@@ -138,9 +138,15 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
               <Checkbox>
                 <Checkbox.Input {...register('agreeToPolicies')} />
                 <Checkbox.Label>
-                  <Typography variant={'regular_text_14'}>
-                    I agree to the <Link href={'/signup/termsOfService'}>Terms of Service</Link> and
-                    <Link href={'/signup/privacyPolicy'}>Privacy Policy</Link>
+                  <Typography variant={'small_text_12'}>
+                    I agree to the
+                    <span>
+                      <Link href={'/signup/termsOfService'}> Terms of Service </Link>
+                    </span>
+                    and
+                    <span>
+                      <Link href={'/signup/privacyPolicy'}> Privacy Policy</Link>
+                    </span>
                   </Typography>
                 </Checkbox.Label>
               </Checkbox>
