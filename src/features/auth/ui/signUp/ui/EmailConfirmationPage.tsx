@@ -15,7 +15,9 @@ export default function EmailConfirmationPage() {
         <Typography align={'center'} variant={'regular_text_16'}>
           Your email has been confirmed
         </Typography>
-        <Button>Sign In</Button>
+        <Button className={s.button} type={'submit'}>
+          Sign In
+        </Button>
       </div>
     </div>
   )
