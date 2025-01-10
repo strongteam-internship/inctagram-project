@@ -64,7 +64,8 @@
   }
 
   &:focus {
-    border: 2px solid var(--color-accent-500);
+    border: none;
+    outline: 2px solid var(--color-accent-500);
   }
 
   &:disabled {
@@ -155,7 +156,8 @@ Ensure consistent autofill styling in all states (hover, focus, active) */
   border-color: var(--color-danger-500);
 
   &:focus {
-    border: 2px solid var(--color-danger-500);
+    border: none;
+    outline: 2px solid var(--color-danger-500);
   }
 }
 

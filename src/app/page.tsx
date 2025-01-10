@@ -1,6 +1,6 @@
 'use client'
-import Link from 'next/link'
 import { Typography } from '@/shared/typography/typography'
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -14,6 +14,9 @@ export default function Home() {
       </div>
       <div>
         <Link href={'/signin'}>Sign In</Link>
+      </div>
+      <div>
+        <Link href={'/resignup'}>Re-Sign Up</Link>
       </div>
       <Typography>Hello world</Typography>
     </div>

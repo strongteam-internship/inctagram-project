@@ -2,9 +2,7 @@ import type { Metadata } from 'next'
 
 import React from 'react'
 
-import { Header } from '@/widgets/header/Header'
-
-// import { Header } from '@/stories/Header'
+import { AppProvider } from '@/application/services/appProvider/appProvider'
 
 import '@/styles/index.scss'
 
@@ -21,8 +19,7 @@ export default function RootLayout({
   return (
     <html lang={'en'} suppressHydrationWarning>
       <body>
-        <Header isAuthenticated notificationsCount={12} />
-        {children}
+        <AppProvider>{children}</AppProvider>
       </body>
     </html>
   )
