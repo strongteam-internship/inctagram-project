@@ -7,6 +7,7 @@ import { Button } from '@/shared/button/button'
 import FlagEn from '@/shared/input/icons/FlagEn'
 import FlagRu from '@/shared/input/icons/FlagRu'
 import NotificationIcon from '@/shared/input/icons/NotificationIcon'
+import { Typography } from '@/shared/typography/typography'
 import Link from 'next/link'
 
 import styles from './Header.module.scss'
@@ -19,24 +20,24 @@ type HeaderProps = {
 export const Header: FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 0 }) => {
   return (
     <header className={styles.header}>
-      <h2>Instagram</h2>
-      <div>
+      <Typography<'Large'> variant={'Large'}>Instagram</Typography>
+      <div className={styles.headerActions}>
         {isAuthenticated && (
-          <div>
+          <div className={styles.notification}>
             <NotificationIcon />
-            {notificationsCount > 0 && <span>{notificationsCount}</span>}
+            {notificationsCount > 0 && <div className={styles.count}>{notificationsCount}</div>}
           </div>
         )}
         <div>
-          <Select>
+          <Select selectedItem={'ru'}>
             <Option key={'1'} value={'en'}>
-              <div>
+              <div className={styles.option}>
                 <FlagEn />
                 <span>English</span>
               </div>
             </Option>
             <Option key={'2'} value={'ru'}>
-              <div>
+              <div className={styles.option}>
                 <FlagRu />
                 <span>Русский</span>
               </div>
@@ -45,9 +46,11 @@ export const Header: FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 
         </div>
         {!isAuthenticated && (
           <>
-            <Link href={'/login'}>Log in</Link>
-            <Link href={'/signup'}>
-              <Button variant={'primary'}>Sign up</Button>
+            <Link className={styles.login} href={'/login'}>
+              Log in
+            </Link>
+            <Link className={styles.signup} href={'/signup'}>
+              Sign up
             </Link>
           </>
         )}

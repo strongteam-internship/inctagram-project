@@ -1,0 +1,54 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 60px;
+  background-color: var(--color-dark-700);
+
+  .headerActions {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .option {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+}
+
+.gap {
+  padding-left: 120px;
+  color: white;
+}
+
+.count {
+  position: absolute;
+  top: -5px;
+  left: 9px;
+
+  display: flex;
+  justify-content: center;
+
+  width: 13px;
+  height: 13px;
+
+  font-size: 10px;
+  color: white;
+
+  background-color: red;
+  border-radius: 50%;
+}
+
+.notification {
+  position: relative;
+}
+
+.login {
+
+}
+
+.signup {
+
+}

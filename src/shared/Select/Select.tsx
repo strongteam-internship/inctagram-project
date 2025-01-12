@@ -1,5 +1,7 @@
 import React, { ReactNode, type SelectHTMLAttributes, useState } from 'react'
 
+import ArrowIosDownOutline from '@/assets/svg/icons/components/ArrowIosDownOutline'
+
 import style from './Select.module.scss'
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
@@ -23,6 +25,17 @@ export const Select = (props: SelectProps) => {
     setSelectedOption(value)
     setIsOpen(false)
   }
+  const renderSelectOption = (arr: any) => {
+    let result = null
+
+    arr.forEach(children, child => {
+      if (child.props.value === selectedOption) {
+        result = React.cloneElement(child as React.ReactElement<any>, {})
+      }
+    })
+
+    return result ? result : 'Select an option'
+  }
 
   return (
     <div className={`${style.DropDownContainer}`}>
@@ -35,7 +48,11 @@ export const Select = (props: SelectProps) => {
         style={{ border, color }}
         type={'button'}
       >
-        {selectedOption || 'Select an option'}
+        {/*{selectedOption || 'Select an option'}*/}
+        <div className={style.options}>
+          {renderSelectOption(React.Children)}
+          <ArrowIosDownOutline className={style.arrow} />
+        </div>
       </button>
       {isOpen && (
         <div className={`${style.DropDownListContainer}`}>

@@ -1,2 +1,7 @@
 @forward 'colors';
 @forward 'typography';
+
+body {
+  font-family: var(--font-family-primary);
+  background-color: var(--color-dark-700);
+}
