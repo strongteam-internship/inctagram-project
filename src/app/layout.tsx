@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang={'en'} suppressHydrationWarning>
       <body>
         <div className={styles.main}>
-          <Header isAuthenticated notificationsCount={12} />
+          <Header isAuthenticate={false} />
           <AppProvider>{children}</AppProvider>
         </div>
       </body>
