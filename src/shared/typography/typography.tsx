@@ -1,6 +1,8 @@
 'use client'
 import { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react'
 
+import clsx from 'clsx'
+
 import s from './typography.module.scss'
 
 type AvoidElements = 'a' | 'h1' | 'h2' | 'h3' | 'p'
@@ -99,10 +101,7 @@ export function Typography<V extends keyof VariantMapping>({
     Component = 'p'
     className += 'regular_text_16'
   }
+  const classNames = clsx(className, props.className)
 
-  return (
-    <Component className={`${className}`} {...props}>
-      {children}
-    </Component>
-  )
+  return <Component className={classNames}>{children}</Component>
 }
