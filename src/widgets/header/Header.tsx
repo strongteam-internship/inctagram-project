@@ -25,7 +25,11 @@ export const Header: FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 
         {isAuthenticated && (
           <div className={styles.notification}>
             <NotificationIcon />
-            {notificationsCount > 0 && <div className={styles.count}>{notificationsCount}</div>}
+            {notificationsCount > 0 && (
+              <div className={styles.count}>
+                {notificationsCount > 9 ? '9+' : notificationsCount}
+              </div>
+            )}
           </div>
         )}
         <div>
