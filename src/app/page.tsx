@@ -2,7 +2,6 @@
 import { useEffect } from 'react'
 
 import { useAppSelector } from '@/application/hooks/hooks'
-import { useGetMeQuery } from '@/features/auth/api/authApi'
 import { Typography } from '@/shared/typography/typography'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
