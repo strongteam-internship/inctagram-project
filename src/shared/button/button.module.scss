@@ -1,5 +1,6 @@
 @mixin button-colors-and-borders($color, $back-ground-color, $border, $border-radius, $box-shadow) {
   color: $color;
+
   background-color: $back-ground-color;
   border: $border;
   border-radius: $border-radius;
@@ -101,7 +102,8 @@ $accent-disabled: var(--color-accent-900);
 
 .link {
   @include button-colors-and-borders($accent-color, transparent, 2px solid transparent, 4px, none);
-  padding: 6px 6px;
+
+  padding: 6px;
 
   &:hover {
     color: $accent-hover;
@@ -138,5 +140,6 @@ $accent-disabled: var(--color-accent-900);
   gap: 10px;
   align-items: center;
   justify-content: center;
+
   text-align: center;
 }
