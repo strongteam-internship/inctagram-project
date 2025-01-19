@@ -10,8 +10,8 @@ import Image from 'next/image'
 
 export function ResendEmailForm() {
   return (
-    <Form onSubmit={data => console.log('Re-form data', data)}>
-      <Card>
+    <Card>
+      <form onSubmit={data => console.log('Re-form data', data)}>
         <Typography align={'center'} variant={'H1'}>
           Email verification link expired
         </Typography>
@@ -22,10 +22,10 @@ export function ResendEmailForm() {
         <Button type={'submit'}>
           <Typography variant={'H3'}>Resend verification link</Typography>
         </Button>
-        <div style={{ margin: '20px 0', textAlign: 'center' }}>
-          <Image alt={'Email verification'} height={352} src={resendEmailImage} width={473} />
-        </div>
-      </Card>
-    </Form>
+      </form>
+      <div>
+        <Image alt={'Email verification'} height={352} src={resendEmailImage} width={473} />
+      </div>
+    </Card>
   )
 }

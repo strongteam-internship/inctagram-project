@@ -69,7 +69,7 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
   const [getSignUp] = useGetSignUpMutation()
   const {
     control,
-    formState: { errors, isValid },
+    formState: { isValid },
     handleSubmit,
     register,
     reset,
@@ -84,17 +84,20 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
 
   const onSubmit: SubmitHandler<SignUpSchemaType> = data => {
     const requestData = {
-      baseUrl: 'http://localhost:3000/',
+      baseUrl: 'https://strong-interns.top/signup/confirmEmail',
       email: data.email,
       password: data.password,
       userName: data.userName,
     }
 
+    //Todo: поправить код на 95 строка после типизации ошибок
     getSignUp(requestData)
       .unwrap()
       .then(response => {
-        onSubmitHandler(requestData.email)
-        reset()
+        if (response.statusCode === 204) {
+          onSubmitHandler(requestData.email)
+          reset()
+        }
       })
       .catch(error => {
         error.data.messages.forEach((error: ErrorMessage) => {
@@ -156,7 +159,7 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
           </div>
 
           <Button disabled={!isTermsAndPolicyChecked || !isValid} fullWidth type={'submit'}>
-            Sing Up
+            Sign Up
           </Button>
           <div className={s.signInContainer}>
             <Typography variant={'regular_text_16'}>Do you have an account?</Typography>

@@ -1,10 +1,11 @@
 'use client'
-import { ResendEmailForm } from '@/features/auth/ui/resendEmail/resendEmailForm'
+import { Suspense } from 'react'
 
+import { ConfirmEmailPage } from '@/layers/registration/ConfirmEmailPage/ConfirmEmailPage'
 export default function confirmEmail() {
   return (
-    <div>
-      <ResendEmailForm />
-    </div>
+    <Suspense>
+      <ConfirmEmailPage />
+    </Suspense>
   )
 }

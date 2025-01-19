@@ -1,4 +1,3 @@
-import { ThunkDispatch } from '@reduxjs/toolkit'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const authApi = createApi({
@@ -6,6 +5,15 @@ export const authApi = createApi({
     baseUrl: 'https://inctagram.work',
   }),
   endpoints: builder => ({
+    getEmailConfirmation: builder.mutation<void, string>({
+      query: (code: string) => ({
+        body: {
+          confirmationCode: code,
+        },
+        method: 'POST',
+        url: '/api/v1/auth/registration-confirmation',
+      }),
+    }),
     getMe: builder.query<
       {
         email: string
@@ -72,4 +80,9 @@ export const authApi = createApi({
   reducerPath: 'authAPI',
 })
 
-export const { useGetMeQuery, useGetSignInMutation, useGetSignUpMutation } = authApi
+export const {
+  useGetEmailConfirmationMutation,
+  useGetMeQuery,
+  useGetSignInMutation,
+  useGetSignUpMutation,
+} = authApi
