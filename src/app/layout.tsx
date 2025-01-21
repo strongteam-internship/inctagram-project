@@ -1,6 +1,4 @@
 'use client'
-import type { Metadata } from 'next'
-
 import React from 'react'
 
 import { AppProvider } from '@/application/services/appProvider/appProvider'

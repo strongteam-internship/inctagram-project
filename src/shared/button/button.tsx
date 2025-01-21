@@ -1,7 +1,8 @@
 import React, { ComponentPropsWithoutRef, ElementType, forwardRef } from 'react'
 
-import s from './button.module.scss'
+import clsx from 'clsx'
 
+import s from './button.module.scss'
 export type ButtonProps<T extends ElementType = 'button'> = {
   as?: T
   fullWidth?: boolean
@@ -20,9 +21,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps<ElementType>>((p
 
   return (
     <Component
-      className={`${s.button} ${s[variant]} ${className} ${fullWidth ? s.fullWidth : ''} ${
-        Component === 'a' ? s.asLink : ''
-      }`}
+      className={clsx(
+        s.button,
+        s[variant],
+        fullWidth ? s.fullWidth : '',
+        Component === 'a' ? s.asLink : '',
+        className
+      )}
       ref={ref}
       {...rest}
     >

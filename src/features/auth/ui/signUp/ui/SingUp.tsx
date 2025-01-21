@@ -9,6 +9,7 @@ import {
   SignUpSchemaType,
   signUpSchema,
 } from '@/features/auth/ui/signUp/utils/validationRules/zodSchema'
+import { isErrorResponse } from '@/features/auth/utils/typeGuards/typeGuards'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { Checkbox } from '@/shared/checkbox/Checkbox'
@@ -20,52 +21,10 @@ import Link from 'next/link'
 import s from './SignUp.module.scss'
 
 type SignUpFormProps = {
-  onSubmitHandler: (email: string) => void
+  onSubmitHandlerAction: (email: string) => void
 }
 
-type ErrorResponse = {
-  data: {
-    error: string
-    messages: Array<ErrorMessage>
-    statusCode: number
-  }
-  status: number
-}
-
-type ErrorMessage = {
-  field: keyof SignUpSchemaType
-  message: string
-}
-
-function isErrorMessage(errorMessage: unknown): errorMessage is ErrorMessage {
-  return (
-    typeof errorMessage === 'object' &&
-    errorMessage !== null &&
-    'field' in errorMessage &&
-    'message' in errorMessage &&
-    typeof errorMessage.field === 'string' &&
-    typeof errorMessage.message === 'string'
-  )
-}
-
-function isError(errorRes: unknown): errorRes is ErrorResponse {
-  return (
-    typeof errorRes === 'object' &&
-    errorRes !== null &&
-    'data' in errorRes &&
-    typeof errorRes.data === 'object' &&
-    errorRes.data !== null &&
-    'error' in errorRes.data &&
-    typeof errorRes.data.error === 'string' &&
-    'messages' in errorRes.data &&
-    Array.isArray(errorRes.data.messages) &&
-    errorRes.data.messages.every(message => isErrorMessage(message)) &&
-    'status' in errorRes &&
-    typeof errorRes.status === 'number'
-  )
-}
-
-export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
+export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
   const [getSignUp] = useGetSignUpMutation()
   const {
     control,
@@ -84,23 +43,26 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
 
   const onSubmit: SubmitHandler<SignUpSchemaType> = data => {
     const requestData = {
-      baseUrl: 'https://strong-interns.top/signup/confirmEmail',
+      baseUrl: 'https://strong-interns.top',
       email: data.email,
       password: data.password,
       userName: data.userName,
     }
 
-    //Todo: поправить код на 95 строка после типизации ошибок
     getSignUp(requestData)
       .unwrap()
       .then(() => {
-        onSubmitHandler(requestData.email)
+        onSubmitHandlerAction(requestData.email)
         reset()
       })
       .catch(error => {
-        error.data.messages.forEach((error: ErrorMessage) => {
-          setError(error.field, { message: error.message })
-        })
+        if (isErrorResponse(error)) {
+          error.data.messages.forEach(error => {
+            setError(error.field, { message: error.message })
+          })
+        } else {
+          throw new Error('Unexpected error')
+        }
       })
   }
 
@@ -141,12 +103,12 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
                 <Checkbox.Label>
                   <Typography className={s.terms} variant={'small_text_12'}>
                     I agree to the
-                    <Link className={s.link} href={'/signup/termsOfService'}>
+                    <Link className={s.link} href={'/auth/signup/termsOfService'}>
                       {' '}
                       Terms of Service{' '}
                     </Link>
                     and
-                    <Link className={s.link} href={'/signup/privacyPolicy'}>
+                    <Link className={s.link} href={'/auth/signup/privacyPolicy'}>
                       {' '}
                       Privacy Policy
                     </Link>
