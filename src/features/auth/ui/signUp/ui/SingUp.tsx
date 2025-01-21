@@ -123,7 +123,7 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
           </Button>
           <div className={s.signInContainer}>
             <Typography variant={'regular_text_16'}>Do you have an account?</Typography>
-            <Link className={s.signinButton} href={'/signin'}>
+            <Link className={s.signinButton} href={'/auth/signin'}>
               Sign In
             </Link>
           </div>
