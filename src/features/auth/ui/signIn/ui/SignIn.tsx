@@ -2,10 +2,10 @@
 
 import { useForm } from 'react-hook-form'
 
-import { useAppDispatch, useAppSelector } from '@/application/hooks/hooks'
+import { useAppDispatch } from '@/application/hooks/hooks'
 import { setIsLoggedIn } from '@/application/model/app/appSlice'
 import { GithubSvg, GoogleSvg } from '@/assets/svg/icons/components'
-import { useGetSignInMutation } from '@/features/auth/api/authApi'
+import { useGetMeQuery, useGetSignInMutation } from '@/features/auth/api/authApi'
 import { SignInSchemaType, signInSchema } from '@/features/auth/ui/signIn/utils/schema/schema'
 import { isErrorResponse } from '@/features/auth/utils/typeGuards/typeGuards'
 import { Button } from '@/shared/button/button'
@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation'
 import s from './SignIn.module.scss'
 
 export function SignInForm() {
+  const { data } = useGetMeQuery()
   const [getSignIn, { isLoading }] = useGetSignInMutation()
   const dispatch = useAppDispatch()
   const router = useRouter()
@@ -28,10 +29,11 @@ export function SignInForm() {
     resolver: zodResolver(signInSchema),
   })
 
+  console.log(data)
   const handleLogIn = (data: { email: string; password: string }) => {
     getSignIn(data)
       .unwrap()
-      .then(res => {
+      .then(() => {
         dispatch(setIsLoggedIn(true))
         router.push('/profile')
       })
