@@ -21,7 +21,7 @@ export const authApi = createApi({
         userId: number
         userName: string
       },
-      null
+      void
     >({
       query: () => `/api/v1/auth/me/`,
     }),
