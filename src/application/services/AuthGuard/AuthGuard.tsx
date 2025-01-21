@@ -10,6 +10,7 @@ type AuthGuardProps = {
 }
 
 export function AuthGuard({ children }: AuthGuardProps) {
+  console.log('Guard !!!!!!!!!!')
   const router = useRouter()
   const isLoggedIn = useAppSelector(state => state.app.isLoggedIn)
   const searchParams = useSearchParams()
@@ -17,11 +18,12 @@ export function AuthGuard({ children }: AuthGuardProps) {
 
   useEffect(() => {
     if (code) {
+      console.log(code)
       router.push('/auth/registration-confirmation')
     } else if (!isLoggedIn) {
       router.push('/auth/signin')
     }
-  }, [router, code, isLoggedIn])
+  }, [router, isLoggedIn])
 
   return <>{children}</>
 }
