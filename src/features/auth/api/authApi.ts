@@ -3,6 +3,13 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://inctagram.work',
+    prepareHeaders: headers => {
+      const token = localStorage.getItem('token')
+
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`)
+      }
+    },
   }),
   endpoints: builder => ({
     getEmailConfirmation: builder.mutation<void, string>({
