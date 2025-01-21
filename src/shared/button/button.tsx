@@ -20,9 +20,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps<ElementType>>((p
 
   return (
     <Component
-      className={` ${className} ${s.button} ${s[variant]} ${fullWidth ? s.fullWidth : ''} ${
+      className={`${s.button} ${s[variant]} ${fullWidth ? s.fullWidth : ''} ${
         Component === 'a' ? s.asLink : ''
-      }`}
+      } ${className}`}
       ref={ref}
       {...rest}
     >
