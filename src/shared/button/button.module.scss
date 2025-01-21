@@ -19,9 +19,9 @@ $accent-disabled: var(--color-accent-900);
   padding: 6px 28px;
 }
 
-.primary, .secondary, .outline, .link {
-  @include button-colors-and-borders($light-color, transparent, 2px solid $accent-color, 4px, 0 4px 18px 0 #8c61ff59);
-}
+//.primary, .secondary, .outline, .link {
+//  @include button-colors-and-borders($light-color, transparent, 2px solid $accent-color, 4px, 0 4px 18px 0 #8c61ff59);
+//}
 
 .primary {
   @include button-colors-and-borders($light-color, $accent-color, 2px solid $accent-color, 4px, 0 4px 18px 0 #8c61ff59);
