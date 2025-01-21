@@ -93,11 +93,9 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
     //Todo: поправить код на 95 строка после типизации ошибок
     getSignUp(requestData)
       .unwrap()
-      .then(response => {
-        if (response.statusCode === 204) {
-          onSubmitHandler(requestData.email)
-          reset()
-        }
+      .then(() => {
+        onSubmitHandler(requestData.email)
+        reset()
       })
       .catch(error => {
         error.data.messages.forEach((error: ErrorMessage) => {

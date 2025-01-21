@@ -8,8 +8,6 @@ export type ButtonProps<T extends ElementType = 'button'> = {
   variant?: 'link' | 'outline' | 'primary' | 'secondary'
 } & ComponentPropsWithoutRef<T>
 
-type ButtonRef<T extends ElementType> = React.ElementRef<T>
-
 export const Button = forwardRef<HTMLButtonElement, ButtonProps<ElementType>>((props, ref) => {
   const {
     as: Component = 'button',
@@ -22,9 +20,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps<ElementType>>((p
 
   return (
     <Component
-      className={`${s.button} ${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className} ${
+      className={`${s.button} ${s[variant]} ${fullWidth ? s.fullWidth : ''} ${
         Component === 'a' ? s.asLink : ''
-      }`}
+      } ${className}`}
       ref={ref}
       {...rest}
     >
