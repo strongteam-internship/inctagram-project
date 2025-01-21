@@ -91,7 +91,6 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
             disabled={disabled}
             onClick={showPasswordHandler}
             type={'button'}
-            variant={'link'}
           >
             {showPassword ? (
               <EyeOutline className={s.icon} />
