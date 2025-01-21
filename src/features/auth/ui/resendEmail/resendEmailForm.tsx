@@ -1,17 +1,26 @@
 'use client'
 
+import { useForm } from 'react-hook-form'
+
 import resendEmailImage from '@/assets/images/resendEmailImage.png'
+import { useGetResendEmailMutation } from '@/features/auth/api/authApi'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
-import { Form } from '@/shared/form/form'
 import { Input } from '@/shared/input'
 import { Typography } from '@/shared/typography/typography'
 import Image from 'next/image'
 
 export function ResendEmailForm() {
+  const { handleSubmit } = useForm<{ email: string }>()
+  const [getResendEmail] = useGetResendEmailMutation()
+  const handler = ({ email }: { email: string }) => {
+    console.log(email)
+    getResendEmail(email)
+  }
+
   return (
     <Card>
-      <form onSubmit={data => console.log('Re-form data', data)}>
+      <form onSubmit={handleSubmit(handler)}>
         <Typography align={'center'} variant={'H1'}>
           Email verification link expired
         </Typography>

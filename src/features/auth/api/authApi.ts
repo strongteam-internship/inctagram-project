@@ -25,6 +25,16 @@ export const authApi = createApi({
     >({
       query: () => `/api/v1/auth/me/`,
     }),
+    getResendEmail: builder.mutation<void, string>({
+      query: (email: string) => ({
+        body: {
+          baseUrl: 'https://strong-interns.top',
+          email,
+        },
+        method: 'POST',
+        url: '/api/v1/auth/registration-email-resending',
+      }),
+    }),
     getSignIn: builder.mutation<{ accessToken: string }, { email: string; password: string }>({
       query: ({ email, password }: { email: string; password: string }) => ({
         body: {
@@ -83,6 +93,7 @@ export const authApi = createApi({
 export const {
   useGetEmailConfirmationMutation,
   useGetMeQuery,
+  useGetResendEmailMutation,
   useGetSignInMutation,
   useGetSignUpMutation,
 } = authApi
