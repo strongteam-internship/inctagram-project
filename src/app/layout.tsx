@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 
+import { useAppSelector } from '@/application/hooks/hooks'
 import { AppProvider } from '@/application/services/appProvider/appProvider'
 import { Header } from '@/widgets/header/Header'
 
@@ -13,11 +14,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const isLoggedIn = useAppSelector(state => state.app.isLoggedIn)
+
   return (
     <html lang={'en'} suppressHydrationWarning>
       <body>
         <div className={styles.main}>
-          <Header isAuthenticated notificationsCount={1} />
+          <Header isAuthenticated={isLoggedIn} notificationsCount={1} />
           <AppProvider>{children}</AppProvider>
         </div>
       </body>
