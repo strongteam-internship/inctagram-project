@@ -29,7 +29,10 @@ export function SignInForm() {
     resolver: zodResolver(signInSchema),
   })
 
-  console.log(data)
+  if (data) {
+    router.push('/profile')
+  }
+
   const handleLogIn = (data: { email: string; password: string }) => {
     getSignIn(data)
       .unwrap()
