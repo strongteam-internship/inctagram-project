@@ -20,11 +20,9 @@ export function SignUpPage() {
     setOpenModal(false)
   }
 
-  console.log('email is: ' + email)
-
   return (
     <div className={s.container}>
-      <SignUpForm onSubmitHandler={onOpenModalHandler} />
+      <SignUpForm onSubmitHandlerAction={onOpenModalHandler} />
       <CheckEmail
         email={email}
         onClose={onCloseModalHandler}
