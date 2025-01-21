@@ -6,12 +6,12 @@ import resendEmailImage from '@/assets/images/resendEmailImage.png'
 import { useGetResendEmailMutation } from '@/features/auth/api/authApi'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
-import { Input } from '@/shared/input'
+import { ControlledInput } from '@/shared/input/controlled-input'
 import { Typography } from '@/shared/typography/typography'
 import Image from 'next/image'
 
 export function ResendEmailForm() {
-  const { handleSubmit } = useForm<{ email: string }>()
+  const { control, handleSubmit } = useForm<{ email: string }>()
   const [getResendEmail] = useGetResendEmailMutation()
   const handler = ({ email }: { email: string }) => {
     console.log(email)
@@ -27,7 +27,13 @@ export function ResendEmailForm() {
         <Typography align={'center'} variant={'regular_text_16'}>
           Looks like the verification link has expired. Not to worry, we can send the link again
         </Typography>
-        <Input label={'Email'} name={'email'} required variant={'text'} />
+        <ControlledInput
+          control={control}
+          label={'Email'}
+          name={'email'}
+          required
+          variant={'text'}
+        />
         <Button type={'submit'}>
           <Typography variant={'H3'}>Resend verification link</Typography>
         </Button>
