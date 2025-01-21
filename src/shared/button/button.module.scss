@@ -102,9 +102,7 @@ $accent-disabled: var(--color-accent-900);
 
 .link {
   @include button-colors-and-borders($accent-color, transparent, 2px solid transparent, 4px, none);
-
   padding: 6px;
-
   &:hover {
     color: $accent-hover;
   }
@@ -140,6 +138,5 @@ $accent-disabled: var(--color-accent-900);
   gap: 10px;
   align-items: center;
   justify-content: center;
-
   text-align: center;
 }
