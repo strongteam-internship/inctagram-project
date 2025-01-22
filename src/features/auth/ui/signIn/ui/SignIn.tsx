@@ -7,7 +7,6 @@ import { setIsLoggedIn } from '@/application/model/app/appSlice'
 import { GithubSvg, GoogleSvg } from '@/assets/svg/icons/components'
 import { useGetMeQuery, useGetSignInMutation } from '@/features/auth/api/authApi'
 import { SignInSchemaType, signInSchema } from '@/features/auth/ui/signIn/utils/schema/schema'
-import { isErrorResponse } from '@/features/auth/utils/typeGuards/typeGuards'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { ControlledInput } from '@/shared/input/controlled-input'
@@ -23,9 +22,16 @@ export function SignInForm() {
   const [getSignIn, { isLoading }] = useGetSignInMutation()
   const dispatch = useAppDispatch()
   const router = useRouter()
-  const { control, handleSubmit, setError } = useForm<SignInSchemaType>({
+  const {
+    control,
+    formState: { errors },
+    getValues,
+    handleSubmit,
+    setError,
+  } = useForm<SignInSchemaType>({
     mode: 'onBlur',
-    reValidateMode: 'onChange',
+    reValidateMode: 'onBlur',
+
     resolver: zodResolver(signInSchema),
   })
 
@@ -41,9 +47,11 @@ export function SignInForm() {
         router.push('/profile')
       })
       .catch(error => {
-        if (isErrorResponse(error)) {
-          error.data.messages.forEach(error => {
-            setError(error.field, { message: error.message })
+        if ('data' in error) {
+          const fieldsKeys = Object.keys(getValues())
+
+          fieldsKeys.forEach(field => {
+            setError(field as keyof SignInSchemaType, { message: error.data.messages })
           })
         } else {
           throw new Error('Unexpected error')
@@ -71,7 +79,12 @@ export function SignInForm() {
               variant={'password'}
             />
           </div>
-          <Button className={s.signInButton} disabled={isLoading} fullWidth type={'submit'}>
+          <Button
+            className={s.signInButton}
+            disabled={isLoading || Object.keys(errors).length > 0}
+            fullWidth
+            type={'submit'}
+          >
             Sing In
           </Button>
           <div className={s.signupContainer}>
