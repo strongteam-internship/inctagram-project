@@ -72,7 +72,7 @@ export function SignInForm() {
             />
           </div>
           <Button className={s.signInButton} disabled={isLoading} fullWidth type={'submit'}>
-            Sing In
+            Sign In
           </Button>
           <div className={s.signupContainer}>
             <Typography variant={'regular_text_16'}>Don’t have an account?</Typography>
