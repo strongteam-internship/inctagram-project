@@ -3,6 +3,7 @@
 import { FC } from 'react'
 
 import { Option, Select } from '@/shared/Select/Select'
+import { Button } from '@/shared/button/button'
 import FlagEn from '@/shared/input/icons/FlagEn'
 import FlagRu from '@/shared/input/icons/FlagRu'
 import NotificationIcon from '@/shared/input/icons/NotificationIcon'
@@ -19,7 +20,7 @@ type HeaderProps = {
 export const Header: FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 0 }) => {
   return (
     <header className={styles.header}>
-      <Typography variant={'Large'}>Instagram</Typography>
+      <Typography variant={'Large'}>Inctagram</Typography>
       <div className={styles.headerActions}>
         {isAuthenticated && (
           <div className={styles.notification}>
@@ -49,12 +50,12 @@ export const Header: FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 
         </div>
         {!isAuthenticated && (
           <>
-            <Link className={styles.login} href={'/login'}>
+            <Button as={Link} className={styles.login} href={'/login'} variant={'link'}>
               Log in
-            </Link>
-            <Link className={styles.signup} href={'/signup'}>
+            </Button>
+            <Button as={Link} className={styles.signup} href={'/signup'}>
               Sign up
-            </Link>
+            </Button>
           </>
         )}
       </div>
