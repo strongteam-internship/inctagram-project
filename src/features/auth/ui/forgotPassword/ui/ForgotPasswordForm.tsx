@@ -36,8 +36,7 @@ export const ForgotPasswordForm = ({ onSubmitHandler }: ForgotPasswordFormProps)
 
   const onSubmit: SubmitHandler<ForgotPasswordSchemaType> = data => {
     const requestData = {
-      //TODO: поменять на 'https://strong-interns.top',
-      baseUrl: 'http://localhost:3000/',
+      baseUrl: 'https://strong-interns.top',
       email: data.email,
       recaptcha: captchaToken,
     }
