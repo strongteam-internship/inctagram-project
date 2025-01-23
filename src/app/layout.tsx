@@ -2,11 +2,9 @@
 import React from 'react'
 
 import { AppProvider } from '@/application/services/appProvider/appProvider'
-import { Header } from '@/widgets/header/Header'
+import { Main } from '@/layers/Main/Main'
 
 import '@/styles/index.scss'
-
-import styles from './main.module.scss'
 
 export default function RootLayout({
   children,
@@ -16,10 +14,9 @@ export default function RootLayout({
   return (
     <html lang={'en'} suppressHydrationWarning>
       <body>
-        <div className={styles.main}>
-          <Header isAuthenticated notificationsCount={1} />
-          <AppProvider>{children}</AppProvider>
-        </div>
+        <AppProvider>
+          <Main>{children}</Main>
+        </AppProvider>
       </body>
     </html>
   )
