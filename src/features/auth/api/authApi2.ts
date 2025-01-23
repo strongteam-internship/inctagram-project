@@ -1,9 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { baseQueryWithReauth } from '@/features/auth/api/baseQueryWithReauth'
+import { queryNotificationHandler } from '@/features/auth/api/queryNotificationHandler'
+import { createApi } from '@reduxjs/toolkit/query/react'
+import { setCookie } from 'cookies-next/client'
 
-export const authApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'https://inctagram.work',
-  }),
+export const authApi2 = createApi({
+  baseQuery: baseQueryWithReauth,
   endpoints: builder => ({
     getMe: builder.query<
       {
@@ -15,6 +16,11 @@ export const authApi = createApi({
       null
     >({
       query: () => `/api/v1/auth/me/`,
+      transformErrorResponse: response => {
+        queryNotificationHandler(response)
+
+        return response
+      },
     }),
     getSignIn: builder.mutation<{ accessToken: string }, { email: string; password: string }>({
       query: ({ email, password }: { email: string; password: string }) => ({
@@ -25,8 +31,14 @@ export const authApi = createApi({
         method: 'POST',
         url: `/api/v1/auth/login`,
       }),
+      transformErrorResponse: response => {
+        queryNotificationHandler(response)
+
+        return response
+      },
       transformResponse(res: { accessToken: string }) {
-        localStorage.setItem('token', res.accessToken)
+        // Устанавливаем токен в cookies, вместо localStorage
+        setCookie('accessToken', res.accessToken)
 
         return res
       },
@@ -66,9 +78,14 @@ export const authApi = createApi({
         method: 'POST',
         url: '/api/v1/auth/registration',
       }),
+      transformErrorResponse: response => {
+        queryNotificationHandler(response)
+
+        return response
+      },
     }),
   }),
   reducerPath: 'authAPI',
 })
 
-export const { useGetMeQuery, useGetSignInMutation, useGetSignUpMutation } = authApi
+export const { useGetMeQuery, useGetSignInMutation, useGetSignUpMutation } = authApi2
