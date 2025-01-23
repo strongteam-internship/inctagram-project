@@ -4,6 +4,7 @@ import ReCAPTCHA from 'react-google-recaptcha'
 export const useRecaptcha = () => {
   const [captchaToken, setCaptchaToken] = useState<string>('')
   const recaptchaRef = useRef<ReCAPTCHA | null>(null)
+  //TODO: Вынеси в .env
   const siteKey = '6LdHxG4qAAAAAPKRxEHrlV5VvLFHIf2BO5NMI8YM'
 
   const handleRecaptcha = useCallback((token: null | string) => {

@@ -36,6 +36,7 @@ export const ForgotPasswordForm = ({ onSubmitHandler }: ForgotPasswordFormProps)
 
   const onSubmit: SubmitHandler<ForgotPasswordSchemaType> = data => {
     const requestData = {
+      //TODO: поменять на 'https://strong-interns.top',
       baseUrl: 'http://localhost:3000/',
       email: data.email,
       recaptcha: captchaToken,
@@ -76,7 +77,7 @@ export const ForgotPasswordForm = ({ onSubmitHandler }: ForgotPasswordFormProps)
               Send Link
             </Button>
             <div className={s.linkContainer}>
-              <Link className={s.linkText} href={'/signin'}>
+              <Link className={s.linkText} href={'/auth/signin'}>
                 Back to Sign In
               </Link>
             </div>
