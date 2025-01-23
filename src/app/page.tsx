@@ -32,6 +32,12 @@ export default function Home() {
       <div>
         <Link href={'/resignup'}>Re-Sign Up</Link>
       </div>
+      <div>
+        <Link href={'/createNewPassword'}>Create New Password</Link>
+      </div>
+      <div>
+        <Link href={'/passwordRecovery'}>Password-recovery</Link>
+      </div>
       <Typography>Hello world</Typography>
     </div>
   )
