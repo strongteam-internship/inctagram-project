@@ -22,7 +22,7 @@ const SvgMessageCircleOutline = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVG
       </clipPath>
     </defs>
     <rect fill={'none'} height={23} rx={0} transform={'translate(.5 .5)'} width={23} />
-    <g clipPath={'url(#message-circle-outline_svg__a)'} fill={'#000'}>
+    <g clipPath={'url(#message-circle-outline_svg__a)'} fill={'#fff'}>
       <path
         d={
           'M13 12c0 .55-.45 1-1 1-.56 0-1-.45-1-1 0-.56.44-1 1-1 .55 0 1 .44 1 1M17 12c0 .55-.45 1-1 1-.56 0-1-.45-1-1 0-.56.44-1 1-1 .55 0 1 .44 1 1M9 12c0 .55-.45 1-1 1-.56 0-1-.45-1-1 0-.56.44-1 1-1 .55 0 1 .44 1 1'
