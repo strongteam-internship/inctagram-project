@@ -14,15 +14,14 @@ $accent-focus: var(--color-accent-700);
 $accent-disabled: var(--color-accent-900);
 
 .button {
-  all: unset;
   cursor: pointer;
   gap: 10px;
   padding: 6px 28px;
 }
 
-.primary, .secondary, .outline, .link {
-  @include button-colors-and-borders($light-color, transparent, 2px solid $accent-color, 4px, 0 4px 18px 0 #8c61ff59);
-}
+//.primary, .secondary, .outline, .link {
+//  @include button-colors-and-borders($light-color, transparent, 2px solid $accent-color, 4px, 0 4px 18px 0 #8c61ff59);
+//}
 
 .primary {
   @include button-colors-and-borders($light-color, $accent-color, 2px solid $accent-color, 4px, 0 4px 18px 0 #8c61ff59);
@@ -101,7 +100,7 @@ $accent-disabled: var(--color-accent-900);
 
 .link {
   @include button-colors-and-borders($accent-color, transparent, 2px solid transparent, 4px, none);
-  padding: 6px 6px;
+  padding: 6px;
 
   &:hover {
     color: $accent-hover;
@@ -124,7 +123,7 @@ $accent-disabled: var(--color-accent-900);
 }
 
 .fullWidth {
-  width: 80%;
+  width: 100%;
   text-align: center;
 }
 

@@ -3,8 +3,24 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://inctagram.work',
+    prepareHeaders: headers => {
+      const token = localStorage.getItem('token')
+
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`)
+      }
+    },
   }),
   endpoints: builder => ({
+    getEmailConfirmation: builder.mutation<void, string>({
+      query: (code: string) => ({
+        body: {
+          confirmationCode: code,
+        },
+        method: 'POST',
+        url: '/api/v1/auth/registration-confirmation',
+      }),
+    }),
     getMe: builder.query<
       {
         email: string
@@ -12,9 +28,19 @@ export const authApi = createApi({
         userId: number
         userName: string
       },
-      null
+      void
     >({
       query: () => `/api/v1/auth/me/`,
+    }),
+    getResendEmail: builder.mutation<void, string>({
+      query: (email: string) => ({
+        body: {
+          baseUrl: 'https://strong-interns.top',
+          email,
+        },
+        method: 'POST',
+        url: '/api/v1/auth/registration-email-resending',
+      }),
     }),
     getSignIn: builder.mutation<{ accessToken: string }, { email: string; password: string }>({
       query: ({ email, password }: { email: string; password: string }) => ({
@@ -71,4 +97,10 @@ export const authApi = createApi({
   reducerPath: 'authAPI',
 })
 
-export const { useGetMeQuery, useGetSignInMutation, useGetSignUpMutation } = authApi
+export const {
+  useGetEmailConfirmationMutation,
+  useGetMeQuery,
+  useGetResendEmailMutation,
+  useGetSignInMutation,
+  useGetSignUpMutation,
+} = authApi

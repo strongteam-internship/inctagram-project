@@ -1,0 +1,35 @@
+.page {
+  position: relative;
+
+  height: 100vh;
+  padding: 70px 0 0;
+
+  font-family: var(--font-family-primary), serif;
+
+  background-color: var(--color-dark-900);
+}
+
+.buttonContainer {
+  position: absolute;
+  top: 25px;
+  left: 70px;
+
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  color: var(--color-light-100);
+}
+
+.textWrapper {
+  width: 75%;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.arrow path {
+  fill: var(--color-light-100);
+}
