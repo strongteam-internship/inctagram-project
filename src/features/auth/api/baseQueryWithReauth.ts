@@ -1,9 +1,20 @@
+import { setAppStatus, setIsLoggedIn } from '@/application/model/app/appSlice'
+import { showToastError } from '@/features/auth/api/showToastError'
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, fetchBaseQuery } from '@reduxjs/toolkit/query'
 import { Mutex } from 'async-mutex'
-import { deleteCookie, getCookie } from 'cookies-next/client'
+import { deleteCookie, getCookie, setCookie } from 'cookies-next/client'
+
+type RefreshTokenResponse = {
+  accessToken: string
+}
+
+type RefreshResult = {
+  data?: RefreshTokenResponse
+  error?: FetchBaseQueryError
+}
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://inctagram.work', // заменить на process.env.NEXT_PUBLIC_BASE_URL
+  baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   credentials: 'include',
   prepareHeaders: headers => {
     const accessToken = getCookie('accessToken')
@@ -14,13 +25,13 @@ const baseQuery = fetchBaseQuery({
 
     return headers
   },
-})
+}) as BaseQueryFn<FetchArgs | string, RefreshTokenResponse, FetchBaseQueryError>
 
 const mutex = new Mutex()
 
 export const baseQueryWithReauth: BaseQueryFn<
   FetchArgs | string,
-  unknown,
+  RefreshTokenResponse,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   await mutex.waitForUnlock()
@@ -29,53 +40,41 @@ export const baseQueryWithReauth: BaseQueryFn<
   if (result.error && result.error.status === 401) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
+      let refreshResult: RefreshResult = { data: undefined, error: undefined }
 
       try {
-        const refreshResult = await baseQuery(
-          { method: 'POST', url: '/auth/refresh-token' },
+        api.dispatch(setAppStatus('loading')) // 1. Устанавливаем статус загрузки
+        refreshResult = await baseQuery(
+          { method: 'POST', url: '/api/v1/auth/update-tokens/' },
           api,
           extraOptions
         )
 
-        if (refreshResult?.meta?.response?.status === 204) {
-          const newAccessToken = getCookie('accessToken')
+        if (refreshResult.data?.accessToken) {
+          setCookie('accessToken', refreshResult.data.accessToken) // 2. Сохраняем accessToken
+          result = await baseQuery(args, api, extraOptions) // 3. Повторяем запрос
 
-          if (!newAccessToken) {
-            deleteCookie('accessToken')
-            window.location.href = '/login'
-
-            return {
-              error: {
-                data: 'Токен не был обновлен. Пожалуйста, войдите снова.',
-                status: 500,
-              },
-            }
+          if (!result.error) {
+            api.dispatch(setIsLoggedIn(true)) // 4. Только если запрос успешен, обновляем статус isLoggedIn
+            api.dispatch(setAppStatus('success')) // 5. Устанавливаем статус успеха
+          } else {
+            api.dispatch(setAppStatus('error')) // Если повторный запрос провалился, статус = "error"
           }
-
-          result = await baseQuery(args, api, extraOptions)
         } else {
-          deleteCookie('accessToken')
-          window.location.href = '/login'
-
-          return {
-            error: {
-              data: refreshResult.error?.data || 'Попробуйте снова авторизоваться.',
-              status: refreshResult?.meta?.response?.status || 500,
-            },
-          }
+          api.dispatch(setAppStatus('error'))
+          showToastError('Ошибка авторизации. Пожалуйста, войдите снова.')
+          setTimeout(() => {
+            deleteCookie('accessToken')
+            api.dispatch(setIsLoggedIn(false))
+          }, 2000)
+          // window.location.href = '/auth/signin' - управление редиректами будет на уровне маршрутов или компонент с помощью useRouter
         }
       } catch (error) {
-        deleteCookie('accessToken')
-        window.location.href = '/login'
-
-        return {
-          error: {
-            data: 'Произошла ошибка. Вам необходимо повторно войти в систему.',
-            status: 500,
-          },
-        }
+        api.dispatch(setIsLoggedIn(false))
+        showToastError('Ошибка повторной авторизации. Пожалуйста, войдите снова.')
       } finally {
         release()
+        api.dispatch(setAppStatus(refreshResult.data?.accessToken ? 'idle' : 'error')) // Проверяем результат и устанавливаем статус
       }
     } else {
       await mutex.waitForUnlock()

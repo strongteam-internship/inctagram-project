@@ -1,10 +1,8 @@
-import { baseQueryWithReauth } from '@/features/auth/api/baseQueryWithReauth'
+import { baseApi } from '@/features/auth/api/baseApi'
 import { queryNotificationHandler } from '@/features/auth/api/queryNotificationHandler'
-import { createApi } from '@reduxjs/toolkit/query/react'
 import { setCookie } from 'cookies-next/client'
 
-export const authApi2 = createApi({
-  baseQuery: baseQueryWithReauth,
+export const authApi2 = baseApi.injectEndpoints({
   endpoints: builder => ({
     getMe: builder.query<
       {
@@ -15,6 +13,7 @@ export const authApi2 = createApi({
       },
       null
     >({
+      providesTags: ['Me'],
       query: () => `/api/v1/auth/me/`,
       transformErrorResponse: response => {
         queryNotificationHandler(response)
@@ -23,6 +22,7 @@ export const authApi2 = createApi({
       },
     }),
     getSignIn: builder.mutation<{ accessToken: string }, { email: string; password: string }>({
+      invalidatesTags: ['Me'],
       query: ({ email, password }: { email: string; password: string }) => ({
         body: {
           email,
@@ -37,7 +37,6 @@ export const authApi2 = createApi({
         return response
       },
       transformResponse(res: { accessToken: string }) {
-        // Устанавливаем токен в cookies, вместо localStorage
         setCookie('accessToken', res.accessToken)
 
         return res
@@ -55,12 +54,12 @@ export const authApi2 = createApi({
         statusCode: number
       },
       {
-        baseUrl: string
         email: string
         password: string
         userName: string
       }
     >({
+      invalidatesTags: ['Me'],
       query: ({
         email,
         password,
@@ -85,7 +84,6 @@ export const authApi2 = createApi({
       },
     }),
   }),
-  reducerPath: 'authAPI',
 })
 
 export const { useGetMeQuery, useGetSignInMutation, useGetSignUpMutation } = authApi2
