@@ -79,6 +79,10 @@ export function SignInForm() {
               variant={'password'}
             />
           </div>
+          <div className={s.forgotPasswordLink}>
+            <Link href={'/auth/forgot-password'}>Forgot Password</Link>
+          </div>
+
           <Button
             className={s.signInButton}
             disabled={isLoading || Object.keys(errors).length > 0}
