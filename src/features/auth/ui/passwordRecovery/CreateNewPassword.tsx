@@ -4,9 +4,9 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { useGetConfirmPasswordRecoveryMutation } from '@/features/auth/api/authApi'
 import {
-  SignUpSchemaType,
-  signUpSchema,
-} from '@/features/auth/ui/signUp/utils/validationRules/zodSchema'
+  RecoveryPasswordSchemaType,
+  recoveryPasswordSchema,
+} from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { ControlledInput } from '@/shared/input/controlled-input'
@@ -28,13 +28,13 @@ export function CreateNewPasswordForm({ onSubmitAction, recoveryCode }: SignUpFo
     handleSubmit,
     reset,
     setError,
-  } = useForm<SignUpSchemaType>({
+  } = useForm<RecoveryPasswordSchemaType>({
     mode: 'onBlur',
     reValidateMode: 'onSubmit',
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(recoveryPasswordSchema),
   })
 
-  const onSubmit: SubmitHandler<SignUpSchemaType> = data => {
+  const onSubmit: SubmitHandler<RecoveryPasswordSchemaType> = data => {
     const requestData = {
       newPassword: data.password,
       recoveryCode,
@@ -47,9 +47,11 @@ export function CreateNewPasswordForm({ onSubmitAction, recoveryCode }: SignUpFo
         reset()
       })
       .catch(error => {
-        error.data.messages.forEach((error: { field: keyof SignUpSchemaType; message: string }) => {
-          setError(error.field, { message: error.message })
-        })
+        error.data.messages.forEach(
+          (error: { field: keyof RecoveryPasswordSchemaType; message: string }) => {
+            setError(error.field, { message: error.message })
+          }
+        )
       })
   }
 
@@ -63,7 +65,7 @@ export function CreateNewPasswordForm({ onSubmitAction, recoveryCode }: SignUpFo
           <div className={s.inputContainer}>
             <ControlledInput
               control={control}
-              errorText={errors.password?.message} // Используем errorText
+              errorText={errors.password?.message}
               label={'Password'}
               name={'password'}
               variant={'password'}

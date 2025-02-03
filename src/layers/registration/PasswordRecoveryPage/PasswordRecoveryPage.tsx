@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { useGetCheckPasswordRecoveryCodeMutation } from '@/features/auth/api/authApi'
 import { CreateNewPasswordForm } from '@/features/auth/ui/passwordRecovery/CreateNewPassword'
