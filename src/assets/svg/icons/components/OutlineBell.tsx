@@ -1,4 +1,5 @@
 import { Ref, SVGProps, forwardRef, memo } from 'react'
+
 const SvgOutlineBell = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
   <svg
     fill={'none'}

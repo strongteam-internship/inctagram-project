@@ -34,3 +34,5 @@ const slice = createSlice<AppState, SliceCaseReducers<AppState>, string, SliceSe
 })
 
 export const appSlice = slice.reducer
+
+export const { setIsLoggedIn } = slice.actions
