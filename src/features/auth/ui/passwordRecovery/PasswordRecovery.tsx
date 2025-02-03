@@ -8,8 +8,12 @@ import { useRouter } from 'next/navigation'
 
 import s from './PasswordRecovery.module.scss'
 
-export default function PasswordRecovery() {
+export function PasswordRecovery() {
   const router = useRouter()
+
+  const onClickHandler = () => {
+    router.push('/auth/forgot-password')
+  }
 
   return (
     <div className={s.page}>
@@ -20,7 +24,7 @@ export default function PasswordRecovery() {
         <Typography align={'center'} variant={'regular_text_16'}>
           Looks like the verification link has expired. Not to worry, we can send the link again
         </Typography>
-        <Button className={s.button} onClick={() => router.push('/signin')} variant={'primary'}>
+        <Button className={s.button} onClick={onClickHandler} variant={'primary'}>
           Resend link
         </Button>
         <div className={s.imgWrapper}>
