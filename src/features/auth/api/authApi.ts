@@ -32,6 +32,37 @@ export const authApi = createApi({
     >({
       query: () => `/api/v1/auth/me/`,
     }),
+    getPasswordRecovery: builder.mutation<
+      {
+        error: string
+        messages: [
+          {
+            field: string
+            message: string
+          },
+        ]
+        statusCode: number
+      },
+      { baseUrl: string; email: string; recaptcha: string }
+    >({
+      query: ({
+        baseUrl,
+        email,
+        recaptcha,
+      }: {
+        baseUrl: string
+        email: string
+        recaptcha: string
+      }) => ({
+        body: {
+          baseUrl,
+          email,
+          recaptcha,
+        },
+        method: 'POST',
+        url: `/api/v1/auth/password-recovery`,
+      }),
+    }),
     getResendEmail: builder.mutation<void, string>({
       query: (email: string) => ({
         body: {
@@ -100,6 +131,7 @@ export const authApi = createApi({
 export const {
   useGetEmailConfirmationMutation,
   useGetMeQuery,
+  useGetPasswordRecoveryMutation,
   useGetResendEmailMutation,
   useGetSignInMutation,
   useGetSignUpMutation,
