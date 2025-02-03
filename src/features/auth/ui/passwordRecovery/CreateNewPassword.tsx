@@ -2,7 +2,7 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { useGetSignUpMutation } from '@/features/auth/api/authApi'
+import { useGetConfirmPasswordRecoveryMutation } from '@/features/auth/api/authApi'
 import {
   SignUpSchemaType,
   signUpSchema,
@@ -16,11 +16,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import s from './CreateNewPassword.module.scss'
 
 type SignUpFormProps = {
-  onSubmitHandler: (email: string) => void
+  onSubmitAction: () => void
+  recoveryCode: string
 }
 
-export function CreateNewPassword({ onSubmitHandler }: SignUpFormProps) {
-  const [getSignUp] = useGetSignUpMutation()
+export function CreateNewPasswordForm({ onSubmitAction, recoveryCode }: SignUpFormProps) {
+  const [getConfirmPasswordRecovery] = useGetConfirmPasswordRecoveryMutation()
   const {
     control,
     formState: { errors, isValid },
@@ -29,21 +30,20 @@ export function CreateNewPassword({ onSubmitHandler }: SignUpFormProps) {
     setError,
   } = useForm<SignUpSchemaType>({
     mode: 'onBlur',
+    reValidateMode: 'onSubmit',
     resolver: zodResolver(signUpSchema),
   })
 
   const onSubmit: SubmitHandler<SignUpSchemaType> = data => {
     const requestData = {
-      baseUrl: 'http://localhost:3000/',
-      email: data.email,
-      password: data.password,
-      userName: data.userName,
+      newPassword: data.password,
+      recoveryCode,
     }
 
-    getSignUp(requestData)
+    getConfirmPasswordRecovery(requestData)
       .unwrap()
-      .then(response => {
-        onSubmitHandler(requestData.email)
+      .then(() => {
+        onSubmitAction()
         reset()
       })
       .catch(error => {
@@ -75,11 +75,6 @@ export function CreateNewPassword({ onSubmitHandler }: SignUpFormProps) {
               name={'confirmPassword'}
               variant={'password'}
             />
-            {errors.confirmPassword && (
-              <Typography style={{ color: 'red' }} variant={'regular_text_14'}>
-                {errors.confirmPassword.message}
-              </Typography>
-            )}
           </div>
           <Button disabled={!isValid} fullWidth type={'submit'}>
             Create new password
