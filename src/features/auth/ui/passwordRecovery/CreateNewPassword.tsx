@@ -34,7 +34,7 @@ export function CreateNewPasswordForm({ onSubmitAction, recoveryCode }: SignUpFo
     resolver: zodResolver(recoveryPasswordSchema),
   })
 
-  const onSubmit: SubmitHandler<RecoveryPasswordSchemaType> = data => {
+  const onSubmitHandler: SubmitHandler<RecoveryPasswordSchemaType> = data => {
     const requestData = {
       newPassword: data.password,
       recoveryCode,
@@ -58,7 +58,7 @@ export function CreateNewPasswordForm({ onSubmitAction, recoveryCode }: SignUpFo
   return (
     <div className={s.wrap}>
       <Card className={s.formContainer}>
-        <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
+        <form className={s.form} onSubmit={handleSubmit(onSubmitHandler)}>
           <Typography align={'center'} className={s.title} variant={'H1'}>
             Create New Password
           </Typography>
@@ -72,7 +72,7 @@ export function CreateNewPasswordForm({ onSubmitAction, recoveryCode }: SignUpFo
             />
             <ControlledInput
               control={control}
-              errorText={errors.confirmPassword?.message} // Используем errorText
+              errorText={errors.confirmPassword?.message}
               label={'Password confirmation'}
               name={'confirmPassword'}
               variant={'password'}
