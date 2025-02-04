@@ -12,10 +12,9 @@ import { useSearchParams } from 'next/navigation'
 import s from './PasswordRecoveryPage.module.scss'
 
 export function PasswordRecoveryPage() {
-  const [openModal, setOpenModal] = useState(false) //Todo: Прилепить модалку
+  const [openModal, setOpenModal] = useState(false)
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
-  const email = searchParams.get('email')
   const [getCodeRecoveryCheck, { isError }] = useGetCheckPasswordRecoveryCodeMutation()
 
   useEffect(() => {
@@ -26,7 +25,7 @@ export function PasswordRecoveryPage() {
     setOpenModal(prev => !prev)
   }
 
-  if (!code) {
+  if (!code || isError) {
     return <PasswordRecovery />
   }
 
