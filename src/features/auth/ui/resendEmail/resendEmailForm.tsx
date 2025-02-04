@@ -14,7 +14,6 @@ export function ResendEmailForm() {
   const { control, handleSubmit } = useForm<{ email: string }>()
   const [getResendEmail] = useGetResendEmailMutation()
   const handler = ({ email }: { email: string }) => {
-    console.log(email)
     getResendEmail(email)
   }
 
