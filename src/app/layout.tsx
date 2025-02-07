@@ -21,7 +21,7 @@ export default function RootLayout({
       <body>
         <div className={s.main}>
           <Header isAuthenticated={isAuthenticated} notificationsCount={1} />
-          <div className={s.layoutContent}>
+          <div className={`${s.layoutContent} ${isAuthenticated ? s.authenticated : ''}`}>
             {isAuthenticated && <Navbar />}
             <div className={s.contentArea}>
               <AppProvider>{children}</AppProvider>
