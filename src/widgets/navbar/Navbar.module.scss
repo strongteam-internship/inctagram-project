@@ -1,10 +1,15 @@
 .sidebar {
+  position: fixed;
+  z-index: 900;
+  top: 60px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 
   width: 220px;
+  height: calc(100vh - 60px);
   padding-top: 72px;
 
   border-right: 2px solid var(--color-dark-300);
@@ -28,12 +33,21 @@
     font-size: var(--font-size-m);
     color: var(--color-light-100);
     outline: none;
-    transition: border-color 0.2s ease;
+    transition: color 0.2s ease, font-weight 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus-visible {
+      color: var(--color-light-100);
+      border-radius: 4px;
+      box-shadow: 0 0 0 1px var(--color-accent-700);
+    }
+
+    svg {
+      fill: var(--color-light-100);
+      transition: fill 0.2s ease;
+    }
 
     &:focus {
-      color: var(--color-light-100);
-      border: 2px solid var(--color-accent-700);
-      border-radius: 4px;
+      outline: none;
     }
   }
 
@@ -54,7 +68,11 @@
     .button {
       font-weight: var(--font-weight-bold);
       color: var(--color-accent-500);
-
+      box-shadow: none;
+      
+      svg {
+        fill: var(--color-accent-500);
+      }
     }
   }
 }

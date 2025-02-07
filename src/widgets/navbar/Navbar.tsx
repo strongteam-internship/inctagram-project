@@ -26,7 +26,7 @@ type NavbarItem = {
 }
 
 export const Navbar = () => {
-  const [openModal, setOpenModal] = useState<boolean>(false)
+  const [openModal, setOpenModal] = useState(false)
   const pathname = usePathname()
   const navbarItems: NavbarItem[] = [
     { href: '/', icon: <HomeOutline />, label: 'Home', type: 'link' },
