@@ -18,8 +18,7 @@ import { useRouter } from 'next/navigation'
 
 import s from './SignIn.module.scss'
 
-export function SignInForm() {
-  const { login } = useGoogleOAuthLogin()
+export function SignInForm({ login }: { login: () => void }) {
   const { data } = useGetMeQuery()
   const [getSignIn, { isLoading }] = useGetSignInMutation()
   const dispatch = useAppDispatch()
