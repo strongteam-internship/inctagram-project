@@ -2,6 +2,7 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form'
 
+import { useGoogleOAuthLogin } from '@/application/hooks/custom/useGoogleOauth'
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { useGetSignUpMutation } from '@/features/auth/api/authApi'
@@ -22,6 +23,7 @@ type SignUpFormProps = {
 }
 
 export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
+  const { login } = useGoogleOAuthLogin()
   const [getSignUp] = useGetSignUpMutation()
   const {
     control,
@@ -71,7 +73,9 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
             Sign Up
           </Typography>
           <div className={s.iconContainer}>
-            <GoogleSvg />
+            <button onClick={login} type={'button'}>
+              <GoogleSvg />
+            </button>
             <GithubSvg />
           </div>
           <div className={s.inputContainer}>

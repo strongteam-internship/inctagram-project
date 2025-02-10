@@ -2,6 +2,7 @@
 
 import { useForm } from 'react-hook-form'
 
+import { useGoogleOAuthLogin } from '@/application/hooks/custom/useGoogleOauth'
 import { useAppDispatch } from '@/application/hooks/hooks'
 import { setIsLoggedIn } from '@/application/model/app/appSlice'
 import { GithubSvg, GoogleSvg } from '@/assets/svg/icons/components'
@@ -18,6 +19,7 @@ import { useRouter } from 'next/navigation'
 import s from './SignIn.module.scss'
 
 export function SignInForm() {
+  const { login } = useGoogleOAuthLogin()
   const { data } = useGetMeQuery()
   const [getSignIn, { isLoading }] = useGetSignInMutation()
   const dispatch = useAppDispatch()
@@ -67,7 +69,9 @@ export function SignInForm() {
             Sign In
           </Typography>
           <div className={s.iconContainer}>
-            <GoogleSvg />
+            <button onClick={login} type={'button'}>
+              <GoogleSvg />
+            </button>
             <GithubSvg />
           </div>
           <div className={s.inputContainer}>
