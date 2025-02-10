@@ -12,6 +12,28 @@ export const authApi = createApi({
     },
   }),
   endpoints: builder => ({
+    getCheckPasswordRecoveryCode: builder.mutation<void, { recoveryCode: string }>({
+      query: ({ recoveryCode }: { recoveryCode: string }) => ({
+        body: {
+          recoveryCode,
+        },
+        method: 'POST',
+        url: '/api/v1/auth/check-recovery-code',
+      }),
+    }),
+    getConfirmPasswordRecovery: builder.mutation<
+      void,
+      { newPassword: string; recoveryCode: string }
+    >({
+      query: ({ newPassword, recoveryCode }: { newPassword: string; recoveryCode: string }) => ({
+        body: {
+          newPassword,
+          recoveryCode,
+        },
+        method: 'POST',
+        url: `/api/v1/auth/new-password`,
+      }),
+    }),
     getEmailConfirmation: builder.mutation<void, string>({
       query: (code: string) => ({
         body: {
@@ -129,6 +151,8 @@ export const authApi = createApi({
 })
 
 export const {
+  useGetCheckPasswordRecoveryCodeMutation,
+  useGetConfirmPasswordRecoveryMutation,
   useGetEmailConfirmationMutation,
   useGetMeQuery,
   useGetPasswordRecoveryMutation,

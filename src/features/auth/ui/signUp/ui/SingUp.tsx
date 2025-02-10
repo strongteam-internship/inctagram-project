@@ -5,11 +5,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { useGetSignUpMutation } from '@/features/auth/api/authApi'
-import {
-  SignUpSchemaType,
-  signUpSchema,
-} from '@/features/auth/ui/signUp/utils/validationRules/zodSchema'
 import { isErrorResponse } from '@/features/auth/utils/typeGuards/typeGuards'
+import { SignUpSchemaType, signUpSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { Checkbox } from '@/shared/checkbox/Checkbox'

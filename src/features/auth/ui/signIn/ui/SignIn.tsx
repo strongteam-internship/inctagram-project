@@ -6,7 +6,7 @@ import { useAppDispatch } from '@/application/hooks/hooks'
 import { setIsLoggedIn } from '@/application/model/app/appSlice'
 import { GithubSvg, GoogleSvg } from '@/assets/svg/icons/components'
 import { useGetMeQuery, useGetSignInMutation } from '@/features/auth/api/authApi'
-import { SignInSchemaType, signInSchema } from '@/features/auth/ui/signIn/utils/schema/schema'
+import { SignInSchemaType, signInSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { ControlledInput } from '@/shared/input/controlled-input'
@@ -79,6 +79,10 @@ export function SignInForm() {
               variant={'password'}
             />
           </div>
+          <div className={s.forgotPasswordLink}>
+            <Link href={'/auth/forgot-password'}>Forgot Password</Link>
+          </div>
+
           <Button
             className={s.signInButton}
             disabled={isLoading || Object.keys(errors).length > 0}

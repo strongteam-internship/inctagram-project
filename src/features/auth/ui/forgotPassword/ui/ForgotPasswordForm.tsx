@@ -7,7 +7,7 @@ import { useGetPasswordRecoveryMutation } from '@/features/auth/api/authApi'
 import {
   ForgotPasswordSchemaType,
   forgotPasswordSchema,
-} from '@/features/auth/ui/forgotPassword/utils/forgotPasswordSchema'
+} from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { ControlledInput } from '@/shared/input/controlled-input'
