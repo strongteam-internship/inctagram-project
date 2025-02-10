@@ -1,4 +1,4 @@
-import { BaseQueryArg, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
@@ -177,11 +177,7 @@ export const authApi = createApi({
 })
 
 export const {
-  useGetCheckPasswordRecoveryCodeMutation,
-  useGetConfirmPasswordRecoveryMutation,
   useGetEmailConfirmationMutation,
-  useGetGoogleOAuth2Mutation,
-  useGetLogOutMutation,
   useGetMeQuery,
   useGetPasswordRecoveryMutation,
   useGetResendEmailMutation,
