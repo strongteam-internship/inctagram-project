@@ -59,6 +59,14 @@ export function SignInForm() {
       })
   }
 
+  const loginGithubHandler = () => {
+    const redirectUrl = encodeURIComponent('http://localhost:3000')
+
+    window.location.assign(
+      `https://inctagram.work/api/v1/auth/github/login?redirect_url=${redirectUrl}`
+    )
+  }
+
   return (
     <div className={s.wrap}>
       <Card className={s.formContainer}>
@@ -68,7 +76,7 @@ export function SignInForm() {
           </Typography>
           <div className={s.iconContainer}>
             <GoogleSvg />
-            <GithubSvg />
+            <GithubSvg onClick={loginGithubHandler} />
           </div>
           <div className={s.inputContainer}>
             <ControlledInput control={control} label={'Email'} name={'email'} variant={'text'} />

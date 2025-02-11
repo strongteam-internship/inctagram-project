@@ -40,6 +40,11 @@ export const signInSchema = z.object({
   email: authBaseSchema.shape.email,
   password: authBaseSchema.shape.password,
 })
+
+export const PasswordOnlySchema = z.object({
+  password: authBaseSchema.shape.password,
+})
+
 export const forgotPasswordSchema = z.object({
   email: authBaseSchema.shape.email,
 })
@@ -58,3 +63,4 @@ export type SignInSchemaType = z.infer<typeof signInSchema>
 export type RecoveryPasswordSchemaType = z.infer<typeof recoveryPasswordSchema>
 export type ForgotPasswordSchemaType = z.infer<typeof forgotPasswordSchema>
 export type SignUpSchemaType = z.infer<typeof signUpSchema>
+export type PasswordOnlySchemaType = z.infer<typeof PasswordOnlySchema>
