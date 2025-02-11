@@ -44,7 +44,7 @@ export const authApi = createApi({
         url: '/api/v1/auth/registration-confirmation',
       }),
     }),
-    getGoogleOAuth2: builder.mutation<
+    getGoogleOAuth: builder.mutation<
       {
         accessToken: string
         email: string
@@ -178,6 +178,7 @@ export const authApi = createApi({
 
 export const {
   useGetEmailConfirmationMutation,
+  useGetGoogleOAuthMutation,
   useGetMeQuery,
   useGetPasswordRecoveryMutation,
   useGetResendEmailMutation,
