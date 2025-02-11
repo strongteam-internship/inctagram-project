@@ -1,8 +1,9 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { BaseQueryArg, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://inctagram.work',
+    credentials: 'include',
     prepareHeaders: headers => {
       const token = localStorage.getItem('token')
 
@@ -41,6 +42,31 @@ export const authApi = createApi({
         },
         method: 'POST',
         url: '/api/v1/auth/registration-confirmation',
+      }),
+    }),
+    getGoogleOAuth2: builder.mutation<
+      {
+        accessToken: string
+        email: string
+      },
+      {
+        code: string
+        redirectUrl: string
+      }
+    >({
+      query: ({ code, redirectUrl }: { code: 'string'; redirectUrl: 'string' }) => ({
+        body: {
+          code,
+          redirectUrl,
+        },
+        method: 'POST',
+        url: '/api/v1/auth/google/login',
+      }),
+    }),
+    getLogOut: builder.mutation<void, void>({
+      query: () => ({
+        method: 'POST',
+        url: `/api/v1/auth/logout`,
       }),
     }),
     getMe: builder.query<
@@ -154,6 +180,8 @@ export const {
   useGetCheckPasswordRecoveryCodeMutation,
   useGetConfirmPasswordRecoveryMutation,
   useGetEmailConfirmationMutation,
+  useGetGoogleOAuth2Mutation,
+  useGetLogOutMutation,
   useGetMeQuery,
   useGetPasswordRecoveryMutation,
   useGetResendEmailMutation,
