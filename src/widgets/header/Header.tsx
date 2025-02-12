@@ -20,10 +20,7 @@ type HeaderProps = {
 export const Header: FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 0 }) => {
   return (
     <header className={styles.header}>
-      <a href={'/'}>
-        <Typography variant={'Large'}>Inctagram</Typography>
-      </a>
-
+      <Typography variant={'Large'}>Inctagram</Typography>
       <div className={styles.headerActions}>
         {isAuthenticated && (
           <div className={styles.notification}>
