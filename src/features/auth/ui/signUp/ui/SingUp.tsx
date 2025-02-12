@@ -72,7 +72,7 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
           </Typography>
           <div className={s.iconContainer}>
             <GoogleSvg />
-            <GithubSvg />
+            <GithubSvg onClick={() => alert('fff')} />
           </div>
           <div className={s.inputContainer}>
             <ControlledInput
