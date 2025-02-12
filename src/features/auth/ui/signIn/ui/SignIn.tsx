@@ -2,6 +2,7 @@
 
 import { useForm } from 'react-hook-form'
 
+import { useGithubAuth } from '@/application/hooks/custom/useGithubAuth'
 import { useAppDispatch } from '@/application/hooks/hooks'
 import { setIsLoggedIn } from '@/application/model/app/appSlice'
 import { GithubSvg, GoogleSvg } from '@/assets/svg/icons/components'
@@ -35,6 +36,8 @@ export function SignInForm() {
     resolver: zodResolver(signInSchema),
   })
 
+  const { loginGithubHandler } = useGithubAuth()
+
   if (data) {
     router.push('/profile')
   }
@@ -59,14 +62,6 @@ export function SignInForm() {
       })
   }
 
-  const loginGithubHandler = () => {
-    const redirectUrl = encodeURIComponent('http://localhost:3000')
-
-    window.location.assign(
-      `https://inctagram.work/api/v1/auth/github/login?redirect_url=${redirectUrl}`
-    )
-  }
-
   return (
     <div className={s.wrap}>
       <Card className={s.formContainer}>
@@ -76,7 +71,7 @@ export function SignInForm() {
           </Typography>
           <div className={s.iconContainer}>
             <GoogleSvg />
-            <GithubSvg onClick={loginGithubHandler} />
+            <GithubSvg onClick={loginGithubHandler} style={{ cursor: 'pointer' }} />
           </div>
           <div className={s.inputContainer}>
             <ControlledInput control={control} label={'Email'} name={'email'} variant={'text'} />
