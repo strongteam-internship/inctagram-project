@@ -154,11 +154,6 @@ Ensure consistent autofill styling in all states (hover, focus, active) */
 
 .error {
   border-color: var(--color-danger-500);
-
-  &:focus {
-    border: none;
-    outline: 2px solid var(--color-danger-500);
-  }
 }
 
 .disabled {
