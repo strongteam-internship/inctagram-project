@@ -177,6 +177,8 @@ export const authApi = createApi({
 })
 
 export const {
+  useGetCheckPasswordRecoveryCodeMutation,
+  useGetConfirmPasswordRecoveryMutation,
   useGetEmailConfirmationMutation,
   useGetGoogleOAuthMutation,
   useGetMeQuery,
