@@ -7,5 +7,9 @@ export function ProfilePage() {
 
   console.log(data)
 
-  return <Typography variant={'H3'}>Hello this is Profile Page its not done yet</Typography>
+  return (
+    <>
+      <Typography variant={'H3'}>Hello this is Profile Page its not done yet</Typography>
+    </>
+  )
 }

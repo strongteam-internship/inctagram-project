@@ -2,6 +2,7 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form'
 
+import { useGoogleOAuthLogin } from '@/application/hooks/custom/useGoogleOauth'
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { useGetSignUpMutation } from '@/features/auth/api/authApi'
@@ -22,6 +23,7 @@ type SignUpFormProps = {
 }
 
 export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
+  const { loginWithGoogleOAuth } = useGoogleOAuthLogin()
   const [getSignUp] = useGetSignUpMutation()
   const {
     control,
@@ -38,7 +40,7 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
 
   const isTermsAndPolicyChecked = watch('agreeToPolicies')
 
-  const onSubmit: SubmitHandler<SignUpSchemaType> = data => {
+  const handleSignUp: SubmitHandler<SignUpSchemaType> = data => {
     const requestData = {
       baseUrl: 'https://strong-interns.top',
       email: data.email,
@@ -66,12 +68,12 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
   return (
     <div className={s.wrap}>
       <Card className={s.formContainer}>
-        <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
+        <form className={s.form} onSubmit={handleSubmit(handleSignUp)}>
           <Typography align={'center'} className={s.title} variant={'H1'}>
             Sign Up
           </Typography>
           <div className={s.iconContainer}>
-            <GoogleSvg />
+            <GoogleSvg onClick={loginWithGoogleOAuth} style={{ cursor: 'pointer' }} />
             <GithubSvg />
           </div>
           <div className={s.inputContainer}>
