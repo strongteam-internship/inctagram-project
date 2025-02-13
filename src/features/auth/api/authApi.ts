@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { setCookie } from 'cookies-next/client'
 
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
@@ -131,7 +132,7 @@ export const authApi = createApi({
         url: `/api/v1/auth/login`,
       }),
       transformResponse(res: { accessToken: string }) {
-        localStorage.setItem('token', res.accessToken)
+        setCookie('accessToken', res.accessToken)
 
         return res
       },
