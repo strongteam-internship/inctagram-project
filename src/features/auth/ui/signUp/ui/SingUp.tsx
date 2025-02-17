@@ -2,10 +2,8 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-
 import { useGithubAuth } from '@/application/hooks/custom/useGithubAuth'
 import { useGoogleOAuthLogin } from '@/application/hooks/custom/useGoogleOauth'
-
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { useGetSignUpMutation } from '@/features/auth/api/authApi'
