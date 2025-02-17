@@ -20,12 +20,14 @@ type HeaderProps = {
 export const Header: FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 0 }) => {
   return (
     <header className={styles.header}>
-      <Typography variant={'Large'}>Inctagram</Typography>
+      <Link href={'/'}>
+        <Typography variant={'Large'}>Inctagram</Typography>
+      </Link>
       <div className={styles.headerActions}>
         {isAuthenticated && (
           <div className={styles.notification}>
             <NotificationIcon />
-            {notificationsCount > 0 && (
+            {notificationsCount && notificationsCount > 0 && (
               <div className={styles.count}>
                 {notificationsCount > 9 ? '9+' : notificationsCount}
               </div>
