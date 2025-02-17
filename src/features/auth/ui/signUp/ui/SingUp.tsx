@@ -2,6 +2,7 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form'
 
+import { useGithubAuth } from '@/application/hooks/custom/useGithubAuth'
 import { useGoogleOAuthLogin } from '@/application/hooks/custom/useGoogleOauth'
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
@@ -39,6 +40,7 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
   })
 
   const isTermsAndPolicyChecked = watch('agreeToPolicies')
+  const { loginGithubHandler } = useGithubAuth()
 
   const handleSignUp: SubmitHandler<SignUpSchemaType> = data => {
     const requestData = {
@@ -74,7 +76,7 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
           </Typography>
           <div className={s.iconContainer}>
             <GoogleSvg onClick={loginWithGoogleOAuth} style={{ cursor: 'pointer' }} />
-            <GithubSvg />
+            <GithubSvg onClick={loginGithubHandler} style={{ cursor: 'pointer' }} />
           </div>
           <div className={s.inputContainer}>
             <ControlledInput

@@ -1,6 +1,5 @@
 import React, { ComponentPropsWithoutRef, ElementRef, forwardRef, useId, useState } from 'react'
 
-import { Button } from '@/shared/button/button'
 import CloseOutline from '@/shared/input/icons/CloseOutline'
 import EyeOffOutline from '@/shared/input/icons/EyeOffOutline'
 import EyeOutline from '@/shared/input/icons/EyeOutline'
@@ -86,30 +85,28 @@ export const Input = forwardRef<InputRef, InputProps>((props, ref) => {
           {...rest}
         />
         {isPassword && (
-          <Button
+          <button
             className={classNames.button}
             disabled={disabled}
             onClick={showPasswordHandler}
             type={'button'}
-            variant={'link'}
           >
             {showPassword ? (
               <EyeOutline className={s.icon} />
             ) : (
               <EyeOffOutline className={s.icon} />
             )}
-          </Button>
+          </button>
         )}
         {isShowClearButton && (
-          <Button
+          <button
             className={classNames.clearIcon}
             disabled={disabled}
             onClick={onClearClick}
             type={'button'}
-            variant={'link'}
           >
             <CloseOutline className={s.icon} />
-          </Button>
+          </button>
         )}
       </div>
       {!!errorText && <Typography className={s.errorMessage}>{errorText}</Typography>}
