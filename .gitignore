@@ -39,7 +39,6 @@ yarn-error.log*
 
 #ide
 .idea
-.env
 
 # typescript
 *.tsbuildinfo
