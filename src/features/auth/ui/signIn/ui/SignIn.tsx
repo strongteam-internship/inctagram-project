@@ -35,15 +35,9 @@ export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: (
     resolver: zodResolver(signInSchema),
   })
 
-
   const { loginGithubHandler } = useGithubAuth()
 
-  if (data) {
-    router.push('/profile')
-  }
-
   const handleSignIn = (data: { email: string; password: string }) => {
-
     getSignIn(data)
       .unwrap()
       .then(() => {
