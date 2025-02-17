@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 
 import { CheckEmail } from '@/features/auth/ui/checkEmail/CheckEmail'
 import { ForgotPasswordForm } from '@/features/auth/ui/forgotPassword/ui/ForgotPasswordForm'
@@ -19,9 +19,9 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div>
+    <Suspense>
       <ForgotPasswordForm onSubmitHandler={email => submitHandler(email)} />
       <CheckEmail email={email} onClose={onClose} open={openModal} setOpen={setOpenModal} />
-    </div>
+    </Suspense>
   )
 }
