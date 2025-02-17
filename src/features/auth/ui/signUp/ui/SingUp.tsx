@@ -24,6 +24,7 @@ type SignUpFormProps = {
 }
 
 export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
+  const test = 5
   const { loginWithGoogleOAuth } = useGoogleOAuthLogin()
   const [getSignUp] = useGetSignUpMutation()
   const {
