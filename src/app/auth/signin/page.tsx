@@ -1,10 +1,12 @@
 'use client'
-import { SignInForm } from '@/features/auth/ui/signIn/ui/SignIn'
+import { Suspense } from 'react'
+
+import { SignInPage } from '@/layers/registration/SignInPage/SignInPage'
 
 export default function SignIn() {
   return (
-    <div>
-      <SignInForm />
-    </div>
+    <Suspense>
+      <SignInPage />
+    </Suspense>
   )
 }

@@ -2,14 +2,12 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form'
 
+import { useGoogleOAuthLogin } from '@/application/hooks/custom/useGoogleOauth'
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { useGetSignUpMutation } from '@/features/auth/api/authApi'
-import {
-  SignUpSchemaType,
-  signUpSchema,
-} from '@/features/auth/ui/signUp/utils/validationRules/zodSchema'
 import { isErrorResponse } from '@/features/auth/utils/typeGuards/typeGuards'
+import { SignUpSchemaType, signUpSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { Checkbox } from '@/shared/checkbox/Checkbox'
@@ -25,6 +23,7 @@ type SignUpFormProps = {
 }
 
 export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
+  const { loginWithGoogleOAuth } = useGoogleOAuthLogin()
   const [getSignUp] = useGetSignUpMutation()
   const {
     control,
@@ -41,7 +40,7 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
 
   const isTermsAndPolicyChecked = watch('agreeToPolicies')
 
-  const onSubmit: SubmitHandler<SignUpSchemaType> = data => {
+  const handleSignUp: SubmitHandler<SignUpSchemaType> = data => {
     const requestData = {
       baseUrl: 'https://strong-interns.top',
       email: data.email,
@@ -69,12 +68,12 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
   return (
     <div className={s.wrap}>
       <Card className={s.formContainer}>
-        <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
+        <form className={s.form} onSubmit={handleSubmit(handleSignUp)}>
           <Typography align={'center'} className={s.title} variant={'H1'}>
             Sign Up
           </Typography>
           <div className={s.iconContainer}>
-            <GoogleSvg />
+            <GoogleSvg onClick={loginWithGoogleOAuth} style={{ cursor: 'pointer' }} />
             <GithubSvg />
           </div>
           <div className={s.inputContainer}>
