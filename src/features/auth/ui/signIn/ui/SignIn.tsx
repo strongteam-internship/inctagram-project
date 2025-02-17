@@ -6,7 +6,8 @@ import { useGithubAuth } from '@/application/hooks/custom/useGithubAuth'
 import { useAppDispatch } from '@/application/hooks/hooks'
 import { setIsLoggedIn } from '@/application/model/app/appSlice'
 import { GithubSvg, GoogleSvg } from '@/assets/svg/icons/components'
-import { useGetMeQuery, useGetSignInMutation } from '@/features/auth/api/authApi'
+import { useGetSignInMutation } from '@/features/auth/api/authApi'
+import { isErrorResponse } from '@/features/auth/utils/typeGuards/typeGuards'
 import { SignInSchemaType, signInSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
@@ -18,15 +19,13 @@ import { useRouter } from 'next/navigation'
 
 import s from './SignIn.module.scss'
 
-export function SignInForm() {
-  const { data } = useGetMeQuery()
+export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: () => void }) {
   const [getSignIn, { isLoading }] = useGetSignInMutation()
-  const dispatch = useAppDispatch()
   const router = useRouter()
+  const dispatch = useAppDispatch()
   const {
     control,
     formState: { errors },
-    getValues,
     handleSubmit,
     setError,
   } = useForm<SignInSchemaType>({
@@ -36,13 +35,15 @@ export function SignInForm() {
     resolver: zodResolver(signInSchema),
   })
 
+
   const { loginGithubHandler } = useGithubAuth()
 
   if (data) {
     router.push('/profile')
   }
 
-  const handleLogIn = (data: { email: string; password: string }) => {
+  const handleSignIn = (data: { email: string; password: string }) => {
+
     getSignIn(data)
       .unwrap()
       .then(() => {
@@ -50,11 +51,9 @@ export function SignInForm() {
         router.push('/profile')
       })
       .catch(error => {
-        if ('data' in error) {
-          const fieldsKeys = Object.keys(getValues())
-
-          fieldsKeys.forEach(field => {
-            setError(field as keyof SignInSchemaType, { message: error.data.messages })
+        if (isErrorResponse(error)) {
+          error.data.messages.forEach(error => {
+            setError(error.field, { message: error.message })
           })
         } else {
           throw new Error('Unexpected error')
@@ -65,12 +64,12 @@ export function SignInForm() {
   return (
     <div className={s.wrap}>
       <Card className={s.formContainer}>
-        <form className={s.form} onSubmit={handleSubmit(handleLogIn)}>
+        <form className={s.form} onSubmit={handleSubmit(handleSignIn)}>
           <Typography align={'center'} className={s.title} variant={'H1'}>
             Sign In
           </Typography>
           <div className={s.iconContainer}>
-            <GoogleSvg />
+            <GoogleSvg onClick={loginWithGoogleAction} style={{ cursor: 'pointer' }} />
             <GithubSvg onClick={loginGithubHandler} style={{ cursor: 'pointer' }} />
           </div>
           <div className={s.inputContainer}>
