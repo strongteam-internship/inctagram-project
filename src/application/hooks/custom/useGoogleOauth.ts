@@ -1,5 +1,7 @@
 import { useEffect, useMemo } from 'react'
 
+import { useAppDispatch } from '@/application/hooks/hooks'
+import { setIsLoggedIn } from '@/application/model/app/appSlice'
 import { useGetGoogleOAuthMutation } from '@/features/auth/api/authApi'
 import { setCookie } from 'cookies-next/client'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -18,6 +20,8 @@ export function useGoogleOAuthLogin() {
   function loginWithGoogleOAuth() {
     router.push(url)
   }
+  const dispatch = useAppDispatch()
+
   useEffect(() => {
     async function fetchGoogleOAuth() {
       if (code) {
@@ -26,6 +30,8 @@ export function useGoogleOAuthLogin() {
 
           if (res.data?.accessToken) {
             setCookie('accessToken', res.data.accessToken)
+            dispatch(setIsLoggedIn(true))
+            router.push('/profile')
           }
         } catch (error) {
           console.error(error)
@@ -33,7 +39,7 @@ export function useGoogleOAuthLogin() {
       }
     }
     fetchGoogleOAuth()
-  }, [getGoogleOAuthLogin, code, redirectUrl])
+  }, [getGoogleOAuthLogin, code, redirectUrl, dispatch, router])
 
   return { loginWithGoogleOAuth }
 }
