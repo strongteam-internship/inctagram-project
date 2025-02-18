@@ -40,6 +40,13 @@ export const authApi = createApi({
         url: '/api/v1/auth/google/login',
       }),
     }),
+    getLogOut: builder.mutation<void, void>({
+      query: () => ({
+        credentials: 'include',
+        method: 'POST',
+        url: '/api/v1/auth/logout',
+      }),
+    }),
     getMe: builder.query<
       {
         email: string
@@ -150,6 +157,7 @@ export const authApi = createApi({
 export const {
   useGetEmailConfirmationMutation,
   useGetGoogleOAuth2Mutation,
+  useGetLogOutMutation,
   useGetMeQuery,
   useGetPasswordRecoveryMutation,
   useGetResendEmailMutation,
