@@ -4,7 +4,6 @@ import { ReactNode, useState } from 'react'
 
 import BookmarkOutline from '@/assets/svg/icons/components/BookmarkOutline'
 import HomeOutline from '@/assets/svg/icons/components/HomeOutline'
-import LogOutOutline from '@/assets/svg/icons/components/LogOutOutline'
 import MessageCircleOutline from '@/assets/svg/icons/components/MessageCircleOutline'
 import PersonOutline from '@/assets/svg/icons/components/PersonOutline'
 import PlusSquareOutline from '@/assets/svg/icons/components/PlusSquareOutline'
@@ -41,7 +40,6 @@ export const Navbar = () => {
     { href: '/search', icon: <SearchOutline />, label: 'Search', type: 'link' },
     { href: '/statistics', icon: <TrendingUpOutline />, label: 'Statistics', type: 'link' },
     { href: '/favorites', icon: <BookmarkOutline />, label: 'Favorites', type: 'link' },
-    { href: '/auth/signup', icon: <LogOutOutline />, label: 'Log Out', type: 'link' },
   ]
 
   return (
@@ -76,6 +74,7 @@ export const Navbar = () => {
             </li>
           ))}
         </ul>
+        {/*<LogOut /> //Заглушка для компоненты Антона*/}
       </nav>
       <Modal open={openModal} setOpen={setOpenModal} title={'Add Photo'}>
         <div className={s.modalContent}>
