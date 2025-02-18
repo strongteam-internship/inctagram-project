@@ -2,6 +2,7 @@
 
 import { useForm } from 'react-hook-form'
 
+import { useGithubAuth } from '@/application/hooks/custom/useGithubAuth'
 import { useAppDispatch } from '@/application/hooks/hooks'
 import { setIsLoggedIn } from '@/application/model/app/appSlice'
 import { GithubSvg, GoogleSvg } from '@/assets/svg/icons/components'
@@ -34,6 +35,8 @@ export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: (
     resolver: zodResolver(signInSchema),
   })
 
+  const { loginGithubHandler } = useGithubAuth()
+
   const handleSignIn = (data: { email: string; password: string }) => {
     getSignIn(data)
       .unwrap()
@@ -61,7 +64,7 @@ export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: (
           </Typography>
           <div className={s.iconContainer}>
             <GoogleSvg onClick={loginWithGoogleAction} style={{ cursor: 'pointer' }} />
-            <GithubSvg />
+            <GithubSvg onClick={loginGithubHandler} style={{ cursor: 'pointer' }} />
           </div>
           <div className={s.inputContainer}>
             <ControlledInput control={control} label={'Email'} name={'email'} variant={'text'} />
