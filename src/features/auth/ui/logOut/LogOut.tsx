@@ -5,28 +5,27 @@ import { useState } from 'react'
 import { useAppDispatch } from '@/application/hooks/hooks'
 import { setIsLoggedIn } from '@/application/model/app/appSlice'
 import SvgLogOut from '@/assets/svg/icons/components/LogOut'
-import { useGetLogOutMutation, useGetMeQuery } from '@/features/auth/api/authApi'
+import { useGetLogOutMutation } from '@/features/auth/api/authApi'
 import { Button } from '@/shared/button/button'
 import { Modal } from '@/shared/modal'
 import { Typography } from '@/shared/typography/typography'
 import { useRouter } from 'next/navigation'
-import { unknown } from 'zod'
 
 import s from './LogOut.module.scss'
 
 export function LogOut() {
   const [isOpen, setIsOpen] = useState(false)
   const dispatch = useAppDispatch()
-  const { data } = useGetMeQuery()
-  const [getLogOut, { isLoading }] = useGetLogOutMutation()
+  const [getLogOut] = useGetLogOutMutation()
   const router = useRouter()
 
   const handleLogOut = () => {
-    getLogOut(null)
+    getLogOut()
       .unwrap()
       .then(() => {
         dispatch(setIsLoggedIn(false))
-        router.push('/auth')
+        router.push('/api/v1/auth/login')
+        localStorage.removeItem('token')
       })
       .catch(error => {
         throw new Error('Unexpected error')
@@ -47,7 +46,7 @@ export function LogOut() {
         }
       >
         <Typography variant={'regular_text_16'}>{`Are you really want to log out of your account “
-        ${data?.email}”`}</Typography>
+        email@.com”`}</Typography>
         <div className={s.buttons}>
           <Button
             onClick={() => {
