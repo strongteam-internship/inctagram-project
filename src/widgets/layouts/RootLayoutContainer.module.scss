@@ -1,0 +1,29 @@
+.main {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.layoutContent {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+.navbar {
+  width: 220px;
+  border-right: 2px solid var(--color-dark-300);
+}
+
+.contentArea {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+  margin-top: 60px;
+  padding: 60px 20px 20px;
+}
+
+.layoutContent.authenticated .contentArea {
+  width: calc(100% - 220px);
+  margin-left: 220px;
+}
