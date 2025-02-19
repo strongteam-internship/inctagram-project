@@ -1,8 +1,9 @@
-import { BaseQueryArg, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://inctagram.work',
+    credentials: 'include',
     prepareHeaders: headers => {
       const token = localStorage.getItem('token')
 
@@ -42,7 +43,6 @@ export const authApi = createApi({
     }),
     getLogOut: builder.mutation<void, void>({
       query: () => ({
-        credentials: 'include',
         method: 'POST',
         url: '/api/v1/auth/logout',
       }),
