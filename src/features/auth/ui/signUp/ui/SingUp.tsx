@@ -2,12 +2,12 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form'
 
+import { isErrorResponse } from '@/application/api/types/typeGuards/typeGuards'
 import { useGithubAuth } from '@/application/hooks/custom/useGithubAuth'
 import { useGoogleOAuthLogin } from '@/application/hooks/custom/useGoogleOauth'
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
 import { useGetSignUpMutation } from '@/features/auth/api/authApi'
-import { isErrorResponse } from '@/features/auth/utils/typeGuards/typeGuards'
 import { SignUpSchemaType, signUpSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
@@ -16,6 +16,7 @@ import { ControlledInput } from '@/shared/input/controlled-input'
 import { Typography } from '@/shared/typography/typography'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
+import { z } from 'zod'
 
 import s from './SignUp.module.scss'
 
@@ -25,10 +26,13 @@ type SignUpFormProps = {
 
 export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
   const { loginWithGoogleOAuth } = useGoogleOAuthLogin()
-  const [getSignUp] = useGetSignUpMutation()
+  const { loginGithubHandler } = useGithubAuth()
+  const [getSignUp, { error, isError, isSuccess }] = useGetSignUpMutation()
+
   const {
     control,
     formState: { isValid },
+    getValues,
     handleSubmit,
     register,
     reset,
@@ -38,39 +42,29 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
     mode: 'onBlur',
     resolver: zodResolver(signUpSchema),
   })
-
   const isTermsAndPolicyChecked = watch('agreeToPolicies')
-  const { loginGithubHandler } = useGithubAuth()
 
-  const handleSignUp: SubmitHandler<SignUpSchemaType> = data => {
-    const requestData = {
-      baseUrl: 'https://strong-interns.top',
-      email: data.email,
-      password: data.password,
-      userName: data.userName,
-    }
-
-    getSignUp(requestData)
-      .unwrap()
-      .then(() => {
-        onSubmitHandlerAction(requestData.email)
-        reset()
-      })
-      .catch(error => {
-        if (isErrorResponse(error)) {
-          error.data.messages.forEach(error => {
-            setError(error.field, { message: error.message })
-          })
-        } else {
-          throw new Error('Unexpected error')
-        }
-      })
+  const handleSuccess = () => {
+    onSubmitHandlerAction(getValues().email)
+    reset()
   }
+
+  if (isError) {
+    if (
+      isErrorResponse<Array<{ field: keyof z.infer<typeof signUpSchema>; message: string }>>(error)
+    ) {
+      error.data.messages.forEach(({ field, message }) => {
+        setError(field, { message: message })
+      })
+    }
+  }
+
+  isSuccess && handleSuccess()
 
   return (
     <div className={s.wrap}>
       <Card className={s.formContainer}>
-        <form className={s.form} onSubmit={handleSubmit(handleSignUp)}>
+        <form className={s.form} onSubmit={handleSubmit(getSignUp)}>
           <Typography align={'center'} className={s.title} variant={'H1'}>
             Sign Up
           </Typography>

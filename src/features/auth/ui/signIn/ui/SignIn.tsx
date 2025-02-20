@@ -2,12 +2,10 @@
 
 import { useForm } from 'react-hook-form'
 
+import { isErrorResponse } from '@/application/api/types/typeGuards/typeGuards'
 import { useGithubAuth } from '@/application/hooks/custom/useGithubAuth'
-import { useAppDispatch } from '@/application/hooks/hooks'
-import { setIsLoggedIn } from '@/application/model/app/appSlice'
 import { GithubSvg, GoogleSvg } from '@/assets/svg/icons/components'
 import { useGetSignInMutation } from '@/features/auth/api/authApi'
-import { isErrorResponse } from '@/features/auth/utils/typeGuards/typeGuards'
 import { SignInSchemaType, signInSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
@@ -20,9 +18,8 @@ import { useRouter } from 'next/navigation'
 import s from './SignIn.module.scss'
 
 export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: () => void }) {
-  const [getSignIn, { isLoading }] = useGetSignInMutation()
+  const [getSignIn, { error, isLoading, isSuccess }] = useGetSignInMutation()
   const router = useRouter()
-  const dispatch = useAppDispatch()
   const {
     control,
     formState: { errors },
@@ -37,28 +34,15 @@ export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: (
 
   const { loginGithubHandler } = useGithubAuth()
 
-  const handleSignIn = (data: { email: string; password: string }) => {
-    getSignIn(data)
-      .unwrap()
-      .then(() => {
-        dispatch(setIsLoggedIn(true))
-        console.log('Logged in successfully')
-      })
-      .catch(error => {
-        if (isErrorResponse(error)) {
-          error.data.messages.forEach(error => {
-            setError(error.field, { message: error.message })
-          })
-        } else {
-          throw new Error('Unexpected error')
-        }
-      })
+  if (isErrorResponse<string>(error)) {
+    setError('password', { message: error.data.messages as string })
   }
+  isSuccess && router.push('/private/profile')
 
   return (
     <div className={s.wrap}>
       <Card className={s.formContainer}>
-        <form className={s.form} onSubmit={handleSubmit(handleSignIn)}>
+        <form className={s.form} onSubmit={handleSubmit(getSignIn)}>
           <Typography align={'center'} className={s.title} variant={'H1'}>
             Sign In
           </Typography>
