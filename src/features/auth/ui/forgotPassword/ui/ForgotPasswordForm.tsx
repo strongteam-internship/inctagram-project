@@ -76,7 +76,7 @@ export const ForgotPasswordForm = ({ onSubmitHandler }: ForgotPasswordFormProps)
               Send Link
             </Button>
             <div className={s.linkContainer}>
-              <Link className={s.linkText} href={'/auth/signin'}>
+              <Link className={s.linkText} href={'/signin'}>
                 Back to Sign In
               </Link>
             </div>
