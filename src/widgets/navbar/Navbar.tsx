@@ -29,19 +29,24 @@ export const Navbar = () => {
   const [openModal, setOpenModal] = useState(false)
   const pathname = usePathname()
   const navbarItems: NavbarItem[] = [
-    { href: '/', icon: <HomeOutline />, label: 'Home', type: 'link' },
+    { href: '/private/home', icon: <HomeOutline />, label: 'Home', type: 'link' },
     {
       icon: <PlusSquareOutline />,
       label: 'Create',
       onClick: () => setOpenModal(true),
       type: 'button',
     },
-    { href: '/profile', icon: <PersonOutline />, label: 'My Profile', type: 'link' },
-    { href: '/messenger', icon: <MessageCircleOutline />, label: 'Messenger', type: 'link' },
-    { href: '/search', icon: <SearchOutline />, label: 'Search', type: 'link' },
-    { href: '/statistics', icon: <TrendingUpOutline />, label: 'Statistics', type: 'link' },
-    { href: '/favorites', icon: <BookmarkOutline />, label: 'Favorites', type: 'link' },
-    { href: '/auth/signup', icon: <LogOutOutline />, label: 'Log Out', type: 'link' },
+    { href: '/private/profile', icon: <PersonOutline />, label: 'My Profile', type: 'link' },
+    {
+      href: '/private/messenger',
+      icon: <MessageCircleOutline />,
+      label: 'Messenger',
+      type: 'link',
+    },
+    { href: '/private/search', icon: <SearchOutline />, label: 'Search', type: 'link' },
+    { href: '/private/statistics', icon: <TrendingUpOutline />, label: 'Statistics', type: 'link' },
+    { href: '/private/favorites', icon: <BookmarkOutline />, label: 'Favorites', type: 'link' },
+    { href: '/signup', icon: <LogOutOutline />, label: 'Log Out', type: 'link' },
   ]
 
   return (
