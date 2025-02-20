@@ -6,7 +6,7 @@ export const authApi = createApi({
     baseUrl: 'https://inctagram.work',
     credentials: 'include',
     prepareHeaders: headers => {
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem('accessToken')
 
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)
@@ -132,7 +132,7 @@ export const authApi = createApi({
         url: `/api/v1/auth/login`,
       }),
       transformResponse(res: { accessToken: string }) {
-        setCookie('accessToken', res.accessToken)
+        localStorage.setItem('accessToken', res.accessToken)
 
         return res
       },
