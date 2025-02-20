@@ -1,18 +1,7 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { setCookie } from 'cookies-next/client'
+import { baseApi } from '@/application/api/baseApi'
+import { setAppStatus, setIsLoggedIn } from '@/application/model/app/appSlice'
 
-export const authApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'https://inctagram.work',
-    credentials: 'include',
-    prepareHeaders: headers => {
-      const token = localStorage.getItem('accessToken')
-
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`)
-      }
-    },
-  }),
+export const authApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getCheckPasswordRecoveryCode: builder.mutation<void, { recoveryCode: string }>({
       query: ({ recoveryCode }: { recoveryCode: string }) => ({
@@ -123,6 +112,18 @@ export const authApi = createApi({
       }),
     }),
     getSignIn: builder.mutation<{ accessToken: string }, { email: string; password: string }>({
+      async onQueryStarted({ email, password }, { dispatch, queryFulfilled }) {
+        try {
+          const response = await queryFulfilled
+
+          if (response.data.accessToken) {
+            localStorage.setItem('accessToken', response.data.accessToken)
+            dispatch(setIsLoggedIn(true))
+          }
+        } catch (error) {
+          dispatch(setAppStatus('error'))
+        }
+      },
       query: ({ email, password }: { email: string; password: string }) => ({
         body: {
           email,
@@ -131,30 +132,22 @@ export const authApi = createApi({
         method: 'POST',
         url: `/api/v1/auth/login`,
       }),
-      transformResponse(res: { accessToken: string }) {
-        localStorage.setItem('accessToken', res.accessToken)
-
-        return res
-      },
     }),
     getSignUp: builder.mutation<
+      void,
       {
-        error: 'string'
-        messages: [
-          {
-            field: 'string'
-            message: 'string'
-          },
-        ]
-        statusCode: number
-      },
-      {
-        baseUrl: string
         email: string
         password: string
         userName: string
       }
     >({
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+        } catch (error) {
+          dispatch(setAppStatus('error'))
+        }
+      },
       query: ({
         email,
         password,
@@ -165,6 +158,7 @@ export const authApi = createApi({
         userName: string
       }) => ({
         body: {
+          baseUrl: 'https://strong-interns.top',
           email,
           password,
           userName,
@@ -174,7 +168,6 @@ export const authApi = createApi({
       }),
     }),
   }),
-  reducerPath: 'authAPI',
 })
 
 export const {
