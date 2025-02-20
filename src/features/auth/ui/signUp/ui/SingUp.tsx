@@ -24,7 +24,6 @@ type SignUpFormProps = {
 }
 
 export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
-  const test = 5
   const { loginWithGoogleOAuth } = useGoogleOAuthLogin()
   const [getSignUp] = useGetSignUpMutation()
   const {
@@ -105,12 +104,12 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
                 <Checkbox.Label>
                   <Typography className={s.terms} variant={'small_text_12'}>
                     I agree to the
-                    <Link className={s.link} href={'/auth/signup/termsOfService'}>
+                    <Link className={s.link} href={'/signup/termsOfService'}>
                       {' '}
                       Terms of Service{' '}
                     </Link>
                     and
-                    <Link className={s.link} href={'/auth/signup/privacyPolicy'}>
+                    <Link className={s.link} href={'/signup/privacyPolicy'}>
                       {' '}
                       Privacy Policy
                     </Link>
@@ -125,7 +124,7 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
           </Button>
           <div className={s.signInContainer}>
             <Typography variant={'regular_text_16'}>Do you have an account?</Typography>
-            <Link className={s.signinButton} href={'/auth/signin'}>
+            <Link className={s.signinButton} href={'/signin'}>
               Sign In
             </Link>
           </div>

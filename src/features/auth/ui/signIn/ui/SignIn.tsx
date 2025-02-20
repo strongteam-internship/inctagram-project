@@ -42,7 +42,7 @@ export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: (
       .unwrap()
       .then(() => {
         dispatch(setIsLoggedIn(true))
-        router.push('/profile')
+        console.log('Logged in successfully')
       })
       .catch(error => {
         if (isErrorResponse(error)) {
@@ -76,7 +76,7 @@ export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: (
             />
           </div>
           <div className={s.forgotPasswordLink}>
-            <Link href={'/auth/forgot-password'}>Forgot Password</Link>
+            <Link href={'/forgot-password'}>Forgot Password</Link>
           </div>
 
           <Button
@@ -89,7 +89,7 @@ export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: (
           </Button>
           <div className={s.signupContainer}>
             <Typography variant={'regular_text_16'}>Don’t have an account?</Typography>
-            <Link className={s.signupButton} href={'/auth/signup'}>
+            <Link className={s.signupButton} href={'/signup'}>
               Sign Up
             </Link>
           </div>

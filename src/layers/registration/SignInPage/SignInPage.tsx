@@ -8,12 +8,6 @@ import s from './SignInPage.module.scss'
 
 export function SignInPage() {
   const { loginWithGoogleOAuth } = useGoogleOAuthLogin()
-  const { data } = useGetMeQuery()
-  const router = useRouter()
-
-  if (data) {
-    router.push('/profile')
-  }
 
   return (
     <div className={s.container}>
