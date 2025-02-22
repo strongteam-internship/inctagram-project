@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { isErrorResponse } from '@/application/api/types/typeGuards/typeGuards'
@@ -49,15 +50,19 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
     reset()
   }
 
-  if (isError) {
-    if (
-      isErrorResponse<Array<{ field: keyof z.infer<typeof signUpSchema>; message: string }>>(error)
-    ) {
-      error.data.messages.forEach(({ field, message }) => {
-        setError(field, { message: message })
-      })
+  useEffect(() => {
+    if (isError) {
+      if (
+        isErrorResponse<Array<{ field: keyof z.infer<typeof signUpSchema>; message: string }>>(
+          error
+        )
+      ) {
+        error.data.messages.forEach(({ field, message }) => {
+          setError(field, { message: message })
+        })
+      }
     }
-  }
+  }, [isError, error, setError])
 
   isSuccess && handleSuccess()
 

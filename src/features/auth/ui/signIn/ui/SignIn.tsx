@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { isErrorResponse } from '@/application/api/types/typeGuards/typeGuards'
@@ -18,7 +19,7 @@ import { useRouter } from 'next/navigation'
 import s from './SignIn.module.scss'
 
 export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: () => void }) {
-  const [getSignIn, { error, isLoading, isSuccess }] = useGetSignInMutation()
+  const [getSignIn, { error, isError, isLoading, isSuccess }] = useGetSignInMutation()
   const router = useRouter()
   const {
     control,
@@ -34,9 +35,14 @@ export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: (
 
   const { loginGithubHandler } = useGithubAuth()
 
-  if (isErrorResponse<string>(error)) {
-    setError('password', { message: error.data.messages as string })
-  }
+  useEffect(() => {
+    if (isError) {
+      if (isErrorResponse<string>(error)) {
+        setError('password', { message: error.data.messages as string })
+      }
+    }
+  }, [isError, setError, error])
+
   isSuccess && router.push('/private/profile')
 
   return (
