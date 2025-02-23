@@ -31,7 +31,7 @@ export function useGoogleOAuthLogin() {
           if (res.data?.accessToken) {
             setCookie('accessToken', res.data.accessToken)
             dispatch(setIsLoggedIn(true))
-            router.push('/profile')
+            router.push('/private/profile')
           }
         } catch (error) {
           console.error(error)
