@@ -2,8 +2,8 @@ import React from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { useRecaptcha } from '@/application/hooks/custom/useRecaptcha'
 import { useGetPasswordRecoveryMutation } from '@/features/auth/api/authApi'
+import { useRecaptcha } from '@/features/auth/hooks/useRecaptcha'
 import {
   ForgotPasswordSchemaType,
   forgotPasswordSchema,
