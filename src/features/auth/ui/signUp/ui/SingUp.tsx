@@ -1,14 +1,10 @@
 'use client'
 
-import { useEffect } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
-import { isErrorResponse } from '@/application/api/types/typeGuards/typeGuards'
-import { useGithubAuth } from '@/application/hooks/custom/useGithubAuth'
-import { useGoogleOAuthLogin } from '@/application/hooks/custom/useGoogleOauth'
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
-import { useGetSignUpMutation } from '@/features/auth/api/authApi'
+import { useSignUp } from '@/features/auth/hooks/useSignUp'
 import { SignUpSchemaType, signUpSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
@@ -17,7 +13,6 @@ import { ControlledInput } from '@/shared/input/controlled-input'
 import { Typography } from '@/shared/typography/typography'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { z } from 'zod'
 
 import s from './SignUp.module.scss'
 
@@ -26,9 +21,10 @@ type SignUpFormProps = {
 }
 
 export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
-  const { loginWithGoogleOAuth } = useGoogleOAuthLogin()
-  const { loginGithubHandler } = useGithubAuth()
-  const [getSignUp, { error, isError, isSuccess }] = useGetSignUpMutation()
+  const successHandler = () => {
+    onSubmitHandlerAction(getValues().email)
+    reset()
+  }
 
   const {
     control,
@@ -41,30 +37,14 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
     watch,
   } = useForm<SignUpSchemaType>({
     mode: 'onBlur',
+    reValidateMode: 'onBlur',
     resolver: zodResolver(signUpSchema),
   })
+  const { getSignUp, loginGithubHandler, loginWithGoogleOAuth } = useSignUp({
+    errorHandler: setError,
+    successHandler: successHandler,
+  })
   const isTermsAndPolicyChecked = watch('agreeToPolicies')
-
-  const handleSuccess = () => {
-    onSubmitHandlerAction(getValues().email)
-    reset()
-  }
-
-  useEffect(() => {
-    if (isError) {
-      if (
-        isErrorResponse<Array<{ field: keyof z.infer<typeof signUpSchema>; message: string }>>(
-          error
-        )
-      ) {
-        error.data.messages.forEach(({ field, message }) => {
-          setError(field, { message: message })
-        })
-      }
-    }
-  }, [isError, error, setError])
-
-  isSuccess && handleSuccess()
 
   return (
     <div className={s.wrap}>

@@ -1,12 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { isErrorResponse } from '@/application/api/types/typeGuards/typeGuards'
-import { useGithubAuth } from '@/application/hooks/custom/useGithubAuth'
 import { GithubSvg, GoogleSvg } from '@/assets/svg/icons/components'
-import { useGetSignInMutation } from '@/features/auth/api/authApi'
+import { useSignIn } from '@/features/auth/hooks/useSignIn'
 import { SignInSchemaType, signInSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
@@ -14,36 +11,23 @@ import { ControlledInput } from '@/shared/input/controlled-input'
 import { Typography } from '@/shared/typography/typography'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
 import s from './SignIn.module.scss'
 
-export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: () => void }) {
-  const [getSignIn, { error, isError, isLoading, isSuccess }] = useGetSignInMutation()
-  const router = useRouter()
+export function SignInForm() {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isLoading },
     handleSubmit,
     setError,
   } = useForm<SignInSchemaType>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
-
     resolver: zodResolver(signInSchema),
   })
-
-  const { loginGithubHandler } = useGithubAuth()
-
-  useEffect(() => {
-    if (isError) {
-      if (isErrorResponse<string>(error)) {
-        setError('password', { message: error.data.messages as string })
-      }
-    }
-  }, [isError, setError, error])
-
-  isSuccess && router.push('/private/profile')
+  const { getSignIn, loginGithubHandler, loginWithGoogleOAuth } = useSignIn({
+    errorHandler: setError,
+  })
 
   return (
     <div className={s.wrap}>
@@ -53,7 +37,7 @@ export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: (
             Sign In
           </Typography>
           <div className={s.iconContainer}>
-            <GoogleSvg onClick={loginWithGoogleAction} style={{ cursor: 'pointer' }} />
+            <GoogleSvg onClick={loginWithGoogleOAuth} style={{ cursor: 'pointer' }} />
             <GithubSvg onClick={loginGithubHandler} style={{ cursor: 'pointer' }} />
           </div>
           <div className={s.inputContainer}>
