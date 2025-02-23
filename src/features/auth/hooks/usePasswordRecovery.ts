@@ -1,8 +1,6 @@
 import { useEffect } from 'react'
 import { UseFormSetError } from 'react-hook-form'
 
-import * as process from 'node:process'
-
 import { ErrorMessage } from '@/application/api/types/types'
 import { isErrorResponse } from '@/application/utils/typeGuards/typeGuards'
 import { useGetPasswordRecoveryMutation } from '@/features/auth/api/authApi'
@@ -34,7 +32,7 @@ export function usePasswordRecovery({ errorHandler, successHandler }: Props) {
     if (isSuccess) {
       successHandler(emailRes)
     }
-  }, [])
+  }, [successHandler, emailRes, isSuccess])
 
   return { getPasswordRecovery }
 }
