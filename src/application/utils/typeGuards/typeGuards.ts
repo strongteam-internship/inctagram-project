@@ -1,5 +1,4 @@
 import { AppErrorResponse } from '@/application/api/types/types'
-import { ErrorMessage } from '@/features/auth/utils/types/types'
 
 export function isErrorResponse<T>(errorRes: unknown): errorRes is AppErrorResponse<T> {
   return (
