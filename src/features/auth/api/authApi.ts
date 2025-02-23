@@ -1,6 +1,5 @@
 import { baseApi } from '@/application/api/baseApi'
 import { setAppStatus, setIsLoggedIn } from '@/application/model/app/appSlice'
-
 export const authApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getCheckPasswordRecoveryCode: builder.mutation<void, { recoveryCode: string }>({
@@ -10,19 +9,6 @@ export const authApi = baseApi.injectEndpoints({
         },
         method: 'POST',
         url: '/api/v1/auth/check-recovery-code',
-      }),
-    }),
-    getConfirmPasswordRecovery: builder.mutation<
-      void,
-      { newPassword: string; recoveryCode: string }
-    >({
-      query: ({ newPassword, recoveryCode }: { newPassword: string; recoveryCode: string }) => ({
-        body: {
-          newPassword,
-          recoveryCode,
-        },
-        method: 'POST',
-        url: `/api/v1/auth/new-password`,
       }),
     }),
     getEmailConfirmation: builder.mutation<void, string>({
@@ -54,6 +40,15 @@ export const authApi = baseApi.injectEndpoints({
       }),
     }),
     getLogOut: builder.mutation<void, void>({
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          localStorage.removeItem('accessToken')
+          dispatch(setIsLoggedIn(false))
+        } catch (err) {
+          dispatch(setAppStatus('error'))
+        }
+      },
       query: () => ({
         method: 'POST',
         url: `/api/v1/auth/logout`,
@@ -70,19 +65,29 @@ export const authApi = baseApi.injectEndpoints({
     >({
       query: () => `/api/v1/auth/me/`,
     }),
+
+    getNewPassword: builder.mutation<void, { newPassword: string; recoveryCode: string }>({
+      query: ({ newPassword, recoveryCode }: { newPassword: string; recoveryCode: string }) => ({
+        body: {
+          newPassword,
+          recoveryCode,
+        },
+        method: 'POST',
+        url: `/api/v1/auth/new-password`,
+      }),
+    }),
     getPasswordRecovery: builder.mutation<
-      {
-        error: string
-        messages: [
-          {
-            field: string
-            message: string
-          },
-        ]
-        statusCode: number
-      },
+      void,
       { baseUrl: string; email: string; recaptcha: string }
     >({
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(setAppStatus('success'))
+        } catch (error) {
+          dispatch(setAppStatus('error'))
+        }
+      },
       query: ({
         baseUrl,
         email,
@@ -112,13 +117,14 @@ export const authApi = baseApi.injectEndpoints({
       }),
     }),
     getSignIn: builder.mutation<{ accessToken: string }, { email: string; password: string }>({
-      async onQueryStarted({ email, password }, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const response = await queryFulfilled
 
           if (response.data.accessToken) {
             localStorage.setItem('accessToken', response.data.accessToken)
             dispatch(setIsLoggedIn(true))
+            dispatch(setAppStatus('success'))
           }
         } catch (error) {
           dispatch(setAppStatus('error'))
@@ -144,6 +150,7 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled
+          dispatch(setAppStatus('success'))
         } catch (error) {
           dispatch(setAppStatus('error'))
         }
@@ -172,10 +179,11 @@ export const authApi = baseApi.injectEndpoints({
 
 export const {
   useGetCheckPasswordRecoveryCodeMutation,
-  useGetConfirmPasswordRecoveryMutation,
   useGetEmailConfirmationMutation,
   useGetGoogleOAuthMutation,
+  useGetLogOutMutation,
   useGetMeQuery,
+  useGetNewPasswordMutation,
   useGetPasswordRecoveryMutation,
   useGetResendEmailMutation,
   useGetSignInMutation,
