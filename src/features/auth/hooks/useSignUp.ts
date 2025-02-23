@@ -33,7 +33,6 @@ export const useSignUp = ({
         )
       ) {
         error.data.messages.forEach(({ field, message }) => {
-          console.log(message)
           errorHandler(field, { message: message })
         })
       }
@@ -42,7 +41,6 @@ export const useSignUp = ({
 
   useEffect(() => {
     if (isSuccess) {
-      console.log('successHandler')
       successHandler()
     }
   }, [isSuccess, successHandler])
