@@ -2,7 +2,7 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { useGetConfirmPasswordRecoveryMutation } from '@/features/auth/api/authApi'
+import { useGetNewPasswordMutation } from '@/features/auth/api/authApi'
 import {
   RecoveryPasswordSchemaType,
   recoveryPasswordSchema,
@@ -21,7 +21,7 @@ type SignUpFormProps = {
 }
 
 export function CreateNewPasswordForm({ onSubmitAction, recoveryCode }: SignUpFormProps) {
-  const [getConfirmPasswordRecovery] = useGetConfirmPasswordRecoveryMutation()
+  const [getConfirmPasswordRecovery] = useGetNewPasswordMutation()
   const {
     control,
     formState: { errors, isValid },
