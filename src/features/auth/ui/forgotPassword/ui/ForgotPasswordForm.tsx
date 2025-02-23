@@ -1,8 +1,8 @@
 import React from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
-import { useGetPasswordRecoveryMutation } from '@/features/auth/api/authApi'
+import { usePasswordRecovery } from '@/features/auth/hooks/usePasswordRecovery'
 import { useRecaptcha } from '@/features/auth/hooks/useRecaptcha'
 import {
   ForgotPasswordSchemaType,
@@ -23,7 +23,13 @@ type ForgotPasswordFormProps = {
 
 export const ForgotPasswordForm = ({ onSubmitHandler }: ForgotPasswordFormProps) => {
   const { captchaToken, handleRecaptcha, recaptchaRef, siteKey } = useRecaptcha()
-  const { control, handleSubmit, reset, setError } = useForm<ForgotPasswordSchemaType>({
+  const {
+    control,
+    formState: { isLoading },
+    handleSubmit,
+    reset,
+    setError,
+  } = useForm<ForgotPasswordSchemaType>({
     defaultValues: {
       email: '',
     },
@@ -32,27 +38,22 @@ export const ForgotPasswordForm = ({ onSubmitHandler }: ForgotPasswordFormProps)
     resolver: zodResolver(forgotPasswordSchema),
   })
 
-  const [getPasswordRecovery, { isLoading }] = useGetPasswordRecoveryMutation()
-
-  const onSubmit: SubmitHandler<ForgotPasswordSchemaType> = data => {
-    const requestData = {
-      baseUrl: 'https://strong-interns.top',
-      email: data.email,
-      recaptcha: captchaToken,
-    }
-
-    getPasswordRecovery(requestData)
-      .unwrap()
-      .then(res => {
-        onSubmitHandler(requestData.email)
-        reset()
-      })
-      .catch(err => setError('email', { message: err.data.messages[0].message }))
-  }
+  const { getPasswordRecovery } = usePasswordRecovery({
+    errorHandler: setError,
+    successHandler: email => {
+      onSubmitHandler(email)
+      reset()
+    },
+  })
 
   return (
     <div>
-      <form className={s.formContainer} onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className={s.formContainer}
+        onSubmit={handleSubmit(({ email }) =>
+          getPasswordRecovery({ email, recaptcha: captchaToken })
+        )}
+      >
         <Card className={s.cardContainer}>
           <Typography align={'center'} className={s.title} variant={'H1'}>
             Forgot Password
