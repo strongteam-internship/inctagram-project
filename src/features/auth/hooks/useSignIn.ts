@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { UseFormSetError, useForm } from 'react-hook-form'
+import { UseFormSetError } from 'react-hook-form'
 
 import { ErrorMessage } from '@/application/api/types/types'
 import { isErrorResponse } from '@/application/utils/typeGuards/typeGuards'
@@ -8,15 +8,15 @@ import { useGithubAuth } from '@/features/auth/hooks/useGithubAuth'
 import { useGoogleOAuthLogin } from '@/features/auth/hooks/useGoogleOauth'
 import { useRouter } from 'next/navigation'
 
-export function useSignIn({
-  errorHandler,
-}: {
+type Props = {
   errorHandler: UseFormSetError<{ email: string; password: string }>
-}) {
+}
+
+export function useSignIn({ errorHandler }: Props) {
   const { loginGithubHandler } = useGithubAuth()
   const { loginWithGoogleOAuth } = useGoogleOAuthLogin()
   const router = useRouter()
-  const { setError } = useForm()
+
   const [getSignIn, { error, isError, isSuccess }] = useGetSignInMutation()
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export function useSignIn({
         errorHandler('password', { message: error.data.messages as string })
       }
     }
-  }, [isError, setError, error, errorHandler])
+  }, [isError, error, errorHandler])
 
   useEffect(() => {
     if (isSuccess) {
