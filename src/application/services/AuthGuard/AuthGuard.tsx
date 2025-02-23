@@ -2,7 +2,6 @@
 
 import { ReactNode, useEffect } from 'react'
 
-import { useAppSelector } from '@/application/hooks/hooks'
 import { useGetMeQuery } from '@/features/auth/api/authApi'
 import { useRouter } from 'next/navigation'
 
