@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react'
 
-import { PasswordRecoveryPage } from '@/layers/registration/PasswordRecoveryPage/PasswordRecoveryPage'
+import { PasswordRecoveryPage } from '@/layers/auth/PasswordRecoveryPage/PasswordRecoveryPage'
 
 export default function SignUp() {
   return (

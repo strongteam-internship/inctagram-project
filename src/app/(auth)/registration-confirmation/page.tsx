@@ -1,7 +1,7 @@
 'use client'
 import { Suspense } from 'react'
 
-import { ConfirmEmailPage } from '@/layers/registration/ConfirmEmailPage/ConfirmEmailPage'
+import { ConfirmEmailPage } from '@/layers/auth/ConfirmEmailPage/ConfirmEmailPage'
 export default function confirmEmail() {
   return (
     <Suspense>

@@ -1,3 +1,9 @@
+import { Typography } from '@/shared/typography/typography'
+
 export default function FavoritesPage() {
-  return <div>Favorites Page</div>
+  return (
+    <div>
+      <Typography variant={'H1'}>Favorites Page</Typography>
+    </div>
+  )
 }
