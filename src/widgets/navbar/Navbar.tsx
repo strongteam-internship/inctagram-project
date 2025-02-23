@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, ReactNode, useState } from 'react'
+import { FC, ReactNode } from 'react'
 
 import BookmarkOutline from '@/assets/svg/icons/components/BookmarkOutline'
 import HomeOutline from '@/assets/svg/icons/components/HomeOutline'

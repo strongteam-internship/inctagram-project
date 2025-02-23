@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { UseFormSetError, useForm, useFormContext } from 'react-hook-form'
+import { UseFormSetError } from 'react-hook-form'
 
 import { isErrorResponse } from '@/application/utils/typeGuards/typeGuards'
 import { useGetSignUpMutation } from '@/features/auth/api/authApi'

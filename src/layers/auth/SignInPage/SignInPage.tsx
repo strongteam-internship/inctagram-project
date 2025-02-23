@@ -1,6 +1,5 @@
 'use client'
 
-import { useGoogleOAuthLogin } from '@/features/auth/hooks/useGoogleOauth'
 import { SignInForm } from '@/features/auth/ui/signIn/ui/SignIn'
 
 import s from './SignInPage.module.scss'
