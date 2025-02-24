@@ -24,7 +24,7 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://inctagram.work',
     prepareHeaders: headers => {
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem('accessToken')
 
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)

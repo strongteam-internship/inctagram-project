@@ -1,13 +1,10 @@
 'use client'
 
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
-import { useGithubAuth } from '@/application/hooks/custom/useGithubAuth'
-import { useGoogleOAuthLogin } from '@/application/hooks/custom/useGoogleOauth'
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
-import { useGetSignUpMutation } from '@/features/auth/api/authApi'
-import { isErrorResponse } from '@/features/auth/utils/typeGuards/typeGuards'
+import { useSignUp } from '@/features/auth/hooks/useSignUp'
 import { SignUpSchemaType, signUpSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
@@ -24,12 +21,15 @@ type SignUpFormProps = {
 }
 
 export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
-  const test = 5
-  const { loginWithGoogleOAuth } = useGoogleOAuthLogin()
-  const [getSignUp] = useGetSignUpMutation()
+  const successHandler = () => {
+    onSubmitHandlerAction(getValues().email)
+    reset()
+  }
+
   const {
     control,
     formState: { isValid },
+    getValues,
     handleSubmit,
     register,
     reset,
@@ -37,41 +37,19 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
     watch,
   } = useForm<SignUpSchemaType>({
     mode: 'onBlur',
+    reValidateMode: 'onBlur',
     resolver: zodResolver(signUpSchema),
   })
-
+  const { getSignUp, loginGithubHandler, loginWithGoogleOAuth } = useSignUp({
+    errorHandler: setError,
+    successHandler: successHandler,
+  })
   const isTermsAndPolicyChecked = watch('agreeToPolicies')
-  const { loginGithubHandler } = useGithubAuth()
-
-  const handleSignUp: SubmitHandler<SignUpSchemaType> = data => {
-    const requestData = {
-      baseUrl: 'https://strong-interns.top',
-      email: data.email,
-      password: data.password,
-      userName: data.userName,
-    }
-
-    getSignUp(requestData)
-      .unwrap()
-      .then(() => {
-        onSubmitHandlerAction(requestData.email)
-        reset()
-      })
-      .catch(error => {
-        if (isErrorResponse(error)) {
-          error.data.messages.forEach(error => {
-            setError(error.field, { message: error.message })
-          })
-        } else {
-          throw new Error('Unexpected error')
-        }
-      })
-  }
 
   return (
     <div className={s.wrap}>
       <Card className={s.formContainer}>
-        <form className={s.form} onSubmit={handleSubmit(handleSignUp)}>
+        <form className={s.form} onSubmit={handleSubmit(getSignUp)}>
           <Typography align={'center'} className={s.title} variant={'H1'}>
             Sign Up
           </Typography>
@@ -105,12 +83,12 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
                 <Checkbox.Label>
                   <Typography className={s.terms} variant={'small_text_12'}>
                     I agree to the
-                    <Link className={s.link} href={'/auth/signup/termsOfService'}>
+                    <Link className={s.link} href={'/signup/termsOfService'}>
                       {' '}
                       Terms of Service{' '}
                     </Link>
                     and
-                    <Link className={s.link} href={'/auth/signup/privacyPolicy'}>
+                    <Link className={s.link} href={'/signup/privacyPolicy'}>
                       {' '}
                       Privacy Policy
                     </Link>
@@ -125,7 +103,7 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
           </Button>
           <div className={s.signInContainer}>
             <Typography variant={'regular_text_16'}>Do you have an account?</Typography>
-            <Link className={s.signinButton} href={'/auth/signin'}>
+            <Link className={s.signinButton} href={'/signin'}>
               Sign In
             </Link>
           </div>

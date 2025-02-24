@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, useState } from 'react'
+import { FC, ReactNode } from 'react'
 
 import BookmarkOutline from '@/assets/svg/icons/components/BookmarkOutline'
 import HomeOutline from '@/assets/svg/icons/components/HomeOutline'
@@ -11,7 +11,6 @@ import PlusSquareOutline from '@/assets/svg/icons/components/PlusSquareOutline'
 import SearchOutline from '@/assets/svg/icons/components/SearchOutline'
 import TrendingUpOutline from '@/assets/svg/icons/components/TrendingUpOutline'
 import { Button } from '@/shared/button/button'
-import { Modal } from '@/shared/modal/Modal'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -24,24 +23,31 @@ type NavbarItem = {
   onClick?: () => void
   type: 'button' | 'link'
 }
-
-export const Navbar = () => {
-  const [openModal, setOpenModal] = useState(false)
+type Props = {
+  onAddPhotoAction: () => void
+  onLogoutAction: () => void
+}
+export const Navbar: FC<Props> = ({ onAddPhotoAction, onLogoutAction }) => {
   const pathname = usePathname()
   const navbarItems: NavbarItem[] = [
-    { href: '/', icon: <HomeOutline />, label: 'Home', type: 'link' },
+    { href: '/private/home', icon: <HomeOutline />, label: 'Home', type: 'link' },
     {
       icon: <PlusSquareOutline />,
       label: 'Create',
-      onClick: () => setOpenModal(true),
+      onClick: onAddPhotoAction,
       type: 'button',
     },
-    { href: '/profile', icon: <PersonOutline />, label: 'My Profile', type: 'link' },
-    { href: '/messenger', icon: <MessageCircleOutline />, label: 'Messenger', type: 'link' },
-    { href: '/search', icon: <SearchOutline />, label: 'Search', type: 'link' },
-    { href: '/statistics', icon: <TrendingUpOutline />, label: 'Statistics', type: 'link' },
-    { href: '/favorites', icon: <BookmarkOutline />, label: 'Favorites', type: 'link' },
-    { href: '/auth/signup', icon: <LogOutOutline />, label: 'Log Out', type: 'link' },
+    { href: '/private/profile', icon: <PersonOutline />, label: 'My Profile', type: 'link' },
+    {
+      href: '/private/messenger',
+      icon: <MessageCircleOutline />,
+      label: 'Messenger',
+      type: 'link',
+    },
+    { href: '/private/search', icon: <SearchOutline />, label: 'Search', type: 'link' },
+    { href: '/private/statistics', icon: <TrendingUpOutline />, label: 'Statistics', type: 'link' },
+    { href: '/private/favorites', icon: <BookmarkOutline />, label: 'Favorites', type: 'link' },
+    { icon: <LogOutOutline />, label: 'Log Out', onClick: onLogoutAction, type: 'button' },
   ]
 
   return (
@@ -77,16 +83,6 @@ export const Navbar = () => {
           ))}
         </ul>
       </nav>
-      <Modal open={openModal} setOpen={setOpenModal} title={'Add Photo'}>
-        <div className={s.modalContent}>
-          <Button onClick={() => {}} variant={'primary'}>
-            Select from Computer
-          </Button>
-          <Button onClick={() => {}} variant={'secondary'}>
-            Open Draft
-          </Button>
-        </div>
-      </Modal>
     </>
   )
 }

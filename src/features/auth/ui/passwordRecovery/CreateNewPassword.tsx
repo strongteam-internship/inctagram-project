@@ -1,8 +1,8 @@
 'use client'
 
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
-import { useGetConfirmPasswordRecoveryMutation } from '@/features/auth/api/authApi'
+import { useGetNewPassword } from '@/features/auth/hooks/useGetNewPassword'
 import {
   RecoveryPasswordSchemaType,
   recoveryPasswordSchema,
@@ -21,7 +21,6 @@ type SignUpFormProps = {
 }
 
 export function CreateNewPasswordForm({ onSubmitAction, recoveryCode }: SignUpFormProps) {
-  const [getConfirmPasswordRecovery] = useGetConfirmPasswordRecoveryMutation()
   const {
     control,
     formState: { errors, isValid },
@@ -33,41 +32,34 @@ export function CreateNewPasswordForm({ onSubmitAction, recoveryCode }: SignUpFo
     reValidateMode: 'onSubmit',
     resolver: zodResolver(recoveryPasswordSchema),
   })
-
-  const onSubmitHandler: SubmitHandler<RecoveryPasswordSchemaType> = data => {
-    const requestData = {
-      newPassword: data.password,
-      recoveryCode,
-    }
-
-    getConfirmPasswordRecovery(requestData)
-      .unwrap()
-      .then(() => {
-        onSubmitAction()
-        reset()
-      })
-      .catch(error => {
-        error.data.messages.forEach(
-          (error: { field: keyof RecoveryPasswordSchemaType; message: string }) => {
-            setError(error.field, { message: error.message })
-          }
-        )
-      })
+  const onSuccessHandler = () => {
+    onSubmitAction()
+    reset()
   }
+
+  const { getNewPassword } = useGetNewPassword({
+    errorHandler: setError,
+    successHandler: onSuccessHandler,
+  })
 
   return (
     <div className={s.wrap}>
       <Card className={s.formContainer}>
-        <form className={s.form} onSubmit={handleSubmit(onSubmitHandler)}>
+        <form
+          className={s.form}
+          onSubmit={handleSubmit(data =>
+            getNewPassword({ newPassword: data.newPassword, recoveryCode })
+          )}
+        >
           <Typography align={'center'} className={s.title} variant={'H1'}>
             Create New Password
           </Typography>
           <div className={s.inputContainer}>
             <ControlledInput
               control={control}
-              errorText={errors.password?.message}
+              errorText={errors.newPassword?.message}
               label={'Password'}
-              name={'password'}
+              name={'newPassword'}
               variant={'password'}
             />
             <ControlledInput

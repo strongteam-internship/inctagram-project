@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     return [
       // Basic redirect
       {
-        destination: '/auth/signin',
+        destination: '/public/posts',
         permanent: true,
         source: '/',
       },

@@ -47,9 +47,9 @@ export const forgotPasswordSchema = z.object({
 export const recoveryPasswordSchema = z
   .object({
     confirmPassword: authBaseSchema.shape.confirmPassword,
-    password: authBaseSchema.shape.password,
+    newPassword: authBaseSchema.shape.password,
   })
-  .refine(data => data.password === data.confirmPassword, {
+  .refine(data => data.newPassword === data.confirmPassword, {
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   })

@@ -2,12 +2,8 @@
 
 import { useForm } from 'react-hook-form'
 
-import { useGithubAuth } from '@/application/hooks/custom/useGithubAuth'
-import { useAppDispatch } from '@/application/hooks/hooks'
-import { setIsLoggedIn } from '@/application/model/app/appSlice'
 import { GithubSvg, GoogleSvg } from '@/assets/svg/icons/components'
-import { useGetSignInMutation } from '@/features/auth/api/authApi'
-import { isErrorResponse } from '@/features/auth/utils/typeGuards/typeGuards'
+import { useSignIn } from '@/features/auth/hooks/useSignIn'
 import { SignInSchemaType, signInSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
@@ -15,55 +11,33 @@ import { ControlledInput } from '@/shared/input/controlled-input'
 import { Typography } from '@/shared/typography/typography'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
 import s from './SignIn.module.scss'
 
-export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: () => void }) {
-  const [getSignIn, { isLoading }] = useGetSignInMutation()
-  const router = useRouter()
-  const dispatch = useAppDispatch()
+export function SignInForm() {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isLoading },
     handleSubmit,
     setError,
   } = useForm<SignInSchemaType>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
-
     resolver: zodResolver(signInSchema),
   })
-
-  const { loginGithubHandler } = useGithubAuth()
-
-  const handleSignIn = (data: { email: string; password: string }) => {
-    getSignIn(data)
-      .unwrap()
-      .then(() => {
-        dispatch(setIsLoggedIn(true))
-        router.push('/profile')
-      })
-      .catch(error => {
-        if (isErrorResponse(error)) {
-          error.data.messages.forEach(error => {
-            setError(error.field, { message: error.message })
-          })
-        } else {
-          throw new Error('Unexpected error')
-        }
-      })
-  }
+  const { getSignIn, loginGithubHandler, loginWithGoogleOAuth } = useSignIn({
+    errorHandler: setError,
+  })
 
   return (
     <div className={s.wrap}>
       <Card className={s.formContainer}>
-        <form className={s.form} onSubmit={handleSubmit(handleSignIn)}>
+        <form className={s.form} onSubmit={handleSubmit(getSignIn)}>
           <Typography align={'center'} className={s.title} variant={'H1'}>
             Sign In
           </Typography>
           <div className={s.iconContainer}>
-            <GoogleSvg onClick={loginWithGoogleAction} style={{ cursor: 'pointer' }} />
+            <GoogleSvg onClick={loginWithGoogleOAuth} style={{ cursor: 'pointer' }} />
             <GithubSvg onClick={loginGithubHandler} style={{ cursor: 'pointer' }} />
           </div>
           <div className={s.inputContainer}>
@@ -76,7 +50,7 @@ export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: (
             />
           </div>
           <div className={s.forgotPasswordLink}>
-            <Link href={'/auth/forgot-password'}>Forgot Password</Link>
+            <Link href={'/forgot-password'}>Forgot Password</Link>
           </div>
 
           <Button
@@ -89,7 +63,7 @@ export function SignInForm({ loginWithGoogleAction }: { loginWithGoogleAction: (
           </Button>
           <div className={s.signupContainer}>
             <Typography variant={'regular_text_16'}>Don’t have an account?</Typography>
-            <Link className={s.signupButton} href={'/auth/signup'}>
+            <Link className={s.signupButton} href={'/signup'}>
               Sign Up
             </Link>
           </div>
