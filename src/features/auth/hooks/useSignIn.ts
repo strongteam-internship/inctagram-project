@@ -14,7 +14,6 @@ type Props = {
 
 export function useSignIn({ errorHandler }: Props) {
   const { loginGithubHandler } = useGithubAuth()
-  const { loginWithGoogleOAuth } = useGoogleOAuthLogin()
   const router = useRouter()
   const [getSignIn, { error, isError, isSuccess }] = useGetSignInMutation()
 
@@ -32,5 +31,5 @@ export function useSignIn({ errorHandler }: Props) {
     }
   }, [router, isSuccess])
 
-  return { getSignIn, loginGithubHandler, loginWithGoogleOAuth }
+  return { getSignIn, loginGithubHandler }
 }
