@@ -8,9 +8,10 @@ import { useRouter, useSearchParams } from 'next/navigation'
 export function useGoogleOAuthLogin() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const dispatch = useAppDispatch()
   const [getGoogleOAuthLogin] = useGetGoogleOAuthMutation()
 
-  const code = useMemo(() => searchParams.get('code'), [searchParams])
+  const code = searchParams.get('code')
   const scope = 'email profile'
   const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
   const redirectUrl = 'https://strong-interns.top'
@@ -19,7 +20,6 @@ export function useGoogleOAuthLogin() {
   function loginWithGoogleOAuth() {
     router.push(url)
   }
-  const dispatch = useAppDispatch()
 
   useEffect(() => {
     async function fetchGoogleOAuth() {
