@@ -15,7 +15,7 @@ export default function GithubPage() {
 
     if (token) {
       localStorage.setItem('token', token as string)
-      router.push('/profile')
+      router.push('/private/profile')
     } else {
       setLoading(false)
     }
