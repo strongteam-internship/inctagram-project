@@ -35,5 +35,5 @@ export default function GoogleAuthPage() {
       }
     }
     fetchGoogleOAuthLogin()
-  }, [router, code, redirectUrl, dispatch])
+  }, [router, code, redirectUrl, dispatch, getGoogleOAuthLogin])
 }
