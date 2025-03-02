@@ -1,0 +1,74 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 220px;
+  height: calc(100vh - 60px);
+  padding-top: 72px;
+
+  border-right: 2px solid var(--color-dark-300);
+}
+
+.sidebarMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: center;
+
+  list-style: none;
+}
+
+.sidebarMenuItem {
+  display: flex;
+  align-items: center;
+
+  .button {
+    font-size: var(--font-size-m);
+    color: var(--color-light-100);
+    outline: none;
+    transition: color 0.2s ease, font-weight 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus-visible {
+      color: var(--color-light-100);
+      border-radius: 4px;
+      box-shadow: 0 0 0 1px var(--color-accent-700);
+    }
+
+    svg {
+      fill: var(--color-light-100);
+      transition: fill 0.2s ease;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &:nth-child(6) .button {
+    margin-top: 60px;
+  }
+
+  &:last-child .button {
+    margin-top: 180px;
+  }
+
+  :hover {
+    color: var(--color-accent-100) ;
+    svg {fill: var(--color-accent-100)}
+  }
+
+  &.active {
+    .button {
+      font-weight: var(--font-weight-bold);
+      color: var(--color-accent-500);
+      box-shadow: none;
+      
+      svg {
+        fill: var(--color-accent-500);
+      }
+    }
+  }
+}

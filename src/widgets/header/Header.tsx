@@ -2,7 +2,9 @@
 
 import { FC } from 'react'
 
+import { useAppSelector } from '@/application/hooks/hooks'
 import { Option, Select } from '@/shared/Select/Select'
+import { Button } from '@/shared/button/button'
 import FlagEn from '@/shared/input/icons/FlagEn'
 import FlagRu from '@/shared/input/icons/FlagRu'
 import NotificationIcon from '@/shared/input/icons/NotificationIcon'
@@ -12,19 +14,22 @@ import Link from 'next/link'
 import styles from './Header.module.scss'
 
 type HeaderProps = {
-  isAuthenticated: boolean
   notificationsCount?: number
 }
 
-export const Header: FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 0 }) => {
+export const Header: FC<HeaderProps> = ({ notificationsCount = 0 }) => {
+  const isLoggedIn = useAppSelector(state => state.app.isLoggedIn)
+
   return (
     <header className={styles.header}>
-      <Typography variant={'Large'}>Instagram</Typography>
+      <Link href={'/'}>
+        <Typography variant={'Large'}>Inctagram</Typography>
+      </Link>
       <div className={styles.headerActions}>
-        {isAuthenticated && (
+        {isLoggedIn && (
           <div className={styles.notification}>
             <NotificationIcon />
-            {notificationsCount > 0 && (
+            {notificationsCount && notificationsCount > 0 && (
               <div className={styles.count}>
                 {notificationsCount > 9 ? '9+' : notificationsCount}
               </div>
@@ -47,14 +52,14 @@ export const Header: FC<HeaderProps> = ({ isAuthenticated, notificationsCount = 
             </Option>
           </Select>
         </div>
-        {!isAuthenticated && (
+        {!isLoggedIn && (
           <>
-            <Link className={styles.login} href={'/login'}>
+            <Button as={Link} className={styles.login} href={'/signin'} variant={'link'}>
               Log in
-            </Link>
-            <Link className={styles.signup} href={'/signup'}>
+            </Button>
+            <Button as={Link} className={styles.signup} href={'/signup'}>
               Sign up
-            </Link>
+            </Button>
           </>
         )}
       </div>

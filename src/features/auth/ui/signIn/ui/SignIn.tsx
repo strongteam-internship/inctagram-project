@@ -3,8 +3,8 @@
 import { useForm } from 'react-hook-form'
 
 import { GithubSvg, GoogleSvg } from '@/assets/svg/icons/components'
-import { useGetSignInMutation } from '@/features/auth/api/authApi'
-import { SignInSchemaType, signInSchema } from '@/features/auth/ui/signIn/utils/schema/schema'
+import { useSignIn } from '@/features/auth/hooks/useSignIn'
+import { SignInSchemaType, signInSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { ControlledInput } from '@/shared/input/controlled-input'
@@ -15,30 +15,30 @@ import Link from 'next/link'
 import s from './SignIn.module.scss'
 
 export function SignInForm() {
-  const [getSignIn, { isLoading }] = useGetSignInMutation()
-  const { control, handleSubmit, setError } = useForm<SignInSchemaType>({
+  const {
+    control,
+    formState: { errors, isLoading },
+    handleSubmit,
+    setError,
+  } = useForm<SignInSchemaType>({
     mode: 'onBlur',
-    reValidateMode: 'onChange',
+    reValidateMode: 'onBlur',
     resolver: zodResolver(signInSchema),
   })
-
-  const handleLogIn = (data: { email: string; password: string }) => {
-    getSignIn(data)
-      .unwrap()
-      .then(res => console.log(res))
-      .catch(err => setError('password', { message: err.data.messages }))
-  }
+  const { getSignIn, loginGithubHandler, loginWithGoogleOAuth } = useSignIn({
+    errorHandler: setError,
+  })
 
   return (
     <div className={s.wrap}>
       <Card className={s.formContainer}>
-        <form className={s.form} onSubmit={handleSubmit(handleLogIn)}>
+        <form className={s.form} onSubmit={handleSubmit(getSignIn)}>
           <Typography align={'center'} className={s.title} variant={'H1'}>
             Sign In
           </Typography>
           <div className={s.iconContainer}>
-            <GoogleSvg />
-            <GithubSvg />
+            <GoogleSvg onClick={loginWithGoogleOAuth} style={{ cursor: 'pointer' }} />
+            <GithubSvg onClick={loginGithubHandler} style={{ cursor: 'pointer' }} />
           </div>
           <div className={s.inputContainer}>
             <ControlledInput control={control} label={'Email'} name={'email'} variant={'text'} />
@@ -49,7 +49,16 @@ export function SignInForm() {
               variant={'password'}
             />
           </div>
-          <Button className={s.signInButton} disabled={isLoading} fullWidth type={'submit'}>
+          <div className={s.forgotPasswordLink}>
+            <Link href={'/forgot-password'}>Forgot Password</Link>
+          </div>
+
+          <Button
+            className={s.signInButton}
+            disabled={isLoading || Object.keys(errors).length > 0}
+            fullWidth
+            type={'submit'}
+          >
             Sing In
           </Button>
           <div className={s.signupContainer}>

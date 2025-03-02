@@ -20,7 +20,11 @@ export default function EmailConfirmation() {
         <Typography align={'center'} variant={'regular_text_16'}>
           Your email has been confirmed
         </Typography>
-        <Button className={s.button} onClick={() => router.push('/signin')} variant={'primary'}>
+        <Button
+          className={s.button}
+          onClick={() => router.push('/auth/signin')}
+          variant={'primary'}
+        >
           Sign In
         </Button>
         <div className={s.imgWrapper}>

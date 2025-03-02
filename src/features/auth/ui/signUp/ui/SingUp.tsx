@@ -1,14 +1,11 @@
 'use client'
 
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
-import { useGetSignUpMutation } from '@/features/auth/api/authApi'
-import {
-  SignUpSchemaType,
-  signUpSchema,
-} from '@/features/auth/ui/signUp/utils/validationRules/zodSchema'
+import { useSignUp } from '@/features/auth/hooks/useSignUp'
+import { SignUpSchemaType, signUpSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
 import { Card } from '@/shared/card'
 import { Checkbox } from '@/shared/checkbox/Checkbox'
@@ -20,56 +17,19 @@ import Link from 'next/link'
 import s from './SignUp.module.scss'
 
 type SignUpFormProps = {
-  onSubmitHandler: (email: string) => void
+  onSubmitHandlerAction: (email: string) => void
 }
 
-type ErrorResponse = {
-  data: {
-    error: string
-    messages: Array<ErrorMessage>
-    statusCode: number
+export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
+  const successHandler = () => {
+    onSubmitHandlerAction(getValues().email)
+    reset()
   }
-  status: number
-}
 
-type ErrorMessage = {
-  field: keyof SignUpSchemaType
-  message: string
-}
-
-function isErrorMessage(errorMessage: unknown): errorMessage is ErrorMessage {
-  return (
-    typeof errorMessage === 'object' &&
-    errorMessage !== null &&
-    'field' in errorMessage &&
-    'message' in errorMessage &&
-    typeof errorMessage.field === 'string' &&
-    typeof errorMessage.message === 'string'
-  )
-}
-
-function isError(errorRes: unknown): errorRes is ErrorResponse {
-  return (
-    typeof errorRes === 'object' &&
-    errorRes !== null &&
-    'data' in errorRes &&
-    typeof errorRes.data === 'object' &&
-    errorRes.data !== null &&
-    'error' in errorRes.data &&
-    typeof errorRes.data.error === 'string' &&
-    'messages' in errorRes.data &&
-    Array.isArray(errorRes.data.messages) &&
-    errorRes.data.messages.every(message => isErrorMessage(message)) &&
-    'status' in errorRes &&
-    typeof errorRes.status === 'number'
-  )
-}
-
-export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
-  const [getSignUp] = useGetSignUpMutation()
   const {
     control,
     formState: { isValid },
+    getValues,
     handleSubmit,
     register,
     reset,
@@ -77,43 +37,25 @@ export function SignUpForm({ onSubmitHandler }: SignUpFormProps) {
     watch,
   } = useForm<SignUpSchemaType>({
     mode: 'onBlur',
+    reValidateMode: 'onBlur',
     resolver: zodResolver(signUpSchema),
   })
-
+  const { getSignUp, loginGithubHandler, loginWithGoogleOAuth } = useSignUp({
+    errorHandler: setError,
+    successHandler: successHandler,
+  })
   const isTermsAndPolicyChecked = watch('agreeToPolicies')
-
-  const onSubmit: SubmitHandler<SignUpSchemaType> = data => {
-    const requestData = {
-      baseUrl: 'https://strong-interns.top/signup/confirmEmail',
-      email: data.email,
-      password: data.password,
-      userName: data.userName,
-    }
-
-    //Todo: поправить код на 95 строка после типизации ошибок
-    getSignUp(requestData)
-      .unwrap()
-      .then(() => {
-        onSubmitHandler(requestData.email)
-        reset()
-      })
-      .catch(error => {
-        error.data.messages.forEach((error: ErrorMessage) => {
-          setError(error.field, { message: error.message })
-        })
-      })
-  }
 
   return (
     <div className={s.wrap}>
       <Card className={s.formContainer}>
-        <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
+        <form className={s.form} onSubmit={handleSubmit(getSignUp)}>
           <Typography align={'center'} className={s.title} variant={'H1'}>
             Sign Up
           </Typography>
           <div className={s.iconContainer}>
-            <GoogleSvg />
-            <GithubSvg />
+            <GoogleSvg onClick={loginWithGoogleOAuth} style={{ cursor: 'pointer' }} />
+            <GithubSvg onClick={loginGithubHandler} style={{ cursor: 'pointer' }} />
           </div>
           <div className={s.inputContainer}>
             <ControlledInput
