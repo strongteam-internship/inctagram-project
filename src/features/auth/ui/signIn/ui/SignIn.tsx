@@ -3,6 +3,7 @@
 import { useForm } from 'react-hook-form'
 
 import { GithubSvg, GoogleSvg } from '@/assets/svg/icons/components'
+import { useGoogleOAuthLogin } from '@/features/auth/hooks/useGoogleOauth'
 import { useSignIn } from '@/features/auth/hooks/useSignIn'
 import { SignInSchemaType, signInSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
@@ -25,9 +26,10 @@ export function SignInForm() {
     reValidateMode: 'onBlur',
     resolver: zodResolver(signInSchema),
   })
-  const { getSignIn, loginGithubHandler, loginWithGoogleOAuth } = useSignIn({
+  const { getSignIn, loginGithubHandler } = useSignIn({
     errorHandler: setError,
   })
+  const { loginWithGoogleOAuth } = useGoogleOAuthLogin()
 
   return (
     <div className={s.wrap}>
