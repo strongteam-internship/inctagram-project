@@ -5,7 +5,6 @@ import { ErrorMessage } from '@/application/api/types/types'
 import { isErrorResponse } from '@/application/utils/typeGuards/typeGuards'
 import { useGetSignInMutation } from '@/features/auth/api/authApi'
 import { useGithubAuth } from '@/features/auth/hooks/useGithubAuth'
-import { useGoogleOAuthLogin } from '@/features/auth/hooks/useGoogleOauth'
 import { useRouter } from 'next/navigation'
 
 type Props = {
