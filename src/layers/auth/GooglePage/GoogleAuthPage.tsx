@@ -19,6 +19,7 @@ export function GoogleAuthPage() {
   useEffect(() => {
     async function fetchGoogleOAuthLogin() {
       if (code) {
+        console.log(code)
         try {
           const res = await getGoogleOAuthLogin({ code: code, redirectUrl: redirectUrl })
 
