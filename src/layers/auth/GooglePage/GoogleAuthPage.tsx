@@ -11,7 +11,7 @@ export function GoogleAuthPage() {
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
   const [getGoogleOAuthLogin, { isLoading }] = useGetGoogleOAuthMutation()
-  const redirectUrl = 'https://strong-interns.top/private/profile'
+  const redirectUrl = 'https://strong-interns.top/googleAuth'
 
   const dispatch = useAppDispatch()
 
