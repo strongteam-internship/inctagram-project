@@ -5,14 +5,13 @@ import React, { useEffect } from 'react'
 import { useAppDispatch } from '@/application/hooks/hooks'
 import { setIsLoggedIn } from '@/application/model/app/appSlice'
 import { useGetGoogleOAuthMutation } from '@/features/auth/api/authApi'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 
 export function GoogleAuthPage() {
   const searchParams = useSearchParams()
-  const router = useRouter()
   const code = searchParams.get('code')
   const [getGoogleOAuthLogin, { isLoading }] = useGetGoogleOAuthMutation()
-  const redirectUrl = 'https://strong-interns.top/private/profile'
+  const redirectUrl = 'https://strong-interns.top/googleAuth'
 
   const dispatch = useAppDispatch()
 
@@ -35,7 +34,7 @@ export function GoogleAuthPage() {
       }
     }
     fetchGoogleOAuthLogin()
-  }, [router, code, redirectUrl, dispatch, getGoogleOAuthLogin])
+  }, [code, redirectUrl, dispatch, getGoogleOAuthLogin])
 
   return <>{isLoading && <p style={{ color: 'white' }}>Loading...</p>}</>
 }
