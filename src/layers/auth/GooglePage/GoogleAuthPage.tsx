@@ -12,20 +12,20 @@ export function GoogleAuthPage() {
   const router = useRouter()
   const code = searchParams.get('code')
   const [getGoogleOAuthLogin, { isLoading }] = useGetGoogleOAuthMutation()
-  const redirectUrl = 'https://strong-interns.top/private/profile'
+  const redirectUrl = 'https://strong-interns.top/googleAuth'
 
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     async function fetchGoogleOAuthLogin() {
       if (code) {
-        console.log(code)
         try {
           const res = await getGoogleOAuthLogin({ code: code, redirectUrl: redirectUrl })
 
           if (res.data?.accessToken) {
             localStorage.setItem('accessToken', res.data.accessToken)
             dispatch(setIsLoggedIn(true))
+            router.push('/private/profile')
           }
         } catch (error) {
           console.error(error)
@@ -35,7 +35,7 @@ export function GoogleAuthPage() {
       }
     }
     fetchGoogleOAuthLogin()
-  }, [router, code, redirectUrl, dispatch, getGoogleOAuthLogin])
+  }, [code, redirectUrl, dispatch, router, getGoogleOAuthLogin])
 
   return <>{isLoading && <p style={{ color: 'white' }}>Loading...</p>}</>
 }
