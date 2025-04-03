@@ -4,9 +4,10 @@ import { SwiperProps, Swiper, SwiperSlide } from 'swiper/react'
 
 import './Slider.scss'
 
-import 'swiper/css'
+import 'swiper/css/index.css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+import Image from 'next/image'
 
 type postImagesType = {
   url: string
@@ -36,7 +37,7 @@ export const Slider = ({ sliderItems, style, ...swiperProps }: SliderProps): Rea
           sliderItems?.map((item, index) => {
             return (
               <SwiperSlide key={index}>
-                <img
+                <Image
                   alt={`${item}_description`}
                   src={item.url}
                   style={{ height: '100%', objectFit: 'cover', width: '100%' }}
