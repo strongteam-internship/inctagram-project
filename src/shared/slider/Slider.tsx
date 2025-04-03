@@ -1,6 +1,7 @@
 'use client'
 import * as React from 'react'
 
+import Image from 'next/image'
 import { Swiper, SwiperProps, SwiperSlide } from 'swiper/react'
 
 import './Slider.scss'
@@ -10,23 +11,19 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 // eslint-disable-next-line import/extensions
 import 'swiper/css/pagination'
-// eslint-disable-next-line import/extensions
-import Image from 'next/image'
 
 type postImagesType = {
+  createdAt?: string
+  fileSize?: number
+  height?: number
+  uploadId?: string
   url: string
   width?: number
-  height?: number
-  fileSize?: number
-  createdAt?: string
-  uploadId?: string
 }
-
 type SliderProps = {
   sliderItems: postImagesType[]
   style?: React.CSSProperties
 } & SwiperProps
-
 export const Slider = ({ sliderItems, style, ...swiperProps }: SliderProps): React.ReactNode => {
   const defaultStyle = {
     display: 'flex',
@@ -41,10 +38,10 @@ export const Slider = ({ sliderItems, style, ...swiperProps }: SliderProps): Rea
           sliderItems?.map((item, index) => {
             return (
               <SwiperSlide key={index}>
-                <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                <div style={{ height: '100%', position: 'relative', width: '100%' }}>
                   <Image
-                    fill
                     alt={`${item}_description`}
+                    fill
                     src={item.url}
                     style={{ objectFit: 'cover' }}
                   />
