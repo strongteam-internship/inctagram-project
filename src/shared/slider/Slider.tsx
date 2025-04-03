@@ -4,9 +4,13 @@ import * as React from 'react'
 import { Swiper, SwiperProps, SwiperSlide } from 'swiper/react'
 
 import './Slider.scss'
+// eslint-disable-next-line import/extensions
 import 'swiper/css'
+// eslint-disable-next-line import/extensions
 import 'swiper/css/navigation'
+// eslint-disable-next-line import/extensions
 import 'swiper/css/pagination'
+// eslint-disable-next-line import/extensions
 import Image from 'next/image'
 
 type postImagesType = {
