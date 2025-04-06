@@ -1,3 +1,4 @@
+import { PublicUserResponse } from '@/entities/user/model/type'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 type User = {
   aboutMe: string
@@ -35,7 +36,10 @@ export const userApi = createApi({
     getProfile: builder.query<User, void>({
       query: () => '/api/v1/users/profile',
     }),
+    getPublicProfileById: builder.query<PublicUserResponse, string>({
+      query: profileId => `/api/v1/public-user/profile/${profileId}`,
+    }),
   }),
 })
 
-export const { useGetProfileQuery } = userApi
+export const { useGetProfileQuery, useGetPublicProfileByIdQuery } = userApi

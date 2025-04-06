@@ -1,5 +1,6 @@
 import { baseApi } from '@/application/api/baseApi'
 import { appSlice } from '@/application/model/app/appSlice'
+import { publicPostApi } from '@/entities/post/api/publicPostApi'
 import { userApi } from '@/entities/user/api/userApi'
 import { authApi } from '@/features/auth/api/authApi'
 import { countApi } from '@/widgets/totalCountOfUsers/api/countApi'
@@ -11,11 +12,13 @@ export const store = configureStore({
       .concat(baseApi.middleware)
       .concat(countApi.middleware)
       .concat(userApi.middleware)
-      .concat(authApi.middleware),
+      .concat(authApi.middleware)
+      .concat(publicPostApi.middleware),
   reducer: {
     app: appSlice,
     [authApi.reducerPath]: authApi.reducer,
     [countApi.reducerPath]: countApi.reducer,
+    [publicPostApi.reducerPath]: publicPostApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
   },
 })
