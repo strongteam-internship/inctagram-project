@@ -17,15 +17,15 @@ export function PublicUserPage() {
         <div>
           <Typography variant={'H2'}>{data.userName}</Typography>
           <div className={s.userMetadata}>
-            <div>
+            <div className={s.metaDataItem}>
               <Typography variant={'bold_text_14'}>{data.userMetadata.following}</Typography>
               <Typography variant={'regular_text_14'}>Following</Typography>
             </div>
-            <div>
+            <div className={s.metaDataItem}>
               <Typography variant={'bold_text_14'}>{data.userMetadata.followers}</Typography>
               <Typography variant={'regular_text_14'}>Followers</Typography>
             </div>
-            <div>
+            <div className={s.metaDataItem}>
               <Typography variant={'bold_text_14'}>{data.userMetadata.publications}</Typography>
               <Typography variant={'regular_text_14'}>Publications</Typography>
             </div>

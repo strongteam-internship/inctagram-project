@@ -2,13 +2,17 @@
   max-width: 234px;
   display: flex;
   flex-direction: column;
-padding: 0;
+  padding: 0;
+}
+
+.userInfoContainer{
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  margin-top: 12px;
 }
 
 .userInfo{
   display: flex;
-  align-items: center;
-  justify-content: start;
   gap: 12px;
-  margin-top: 12px;
 }
