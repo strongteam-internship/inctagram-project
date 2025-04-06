@@ -1,0 +1,29 @@
+.countContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-dark-500);
+  border: 1px solid var(--color-dark-300);
+  padding: 12px 24px;
+  color: var(--color-light-100);
+  font-size: var(--font-size-l);
+  border-radius: 2px;
+}
+
+.counter{
+  background: var(--color-dark-700);
+  border-radius: 4px;
+  border: 1px solid var(--color-dark-300);
+  padding: 8px 12px 10px 12px;
+  display: flex;
+  align-items: center;
+  list-style: none;
+  :last-child{
+    border: none;
+  }
+}
+.item{
+  padding: 5px 10px;
+  border-right: 1px solid var(--color-dark-300);
+}

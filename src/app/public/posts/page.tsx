@@ -1,7 +1,6 @@
-import { Typography } from "@/shared/typography/typography";
+
+import { PostsPage } from "@/layers/public/postsPage/PostsPage";
 
 export default function PublicPosts(){
-  return (<div>
-    <Typography variant={'H1'}>public posts page</Typography>
-  </div>)
+  return (<PostsPage/>);
 }
