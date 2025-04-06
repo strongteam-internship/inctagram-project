@@ -1,5 +1,3 @@
-import * as url from 'node:url'
-
 import { PostsResponse, PublicUserPostsResponse } from '@/entities/post/model/types'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
