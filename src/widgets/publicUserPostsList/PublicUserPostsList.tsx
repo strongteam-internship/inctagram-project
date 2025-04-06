@@ -1,6 +1,5 @@
 import { useGetPostByUserIdQuery } from '@/entities/post/api/publicPostApi'
 import { PublicUserPostCard } from '@/entities/post/ui/publicUserPostCard/PublicUserPostCard'
-import Image from 'next/image'
 
 import s from './PublicUserPostsList.module.scss'
 export function PublicUserPostsList({ id }: { id: string }) {

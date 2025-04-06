@@ -1,12 +1,7 @@
 import * as url from 'node:url'
 
 import { PostsResponse, PublicUserPostsResponse } from '@/entities/post/model/types'
-import {
-  BaseQueryArg,
-  EndpointBuilder,
-  createApi,
-  fetchBaseQuery,
-} from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const publicPostApi = createApi({
   baseQuery: fetchBaseQuery({

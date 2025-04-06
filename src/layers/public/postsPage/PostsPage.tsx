@@ -1,4 +1,3 @@
-import { Typography } from "@/shared/typography/typography";
 import { PublicPostsList } from "@/widgets/publicPostsList/PublicPostsList";
 import { TotalUsersCount } from "@/widgets/totalCountOfUsers/ui/TotalUsersCount";
 
