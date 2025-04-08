@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 
 import GithubSvg from '@/assets/svg/icons/components/GithubSvg'
 import GoogleSvg from '@/assets/svg/icons/components/GoogleSvg'
+import { useGoogleOAuthLogin } from '@/features/auth/hooks/useGoogleOauth'
 import { useSignUp } from '@/features/auth/hooks/useSignUp'
 import { SignUpSchemaType, signUpSchema } from '@/features/auth/utils/validationRules/zodSchema'
 import { Button } from '@/shared/button/button'
@@ -40,10 +41,11 @@ export function SignUpForm({ onSubmitHandlerAction }: SignUpFormProps) {
     reValidateMode: 'onBlur',
     resolver: zodResolver(signUpSchema),
   })
-  const { getSignUp, loginGithubHandler, loginWithGoogleOAuth } = useSignUp({
+  const { getSignUp, loginGithubHandler } = useSignUp({
     errorHandler: setError,
     successHandler: successHandler,
   })
+  const { loginWithGoogleOAuth } = useGoogleOAuthLogin()
   const isTermsAndPolicyChecked = watch('agreeToPolicies')
 
   return (
