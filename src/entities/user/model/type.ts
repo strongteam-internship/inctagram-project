@@ -1,7 +1,7 @@
 export type PublicUserResponse = {
   aboutMe: string
   avatars: {
-    createdAt: Date
+    createdAt: string
     fileSize: number
     height: number
     url: string

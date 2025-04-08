@@ -1,5 +1,12 @@
 import { PublicUserResponse } from '@/entities/user/model/type'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {
+  BaseQueryMeta,
+  BaseQueryResult,
+  createApi,
+  fetchBaseQuery,
+} from '@reduxjs/toolkit/query/react'
+
+import defaultAvatar from '../../../assets/images/defaultAvatar.jpg'
 type User = {
   aboutMe: string
   avatars: UserAvatar[]
@@ -38,6 +45,19 @@ export const userApi = createApi({
     }),
     getPublicProfileById: builder.query<PublicUserResponse, string>({
       query: profileId => `/api/v1/public-user/profile/${profileId}`,
+      transformResponse: (response: PublicUserResponse) => {
+        if (response.avatars.length === 0) {
+          response.avatars.push({
+            createdAt: '2023-01-01T00:00:00Z',
+            fileSize: 100,
+            height: 100,
+            url: defaultAvatar.src,
+            width: 100,
+          })
+        }
+
+        return response
+      },
     }),
   }),
 })

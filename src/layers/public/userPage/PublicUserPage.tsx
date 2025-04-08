@@ -11,6 +11,8 @@ export function PublicUserPage() {
   const {user} = useParams()
   const { data, isSuccess } = useGetPublicProfileByIdQuery(user as string)
 
+console.log(data)
+
   return (<div className={s.container}>
       { isSuccess && <div className={s.userInfo}>
         <Avatar alt={"User Avatar"} size={'large'} src={data.avatars[0].url}/>

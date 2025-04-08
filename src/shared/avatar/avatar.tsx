@@ -4,6 +4,8 @@ import Image from 'next/image'
 
 import s from './avatar.module.scss'
 
+import defaultAvatar from '../../assets/images/defaultAvatar.jpg'
+
 type Props = {
   alt: string
   size: 'large' | 'medium' | 'small'
@@ -24,7 +26,7 @@ export const Avatar = forwardRef<HTMLDivElement, Props>(
           alt={alt}
           className={s.avatar}
           height={sizes[size].height}
-          src={src}
+          src={src ? src : defaultAvatar}
           width={sizes[size].width}
         />
       </div>
