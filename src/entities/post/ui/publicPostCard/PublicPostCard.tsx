@@ -1,5 +1,3 @@
-'use client'
-
 import { Post } from '@/entities/post/model/types'
 import { Avatar } from '@/shared/avatar/avatar'
 import { Card } from '@/shared/card'

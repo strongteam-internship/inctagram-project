@@ -6,12 +6,6 @@ export const publicPostApi = createApi({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
   endpoints: build => ({
-    getAllPosts: build.query<PostsResponse, void>({
-      providesTags: ['AllPosts'],
-      query: () => ({
-        url: `/api/v1/public-posts/all/?pageSize=4`,
-      }),
-    }),
     getPostByUserId: build.query<PublicUserPostsResponse, string>({
       providesTags: ['UserPosts'],
       query: userId => ({
@@ -24,4 +18,4 @@ export const publicPostApi = createApi({
   tagTypes: ['AllPosts', 'UserPosts'],
 })
 
-export const { useGetAllPostsQuery, useGetPostByUserIdQuery } = publicPostApi
+export const { useGetPostByUserIdQuery } = publicPostApi

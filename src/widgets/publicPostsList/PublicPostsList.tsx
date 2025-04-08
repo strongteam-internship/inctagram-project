@@ -1,12 +1,10 @@
-'use client'
-
-import { useGetAllPostsQuery } from '@/entities/post/api/publicPostApi'
 import { PublicPostCard } from '@/entities/post/ui/publicPostCard/PublicPostCard'
+import { getTopPublicPosts } from '@/widgets/publicPostsList/api/topPostsApi'
 
 import s from './PublicPostsList.module.scss'
 
-export function PublicPostsList() {
-  const { data } = useGetAllPostsQuery()
+export async function PublicPostsList() {
+  const data = await getTopPublicPosts()
 
   return (
     <div className={s.container}>

@@ -1,11 +1,9 @@
-'use client'
-
-import { useGetTotalCountOfUsersQuery } from '@/widgets/totalCountOfUsers/api/countApi'
-import { number } from 'zod'
+import { getTotalUsersCount } from '@/widgets/totalCountOfUsers/api/countApi'
 
 import s from './TotalUsersCount.module.scss'
-export function TotalUsersCount() {
-  const { data } = useGetTotalCountOfUsersQuery()
+
+export async function TotalUsersCount() {
+  const data = await getTotalUsersCount()
 
   return (
     <div className={s.countContainer}>
