@@ -37,11 +37,11 @@ export type PostsResponse = {
 export type Post = {
   avatarOwner: string
   avatarWhoLikes: string[]
-  createdAt: Date
+  createdAt: string
   description: string
   id: number
   images: {
-    createdAt: Date
+    createdAt: string
     fileSize: number
     height: number
     uploadId: string
@@ -56,6 +56,6 @@ export type Post = {
     lastName: string
   }
   ownerId: number
-  updatedAt: Date
+  updatedAt: string
   userName: string
 }
