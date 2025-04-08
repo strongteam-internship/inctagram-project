@@ -1,10 +1,5 @@
 import { PublicUserResponse } from '@/entities/user/model/type'
-import {
-  BaseQueryMeta,
-  BaseQueryResult,
-  createApi,
-  fetchBaseQuery,
-} from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 import defaultAvatar from '../../../assets/images/defaultAvatar.jpg'
 type User = {
