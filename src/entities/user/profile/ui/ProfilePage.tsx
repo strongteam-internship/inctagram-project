@@ -5,7 +5,6 @@ import { useGetProfileQuery } from '@/entities/user/api/userApi'
 import { Modal } from '@/shared/modal'
 import { Slider } from '@/shared/slider/Slider'
 import { Typography } from '@/shared/typography/typography'
-import { Navigation, Pagination } from 'swiper/modules'
 
 import './styles.scss'
 
@@ -30,10 +29,17 @@ export function ProfilePage() {
     <>
       <Typography variant={'H3'}>Hello this is Profile Page its not done yet</Typography>
       <button type={'button'}>Open modal</button>
-      <Modal className={'test111'} open={openModal} setOpen={setOpenModal}>
-        <div style={{ display: 'flex', maxHeight: '564px' }}>
-          <div>
-            <Slider modules={[Navigation, Pagination]} navigation pagination sliderItems={imgs} />
+      <Modal open={openModal} setOpen={setOpenModal}>
+        <div
+          style={{
+            display: 'flex',
+            height: '564px',
+            maxHeight: '564px',
+            width: '976px',
+          }}
+        >
+          <div className={'test'} style={{ height: '100%', width: '490px' }}>
+            <Slider navigation pagination sliderItems={imgs} slidesPerView={1} />
           </div>
           <div
             style={{
