@@ -1,0 +1,62 @@
+.userCommentContainer {
+  display: flex;
+  gap: 12px;
+  margin: 15px 0;
+
+  .userLogo {
+    flex-shrink: 0;
+  }
+
+  .userNameAvatarContentContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    word-wrap: break-word;
+
+    .commentAuthorUserName {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 24px;
+      letter-spacing: 0;
+      margin-right: 5px;
+      color: var(--color-light-100);
+    }
+
+    .commentContent {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 24px;
+      letter-spacing: 0;
+      color: var(--color-light-100);
+      word-break: break-word;
+      max-width: 345px;
+    }
+
+    .commentDateCreated {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      color: #8d9094;
+    }
+
+    .separatorAnswerCountContainer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .lineSeparator {
+        height: 1px;
+        width: 24px;
+        background-color: #ccc;
+        border: none;
+      }
+
+      .viewCommentAnswersBtn {
+        background: none;
+        color: #8d9094;
+        cursor: pointer;
+        font-size: 13px;
+      }
+    }
+  }
+}

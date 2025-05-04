@@ -1,9 +1,12 @@
-'use client'
+import { PublicUserPage } from '@/layers/public/userPage/PublicUserPage'
+import { getPostById } from '@/widgets/publicPostModal/api/getPostById'
 
-import { PublicUserPage } from "@/layers/public/userPage/PublicUserPage";
+export default async function UserPage({ searchParams}: {
+  searchParams: { post: string }
+}) {
 
-export default function UserPage(){
-  return (<>
-    <PublicUserPage/>
-  </>)
+  const { post } = await searchParams
+  const postData = await getPostById(+post)
+
+  return <PublicUserPage postData = {postData} />
 }

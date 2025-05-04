@@ -2,6 +2,7 @@
 import * as React from 'react'
 
 import Image from 'next/image'
+import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperProps, SwiperSlide } from 'swiper/react'
 
 import './Slider.scss'
@@ -12,6 +13,11 @@ import 'swiper/css/navigation'
 // eslint-disable-next-line import/extensions
 import 'swiper/css/pagination'
 
+const defaultStyle = {
+  height: '100%',
+  width: '100%',
+}
+
 type postImagesType = {
   createdAt?: string
   fileSize?: number
@@ -20,36 +26,38 @@ type postImagesType = {
   url: string
   width?: number
 }
+
 type SliderProps = {
   sliderItems: postImagesType[]
   style?: React.CSSProperties
 } & SwiperProps
-export const Slider = ({ sliderItems, style, ...swiperProps }: SliderProps): React.ReactNode => {
-  const defaultStyle = {
-    display: 'flex',
-    height: '562px',
-    width: '490px',
-  }
 
+export const Slider = ({
+  sliderItems,
+  style = defaultStyle,
+  ...swiperProps
+}: SliderProps): React.ReactNode => {
   return (
-    <div style={{ ...defaultStyle, ...style }}>
-      <Swiper {...swiperProps}>
-        {Array.isArray(sliderItems) &&
-          sliderItems?.map((item, index) => {
-            return (
-              <SwiperSlide key={index}>
-                <div style={{ height: '100%', position: 'relative', width: '100%' }}>
-                  <Image
-                    alt={`${item}_description`}
-                    fill
-                    src={item.url}
-                    style={{ objectFit: 'cover' }}
-                  />
-                </div>
-              </SwiperSlide>
-            )
-          })}
-      </Swiper>
-    </div>
+    <Swiper
+      modules={[Navigation, Pagination]}
+      style={{ ...defaultStyle, ...style }}
+      {...swiperProps}
+    >
+      {Array.isArray(sliderItems) &&
+        sliderItems?.map((item, index) => {
+          return (
+            <SwiperSlide key={index}>
+              <div style={{ height: '100%', position: 'relative', width: '100%' }}>
+                <Image
+                  alt={`${item}_description`}
+                  fill
+                  src={item.url}
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+            </SwiperSlide>
+          )
+        })}
+    </Swiper>
   )
 }
