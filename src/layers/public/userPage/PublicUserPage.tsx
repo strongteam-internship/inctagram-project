@@ -1,19 +1,28 @@
 'use client'
-import { useGetPublicProfileByIdQuery } from "@/entities/user/api/userApi";
-import { Avatar } from "@/shared/avatar/avatar";
-import { Typography } from "@/shared/typography/typography";
-import { PublicUserPostsList } from "@/widgets/publicUserPostsList/PublicUserPostsList";
-import { useParams } from "next/navigation";
+import { useState } from 'react'
+
+import { Post } from '@/entities/post/model/types'
+import { useGetPublicProfileByIdQuery } from '@/entities/user/api/userApi'
+import { Avatar } from '@/shared/avatar/avatar'
+import { Typography } from '@/shared/typography/typography'
+import ModalServerPostContent from '@/widgets/publicPostModal/ui/ModalServerPostContent'
+import { PublicUserPostsList } from '@/widgets/publicUserPostsList/PublicUserPostsList'
+import { useParams, useSearchParams } from 'next/navigation'
 
 import s from './PublicUserPage.module.scss'
 
-export function PublicUserPage() {
-  const {user} = useParams()
+export function PublicUserPage({ postData }: { postData: Post }) {
+
+  const { user } = useParams()
   const { data, isSuccess } = useGetPublicProfileByIdQuery(user as string)
+  const [openModal, setOpenModal] = useState<boolean>(true)
+
+  const hasPostParam = useSearchParams().has('post')
 
   return (<div className={s.container}>
-      { isSuccess && <div className={s.userInfo}>
-        <Avatar alt={"User Avatar"} size={'large'} src={data.avatars[0].url}/>
+      {hasPostParam && <ModalServerPostContent openModal={openModal} postData={postData} setOpenModal={setOpenModal} />}
+      {isSuccess && <div className={s.userInfo}>
+        <Avatar alt={'User Avatar'} size={'large'} src={data.avatars[0].url} />
         <div>
           <Typography variant={'H2'}>{data.userName}</Typography>
           <div className={s.userMetadata}>
@@ -30,11 +39,12 @@ export function PublicUserPage() {
               <Typography variant={'regular_text_14'}>Publications</Typography>
             </div>
           </div>
-          <Typography variant={'regular_text_14'}>{data.aboutMe?data.aboutMe:'User dont tell about your self'}</Typography>
+          <Typography
+            variant={'regular_text_14'}>{data.aboutMe ? data.aboutMe : 'User dont tell about your self'}</Typography>
         </div>
       </div>
       }
       <PublicUserPostsList id={user as string} />
-  </div>
-)
+    </div>
+  )
 }
